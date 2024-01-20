@@ -2,32 +2,154 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+/* Autofill Styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s; /* Consider adjusting the transition duration */
+  background-color: #fff;
+  border-radius: 4px;
+  [data-theme="dark"] & {
+    background-color: #333;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 12px;
+  border-radius: 4px;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+::-webkit-scrollbar-track {
+  background-color: #c9c2c2;
+  border-radius: 4px;
+  [data-theme="dark"] & {
+    background-color: #333;
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+  [data-theme="dark"] & {
+    background-color: #b6a8a8;
+  }
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+  [data-theme="dark"] & {
+    background-color: #8a8080;
+  }
+}
+.scrollforchat::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 4px;
+}
+
+.scrollforchat::-webkit-scrollbar-track {
+  background-color: #c9c2c2;
+  [data-theme="dark"] & {
+    background-color: #333;
+  }
+}
+
+.scrollforchat::-webkit-scrollbar-thumb {
+  background-color: #252121;
+  border-radius: 4px;
+  [data-theme="dark"] & {
+    background-color: #8a8080;
+  }
+}
+
+.scrollforchat::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+  [data-theme="dark"] & {
+    background-color: #b6a8a8;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  /* Hide scrollbar on small screens */
+  .scrollforchat::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+
+[data-theme="dark"] {
+  @apply bg-[#4c4c4c] text-[#e3ebdb];
+}
+[data-theme="light"] {
+  @apply bg-[#f5f4f069] text-black;
+}
+.forum-btn1 {
+  @apply text-white px-4 py-1 rounded-lg cursor-pointer;
+}
+.forum-btn2 {
+  @apply lg:hover:text-white duration-300 px-4 py-1 rounded-lg cursor-pointer w-full;
+}
+.cardinhome {
+  @apply lg:w-[50vw] lg:max-w-[800px] md:w-[90vw] md:max-w-[500px] w-[95vw] mx-auto;
+}
+.forum-btn-sm {
+  @apply px-2 py-1 rounded-md text-sm;
+}
+.w-calc {
+  width: calc(50% - 2px);
+}
+
+.swiper-pagination-bullet {
+  color: white !important;
+  mix-blend-mode: difference !important;
+}
+.statsHeaderTitle {
+  @apply text-center font-semibold text-xl;
+}
+.width-full {
+  width: 100% !important;
+}
+.highlightedClass {
+  background-color: #888 !important;
+}
+.greenbg{
+  @apply bg-[#22c55e]
+}
+
+
+
+.scroll-reveal {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  display: inline;
+  background-clip: text;
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  animation: scroll-reveal linear forwards;
+ color: hsla(0, 12%, 97%, 0.5);
+animation-timeline: view();
+  animation-range: cover;
+  animation-range-start: 10vh;
+  animation-range-end: 35vh;
+}
+.scroll-reveal {
+  [data-theme="light"] & {
+    background-image: linear-gradient(90deg, black, black);
+    color: hsla(0, 0%, 1%, 0.5);
+  }
+  [data-theme="dark"] & {
+    background-image: linear-gradient(90deg, white, white);
+    color: hsla(0, 0%, 100%, 0.5);
+  }
+}
+
+@keyframes scroll-reveal {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
   }
 }
