@@ -55,7 +55,7 @@ const ReplyText = ({ text, replyID, commentID, postID, setFetchedReplies, setRep
                     </div>
                 }
             </div>
-            <p className='whitespace-pre-wrap text-[14px] py-[4px]' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(text, theme) }}></p>
+            <p className='scroll-reveal text-[14px] py-[4px]' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(text, theme) }}></p>
             {
                 showReportModal && reportingCommentId && reportingReplyId && <ReportModal commentID={reportingCommentId} key={reportingReplyId} postID={postID} replyID={reportingReplyId} type={"reply"} />
             }

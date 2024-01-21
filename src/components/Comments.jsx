@@ -16,6 +16,7 @@ import CommentEditModal from "./CommentEditModal";
 import ReportModal from "./ReportModal";
 import makeUrlsClickable from "@/utils/makeUrlsClickable";
 import useTheme from "@/hooks/useTheme";
+import LinkPreview from "./LinkPreview";
 const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: commentID, replies, setLikersArray, handleDislike, hanldleLike, postID, setPost }) => {
   const [replyText, setReplyText] = useState("");
   const [replyCount, setReplyCount] = useState(replies);
@@ -24,8 +25,8 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
   const [showCommentOptions, setShowCommentOptions] = useState(false);
   const [showCommentEditModal, setShowCommentEditModal] = useState(false);
   const [loadingNewReply, setLoadingNewReply] = useState(false);
-  const {theme} = useTheme();
-  
+  const { theme } = useTheme();
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -168,7 +169,12 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
                   </div>
                 }
               </div>
-              <p className='rounded whitespace-pre-wrap py-[4px] text-[14px]' dangerouslySetInnerHTML={{__html: makeUrlsClickable(c.comment, theme)}}></p>
+              <p className='rounded scroll-reveal py-[4px] text-[14px]' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(c.comment, theme) }}></p>
+              {
+                c?.videos?.length === 0 && c?.photos?.length === 0 && <div>
+                  <LinkPreview text={c.comment} />
+                </div>
+              }
             </div>
           </div>
 

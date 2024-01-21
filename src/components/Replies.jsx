@@ -6,6 +6,7 @@ import { FaUserLarge } from "react-icons/fa6";
 import LoadingModalUser from "./LoadingModal";
 import ReplyText from "./ReplyText";
 import { useSearchParams } from "next/navigation";
+import LinkPreview from "./LinkPreview";
 
 const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount, socket }) => {
     const pageRef = useRef(1);
@@ -132,6 +133,12 @@ const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount,
                                 setFetchedReplies={setFetchedReplies}
                                 setReplyCount={setReplyCount}
                             />
+                            {
+                                reply?.videos?.length === 0 && reply?.photos?.length === 0 && <div>
+                                    <LinkPreview text={reply.reply} />
+                                </div>
+                            }
+
                             {/* <p className='whitespace-pre-wrap text-[14px] py-[4px] '>{reply.reply}</p> */}
                         </div>
                     </div>
