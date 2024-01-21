@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
     const [allNotifications, setAllNotifications] = useState([]);
     const [loggedOut, setLoggedOut] = useState(false);
     const [fetchedUser, setFetchedUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isReportingPost, setIsReportingPost] = useState(false);
     const [showReportModal, setShowReportModal] = useState(false);
@@ -53,21 +53,21 @@ const AuthProvider = ({ children }) => {
                 socket.disconnect();
             }
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchedUser]);
 
     useEffect(() => {
         const fetchUser = async () => {
             setLoading(true);
             const { user } = await getUser();
+            setLoading(false);
             if (user.status === 200) {
                 setLoggedOut(false);
                 setFetchedUser(user.user);
-                setLoading(false);
             }
 
             else {
                 setFetchedUser(null)
-                setLoading(false)
                 return;
             }
         }

@@ -92,7 +92,8 @@ const Navbar = () => {
     startTransition(() => {
       router.refresh()
     });
-  }, [loading, router])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
