@@ -1,5 +1,7 @@
+import useTheme from "@/hooks/useTheme";
+
 const makeUrlsClickable = (text, theme) => {
-  
+
   const themes = {
     light: {
       color: 'blue',
