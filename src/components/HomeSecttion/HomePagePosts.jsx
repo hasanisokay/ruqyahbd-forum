@@ -2,9 +2,8 @@
 import formatRelativeDate from '@/utils/formatDate';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useRef, useContext, useState, useEffect } from 'react';
-import { FaRegComment, FaRegHeart } from "react-icons/fa";
 import Image from 'next/image'
-import { FaUserLarge, FaHeart } from "react-icons/fa6"
+import { FaUserLarge } from "react-icons/fa6"
 import AuthContext from '@/contexts/AuthContext';
 import LoadingCards from '../LoadingCards';
 import truncateText from '@/utils/trancatText';

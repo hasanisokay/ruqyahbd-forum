@@ -135,7 +135,7 @@ const NewPost = () => {
     };
 
     return (
-        fetchedUser && !fetchedUser?.blocked && <div className="mb-4">
+        <div className="mb-4">
             <div className="cardinhome">
                 <input
                     className="textarea w-full resize-none placeholder-shown:text-center bg-slate-200 dark:bg-[#3b3b3b] focus:outline-none"

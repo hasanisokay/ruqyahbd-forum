@@ -1,6 +1,6 @@
 'use server'
 import HomePagePosts from "@/components/HomeSecttion/HomePagePosts";
-import NewPost from "@/components/HomeSecttion/NewPost";
+import NewPostSection from "@/components/HomeSecttion/NewPostSection";
 import getPosts from "@/utils/getPosts";
 
 
@@ -8,7 +8,7 @@ const HomePage = async () => {
   const posts = await getPosts(1);
   return (
     <div>
-      <NewPost />
+     <NewPostSection />
       <div>
         {posts?.status === 400 || posts?.status === 404 ? (
           <div className="cardinhome">

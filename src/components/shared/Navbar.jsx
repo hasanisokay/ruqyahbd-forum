@@ -185,10 +185,10 @@ const Navbar = () => {
     setShowNotificationMenu(false);
     return router.push("/notifications");
   }
-  if (loading) {
-    return <LoadingNavbar />
-  }
-  if (!loading) return (
+  // if (loading) {
+  //   return <LoadingNavbar />
+  // }
+   return (
     <div className="flex min-h-[50px] md:px-10 px-2 justify-between items-center shadow-xl font-semibold z-50" ref={navRef}>
       <Link href={"/"}><Image width={150} height={50} placeholder="blur" blurDataURL={`${process.env.NEXT_PUBLIC_BASEURL}/_next/image?${logoForDarkMood}?w=20&h=20`} className="text-black py-1" priority={true} src={theme==="dark" ? logoForDarkMood : logoForDayMood} alt="logo"  /></Link>
       <div
