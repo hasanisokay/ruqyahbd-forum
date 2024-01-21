@@ -7,9 +7,8 @@ import { useEffect, useState, useRef, useContext } from 'react';
 import toast from 'react-hot-toast';
 import io from 'socket.io-client';
 import useSWRInfinite from 'swr/infinite';
-
 import { RiSendPlane2Fill } from "react-icons/ri";
-import LoadingModalUser from '@/components/LoadingModal';
+
 import { useRouter } from 'next/navigation';
 import getAdmins from '@/utils/getAdmins';
 const Loader = () => <div className="text-center text-gray-500 py-2">Loading...</div>;
@@ -112,7 +111,7 @@ const Chat = () => {
     setSize(size + 1)
   }
   if (!fetchedUser.isAdmin) {
-    return router.push("/")
+    return router.replace("/")
   }
   return (
     <>
