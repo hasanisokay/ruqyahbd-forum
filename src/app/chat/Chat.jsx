@@ -19,7 +19,7 @@ const fetcher = async (url) => {
   const data = await response.json();
   return data.messages || [];
 };
-const decryptMessage = (text) => AES.decrypt(text, process.env.NEXT_PUBLIC_ENCRYPTION_SECRET_KEY).toString(enc.Utf8);
+const decryptMessage = (text) => AES.decrypt(text, process.env.ENCRYPTION_KEY).toString(enc.Utf8);
 const Chat = () => {
   const router = useRouter();
   const { fetchedUser, loading } = useContext(AuthContext);
@@ -99,7 +99,7 @@ const Chat = () => {
       return toast.error("can't send empty message")
     }
     if (socket) {
-      const encryptedMessage = AES?.encrypt(inputText, process.env.NEXT_PUBLIC_ENCRYPTION_SECRET_KEY)?.toString();
+      const encryptedMessage = AES?.encrypt(inputText, process.env.ENCRYPTION_KEY)?.toString();
       socket.emit('sendMessage', { user: fetchedUser.username, text: encryptedMessage });
       setInputText('');
     }
