@@ -107,7 +107,7 @@ const LoginForm = () => {
                     Log In
                 </button>
                 <div className='my-2  dark:text-[#999da7]'>
-                    <p className='text-sm'>Don't have an account? Please <button onClick={() => router.push("/signup")} title='goto signup' className='text-blue-600'>Sign Up</button>.</p>
+                    <p className='text-sm'>Don&apos;t have an account? Please <button onClick={() => router.push("/signup")} title='goto signup' className='text-blue-600'>Sign Up</button>.</p>
                     <p className='text-sm mt-2'>Forgotten password? <button onClick={() => router.push("/identity")} title='goto reset password' className='text-blue-600'>Reset Password</button>.</p>
                 </div>
             </form>

@@ -166,7 +166,7 @@ const ForgetPass = () => {
                         }`}
                     onSubmit={(e) => handleCheckOTPForm(e)}
                 >
-                    <p className="text-black">Please check your email <span className="italic">{email}</span>. Your OTP is on its way, set to expire in 10 minutes. If you can't find it, be sure to check your spam folder.  </p>
+                    <p className="text-black">Please check your email <span className="italic">{email}</span>. Your OTP is on its way, set to expire in 10 minutes. If you can&apos;t find it, be sure to check your spam folder.  </p>
                     <label htmlFor="otp" className="block mt-4 mb-2 text-gray-600">
                         OTP
                     </label>
