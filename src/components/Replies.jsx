@@ -37,6 +37,7 @@ const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount,
                 }
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [replyIDFromParams, fetchedReplies]);
 
 
@@ -66,7 +67,8 @@ const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount,
         } finally {
             setLoading(false);
         }
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [commentID, postID]);
 
     useEffect(() => {
         (async () => {

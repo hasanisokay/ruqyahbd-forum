@@ -59,7 +59,7 @@ const Chat = () => {
       setAdminsData(data)
       setLoadingChatData(false);
     })()
-  })
+  },[])
 
   useEffect(() => {
     if (socket) {
@@ -76,6 +76,7 @@ const Chat = () => {
         socket.disconnect();
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, setSize]);
 
   useEffect(() => {

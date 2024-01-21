@@ -25,6 +25,7 @@ const LinkPreview = ({ text }) => {
 
     useEffect(() => {
         fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [text])
     
     if (previewData?.title?.length > 0) return (
