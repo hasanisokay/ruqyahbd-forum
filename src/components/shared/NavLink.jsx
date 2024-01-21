@@ -1,7 +1,7 @@
 'use client';
 import classNames from "@/utils/classNames";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname} from "next/navigation";
 
 const NavLink = ({ children, href, exact = false, activeClassName, ...props }) => {
     const path = usePathname();

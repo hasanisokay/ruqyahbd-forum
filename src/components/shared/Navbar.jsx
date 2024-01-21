@@ -195,7 +195,6 @@ const Navbar = () => {
         className={`z-40 absolute ${navToggle ? "right-0" : "left-[-120%]"
           } top-[4.5rem] w-[40vw] flex justify-center items-center bg-slate-200 py-3 rounded-xl transition-all duration-1000 dark:bg-slate-900 lg:static lg:w-[unset] lg:flex-row lg:bg-transparent lg:pb-0 lg:pt-0 dark:lg:bg-transparent`}
       >
-
         <ul className="flex flex-col lg:flex-row gap-4 items-center justify-center mr-6" >
           {
             navData?.map(({ path, title }) => <li key={path}>
