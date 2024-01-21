@@ -6,12 +6,13 @@ import AuthContext from "@/contexts/AuthContext";
 import ReplyEditModal from "./ReplyEditModal";
 import ReportModal from "./ReportModal";
 import makeUrlsClickable from "@/utils/makeUrlsClickable";
+import useTheme from "@/hooks/useTheme";
 
 const ReplyText = ({ text, replyID, commentID, postID, setFetchedReplies, setReplyCount, replyAuthor }) => {
     const { showDeleteModal, setShowDeleteModal, fetchedUser, reportingReplyId, setReportingReplyId, reportingCommentId, setReportingCommentId, showReportModal, setShowReportModal } = useContext(AuthContext);
     const [showReplyOptions, setShowReplyOptions] = useState(false);
     const [showEditReplyModal, setShowEditReplyModal] = useState(false);
-
+    const { theme } = useTheme();
     useEffect(() => {
         const handleOutsideClick = (event) => {
             if (showReplyOptions &&
@@ -54,7 +55,7 @@ const ReplyText = ({ text, replyID, commentID, postID, setFetchedReplies, setRep
                     </div>
                 }
             </div>
-            <p className='whitespace-pre-wrap text-[14px] py-[4px]' dangerouslySetInnerHTML={{__html: makeUrlsClickable(text)}}></p>
+            <p className='whitespace-pre-wrap text-[14px] py-[4px]' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(text, theme) }}></p>
             {
                 showReportModal && reportingCommentId && reportingReplyId && <ReportModal commentID={reportingCommentId} key={reportingReplyId} postID={postID} replyID={reportingReplyId} type={"reply"} />
             }

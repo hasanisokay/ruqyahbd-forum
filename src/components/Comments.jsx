@@ -15,6 +15,7 @@ import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import CommentEditModal from "./CommentEditModal";
 import ReportModal from "./ReportModal";
 import makeUrlsClickable from "@/utils/makeUrlsClickable";
+import useTheme from "@/hooks/useTheme";
 const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: commentID, replies, setLikersArray, handleDislike, hanldleLike, postID, setPost }) => {
   const [replyText, setReplyText] = useState("");
   const [replyCount, setReplyCount] = useState(replies);
@@ -23,6 +24,8 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
   const [showCommentOptions, setShowCommentOptions] = useState(false);
   const [showCommentEditModal, setShowCommentEditModal] = useState(false);
   const [loadingNewReply, setLoadingNewReply] = useState(false);
+  const {theme} = useTheme();
+  
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -165,7 +168,7 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
                   </div>
                 }
               </div>
-              <p className='rounded whitespace-pre-wrap py-[4px] text-[14px]' dangerouslySetInnerHTML={{__html: makeUrlsClickable(c.comment)}}></p>
+              <p className='rounded whitespace-pre-wrap py-[4px] text-[14px]' dangerouslySetInnerHTML={{__html: makeUrlsClickable(c.comment, theme)}}></p>
             </div>
           </div>
 
