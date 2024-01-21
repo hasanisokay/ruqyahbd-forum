@@ -8,9 +8,9 @@ import toast from 'react-hot-toast';
 import io from 'socket.io-client';
 import useSWRInfinite from 'swr/infinite';
 import { RiSendPlane2Fill } from "react-icons/ri";
-
-import { useRouter } from 'next/navigation';
 import getAdmins from '@/utils/getAdmins';
+
+
 const Loader = () => <div className="text-center text-gray-500 py-2">Loading...</div>;
 
 const fetcher = async (url) => {
@@ -20,10 +20,10 @@ const fetcher = async (url) => {
 };
 const decryptMessage = (text) => AES.decrypt(text, process.env.ENCRYPTION_KEY).toString(enc.Utf8);
 const Chat = () => {
-  const router = useRouter();
+
   const { fetchedUser, loading } = useContext(AuthContext);
   const [inputText, setInputText] = useState('');
-  const [selectedGroup, setSelectedGroup] = useState(fetchedUser.gender ==="female" ? "group2" :"group1");
+  const [selectedGroup, setSelectedGroup] = useState(fetchedUser?.gender === "female" ? "group2" : "group1");
   const [socket, setSocket] = useState(null);
   const messageContainerRef = useRef(null);
   const [adminsData, setAdminsData] = useState([]);
@@ -35,7 +35,7 @@ const Chat = () => {
   };
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(getKey, fetcher);
-  const [fetchedMessages, setFetchedMessages] = useState(data ? data?.flat()?.reverse() : []);
+  const [fetchedMessages, setFetchedMessages] = useState(data ? data?.flat()?.reverse() || [] : []);
   useEffect(() => {
     setFetchedMessages(data?.flat().reverse())
   }, [data])
@@ -49,16 +49,18 @@ const Chat = () => {
     return () => {
       newSocket.disconnect();
     };
-  }, [selectedGroup, data, setSize]);
-  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGroup]);
+
   useEffect(() => {
-    (async () => {
+    const fetchAdmins = async () => {
       setLoadingChatData(true);
       const data = await getAdmins();
       setAdminsData(data)
       setLoadingChatData(false);
-    })()
-  },[])
+    }
+    fetchAdmins();
+  }, [])
 
   useEffect(() => {
     if (socket) {
@@ -75,19 +77,15 @@ const Chat = () => {
         socket.disconnect();
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket, setSize]);
 
   useEffect(() => {
-    if (messageContainerRef.current) {
-      const isUserAtBottom =
-        messageContainerRef.current.scrollHeight -
-        (messageContainerRef.current.scrollTop + messageContainerRef?.current?.clientHeight) <=
-        400;
-
+    if (messageContainerRef?.current) {
+      const isUserAtBottom = messageContainerRef.current.scrollHeight - (messageContainerRef.current.scrollTop + messageContainerRef.current.clientHeight) <= 400;
       if (isUserAtBottom) {
         setTimeout(() => {
-          messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+          messageContainerRef.current.scrollTop = messageContainerRef?.current.scrollHeight;
         }, 0);
       }
     }
@@ -110,9 +108,6 @@ const Chat = () => {
     }
     setSize(size + 1)
   }
-  if (!fetchedUser.isAdmin) {
-    return router.replace("/")
-  }
   return (
     <>
       <div className="px-4 pb-2 flex flex-col cardinhome  h-[calc(100vh-100px)] bg-[#1c1c1c] relative">
@@ -129,8 +124,8 @@ const Chat = () => {
 
                   </div>
                   <div className={`${fetchedUser?.username === message?.user ? "flex-row-reverse lg:pl-[70px] pl-[50px]" : "flex-row pr-[40px] lg:pr-[70px]"} flex gap-2`}>
-                    <Image width={30} height={30} 
-                    priority={true}
+                    <Image width={30} height={30}
+                      priority={true}
                       title={adminsData?.find((a) => a?.username === message?.user)?.name || "unknown"}
                       style={{
                         width: "30px",
