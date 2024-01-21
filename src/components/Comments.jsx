@@ -170,11 +170,11 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
                 }
               </div>
               <p className='rounded scroll-reveal py-[4px] text-[14px]' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(c.comment, theme) }}></p>
-              {
-                c?.videos?.length === 0 && c?.photos?.length === 0 && <div>
-                  <LinkPreview text={c.comment} />
-                </div>
-              }
+
+              <div>
+                <LinkPreview text={c?.comment} />
+              </div>
+
             </div>
           </div>
 

@@ -133,11 +133,10 @@ const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount,
                                 setFetchedReplies={setFetchedReplies}
                                 setReplyCount={setReplyCount}
                             />
-                            {
-                                reply?.videos?.length === 0 && reply?.photos?.length === 0 && <div>
-                                    <LinkPreview text={reply.reply} />
-                                </div>
-                            }
+                            <div>
+                                <LinkPreview text={reply?.reply} />
+                            </div>
+
 
                             {/* <p className='whitespace-pre-wrap text-[14px] py-[4px] '>{reply.reply}</p> */}
                         </div>
