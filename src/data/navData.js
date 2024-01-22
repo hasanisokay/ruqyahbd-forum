@@ -1,4 +1,4 @@
-const commonNavData = [
+export const commonNavData = [
     {
       path: "/",
       title: "Home",

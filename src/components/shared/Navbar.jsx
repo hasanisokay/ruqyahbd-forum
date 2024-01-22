@@ -4,7 +4,7 @@ import logoForDayMood from "../../../public/images/bd-support-1.png";
 import logoForDarkMood from "../../../public/images/bd-support-1.png";
 import Image from 'next/image';
 import NavLink from "./NavLink";
-import { afterLoginNavData, beforeLoginNavData } from "@/data/navData";
+import { afterLoginNavData, beforeLoginNavData, commonNavData } from "@/data/navData";
 import useTheme from "@/hooks/useTheme";
 import { useContext, useEffect, useRef, useState, useTransition } from "react";
 import AuthContext from "@/contexts/AuthContext";
@@ -18,8 +18,6 @@ import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import { io } from "socket.io-client";
 import notificationMaker from "@/utils/notificationMaker";
 import LoadingNotificaions from "../LoadingNotificaions";
-import LoadingNavbar from "../LoadingNavbar";
-
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
@@ -33,13 +31,18 @@ const Navbar = () => {
   const navRef = useRef(null);
   const [socket, setSocket] = useState(null)
   useEffect(() => {
-    setNavData(fetchedUser ? afterLoginNavData : beforeLoginNavData)
-  }, [fetchedUser, loggedOut])
+    if (loading) {
+      setNavData(commonNavData)
+    }
+    else {
+      setNavData(fetchedUser ? afterLoginNavData : beforeLoginNavData)
+    }
+  }, [fetchedUser, loggedOut, loading])
 
   useEffect(() => {
     if (socket && fetchedUser && fetchedUser?.isAdmin) {
       socket.on('newReport', (newNotification) => {
-  
+
         setAllNotifications((prev) => [newNotification, ...prev]);
         setNotificationsCount((prev) => prev ? prev + 1 : 1)
       });
@@ -92,7 +95,7 @@ const Navbar = () => {
     startTransition(() => {
       router.refresh()
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading])
 
   useEffect(() => {
@@ -188,9 +191,9 @@ const Navbar = () => {
   // if (loading) {
   //   return <LoadingNavbar />
   // }
-   return (
+  return (
     <div className="flex min-h-[50px] md:px-10 px-2 justify-between items-center shadow-xl font-semibold z-50" ref={navRef}>
-      <Link href={"/"}><Image width={150} height={50} placeholder="blur" blurDataURL={`${process.env.NEXT_PUBLIC_BASEURL}/_next/image?${logoForDarkMood}?w=20&h=20`} className="text-black py-1" priority={true} src={theme==="dark" ? logoForDarkMood : logoForDayMood} alt="logo"  /></Link>
+      <Link href={"/"}><Image width={150} height={50} placeholder="blur" blurDataURL={`${process.env.NEXT_PUBLIC_BASEURL}/_next/image?${logoForDarkMood}?w=20&h=20`} className="text-black py-1" priority={true} src={theme === "dark" ? logoForDarkMood : logoForDayMood} alt="logo" /></Link>
       <div
         className={`z-40 absolute ${navToggle ? "right-0" : "left-[-120%]"
           } top-[4.5rem] w-[40vw] flex justify-center items-center bg-slate-200 py-3 rounded-xl transition-all duration-1000 dark:bg-slate-900 lg:static lg:w-[unset] lg:flex-row lg:bg-transparent lg:pb-0 lg:pt-0 dark:lg:bg-transparent`}
