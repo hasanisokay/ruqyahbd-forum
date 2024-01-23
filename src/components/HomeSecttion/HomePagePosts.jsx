@@ -235,7 +235,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                             width={41}
                                             placeholder='empty'
                                             height={41}
-                                            priority={true}
+                                            loading='lazy'
                                             quality={100}
                                             className='w-[45px] h-[45px] rounded-full border-gray-400 border-2'
                                             sizes="10vw"
