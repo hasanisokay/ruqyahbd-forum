@@ -1,62 +1,32 @@
 'use client'
 import dynamic from 'next/dynamic';
+import { io } from 'socket.io-client';
+import { useContext, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import AuthContext from '@/contexts/AuthContext';
+import toast from 'react-hot-toast';
+import formatDateForUserJoined from '@/utils/formatDateForUserJoined';
+import formatDateInAdmin from '@/utils/formatDateInAdmin';
+import useTheme from '@/hooks/useTheme';
+import makeUrlsClickable from '@/utils/makeUrlsClickable';
+import {FaRegComment, FaRegHeart} from "react-icons/fa";
+import { FaUserLarge, FaHeart } from "react-icons/fa6";
+import copyToClipboard from '@/utils/copyToClipboard';
+import Image from 'next/image';
+import ModalUser from '@/components/ModalUser';
+import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import PostEditModal from '@/components/PostEditModal';
+import ReportModal from '@/components/ReportModal';
+import LikersModal from '@/components/LikersModal';
+import {BsThreeDotsVertical} from "react-icons/bs"
+import { RiSendPlane2Fill } from 'react-icons/ri';
 
-const formatDateInAdmin = dynamic(() => import('@/utils/formatDateInAdmin'));
-const Image = dynamic(() => import('next/image'));
-const { io } = dynamic(() => import('socket.io-client'));
-const { FaUserLarge, FaHeart } = dynamic(() => import("react-icons/fa6"));
-const { FaRegComment, FaRegHeart } = dynamic(() => import("react-icons/fa"));
-const axios = dynamic(() => import('axios'));
-const toast = dynamic(() => import('react-hot-toast'));
+// dynamic imports
 const TextareaAutosize = dynamic(() => import('react-textarea-autosize'));
-const { useContext, useEffect, useState } = dynamic(() => import('react'));
-const AuthContext = dynamic(() => import('@/contexts/AuthContext'));
-const formatDateForUserJoined = dynamic(() => import('@/utils/formatDateForUserJoined'));
-const { RiSendPlane2Fill } = dynamic(() => import("react-icons/ri"));
-const LoadingCards = dynamic(() => import('@/components/LoadingCards'));
-const ModalUser = dynamic(() => import('@/components/ModalUser'));
-const { BsThreeDotsVertical } = dynamic(() => import('react-icons/bs'));
-const LikersModal = dynamic(() => import('@/components/LikersModal'));
 const Comments = dynamic(() => import('@/components/Comments'));
-const PostEditModal = dynamic(() => import('@/components/PostEditModal'));
-const DeleteConfirmationModal = dynamic(() => import('@/components/DeleteConfirmationModal'));
 const PhotosInPost = dynamic(() => import('@/components/PhotosInPost'));
-const { useSearchParams } = dynamic(() => import('next/navigation'));
-const copyToClipboard = dynamic(() => import('@/utils/copyToClipboard'));
 const VideosInPost = dynamic(() => import('@/components/video-components/VideosInPost'));
-const ReportModal = dynamic(() => import('@/components/ReportModal'));
-const makeUrlsClickable = dynamic(() => import('@/utils/makeUrlsClickable'));
-const useTheme = dynamic(() => import('@/hooks/useTheme'));
 const LinkPreview = dynamic(() => import('@/components/LinkPreview'));
-
-// import formatDateInAdmin from '@/utils/formatDateInAdmin';
-// import Image from 'next/image';
-// import { io } from 'socket.io-client';
-// import { FaUserLarge, FaHeart } from "react-icons/fa6";
-// import { FaRegComment, FaRegHeart } from "react-icons/fa";
-// import axios from 'axios';
-// import toast from 'react-hot-toast';
-// import TextareaAutosize from 'react-textarea-autosize';
-// import { useContext, useEffect, useState } from 'react';
-// import AuthContext from '@/contexts/AuthContext';
-// import formatDateForUserJoined from '@/utils/formatDateForUserJoined';
-// import { RiSendPlane2Fill } from "react-icons/ri";
-// import { comment } from 'postcss';
-// import LoadingCards from '@/components/LoadingCards';
-// import ModalUser from '@/components/ModalUser';
-// import { BsThreeDotsVertical } from 'react-icons/bs';
-// import LikersModal from '@/components/LikersModal';
-// import Comments from '@/components/Comments';
-// import PostEditModal from '@/components/PostEditModal';
-// import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
-// import PhotosInPost from '@/components/PhotosInPost';
-// import { useSearchParams } from 'next/navigation';
-// import copyToClipboard from '@/utils/copyToClipboard';
-// import VideosInPost from '@/components/video-components/VideosInPost';
-// import ReportModal from '@/components/ReportModal';
-// import makeUrlsClickable from '@/utils/makeUrlsClickable';
-// import useTheme from '@/hooks/useTheme';
-// import LinkPreview from '@/components/LinkPreview';
 
 
 const SinglePostInHomePage = ({ fetchedPost }) => {
@@ -172,8 +142,6 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
     if (showEditModal) document?.getElementById('editModal')?.showModal()
   }, [showEditModal])
 
-  if (!post) return <LoadingCards />;
-
   const handleShowUser = (username) => {
     setSelectedUsernameToShowDetails(username);
   }
@@ -194,7 +162,18 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
     };
     try {
       setLoadingNewComment(true);
-      const { data } = await axios.post("/api/posts/comment", dataToSend);
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      };
+
+      const response = await fetch('/api/posts/comment', requestOptions);
+      const { data } = await response.json();
+
       if (data.status === 200) {
         // send comment with socket
         const dataToSendInSocket = {
@@ -259,7 +238,17 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       if (commentID) {
         dataToSend.commentID = commentID;
       }
-      const { data } = await axios.post("/api/posts/reaction", dataToSend);
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      };
+
+      const response = await fetch('/api/posts/reaction', requestOptions);
+      const { data } = await response.json();
+
       if (commentID && data.status === 200) {
         if (data.status === 200 && commentID) {
           setPost((prevPost) => ({
@@ -295,7 +284,17 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       if (commentID) {
         dataToSend.commentID = commentID;
       }
-      const { data } = await axios.post("/api/posts/reaction", dataToSend);
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      };
+
+      const response = await fetch('/api/posts/reaction', requestOptions);
+      const { data } = await response.json();
+
       if (data.status === 200 && commentID) {
         setPost((prevPost) => ({
           ...prevPost,
@@ -364,7 +363,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
                   height: "45px",
                   borderRadius: '50%',
                 }}
-                layout="fixed"
+                sizes="(max-width: 768px) 100vw, 33vw"
                 className='border-gray-400 border-2'
               />
               : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'><FaUserLarge className='' /></div>
@@ -458,7 +457,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
         </div>
       }
       {
-        post?.comment?.length > 0 && post?.comment[comment.length - 1]?.author?.authorInfo?.name && <div>
+        post?.comment?.length > 0 && <div>
           {post?.comment?.map((c, index) => (
             <Comments
               key={index}

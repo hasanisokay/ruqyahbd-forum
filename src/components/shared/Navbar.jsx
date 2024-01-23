@@ -1,23 +1,23 @@
 'use client'
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import logoForDayMode from "../../../public/images/bd-support-1.png";
-import logoForDarkMode from "../../../public/images/bd-support-1.png";
-import Image from 'next/image';
 import NavLink from "./NavLink";
 import { afterLoginNavData, beforeLoginNavData, commonNavData } from "@/data/navData";
 import useTheme from "@/hooks/useTheme";
 import { useContext, useEffect, useRef, useState, useTransition } from "react";
 import AuthContext from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import 'react-loading-skeleton/dist/skeleton.css'
-import { FaBell, FaUserLarge } from "react-icons/fa6";
-import axios from "axios";
-import toast from "react-hot-toast";
-import formatRelativeDate from "@/utils/formatDate";
-import formatDateInAdmin from "@/utils/formatDateInAdmin";
+import logoForDarkMode from "@/../public/images/bd-support-1.png"
 import { io } from "socket.io-client";
+import formatDateInAdmin from "@/utils/formatDateInAdmin";
+import formatRelativeDate from "@/utils/formatDate";
 import notificationMaker from "@/utils/notificationMaker";
-import LoadingNotificaions from "../LoadingNotificaions";
+import LoadingNotifications from "../LoadingNotificaions";
+import Image from "next/image";
+
+// Dynamic imports
+const FaBell = dynamic(() => import('react-icons/fa6').then(module => module.FaBell));
+const FaUserLarge = dynamic(() => import('react-icons/fa6').then(module => module.FaUserLarge));
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
@@ -40,9 +40,18 @@ const Navbar = () => {
   }, [fetchedUser, loggedOut, loading])
 
   useEffect(() => {
+    (async () => {
+      if (fetchedUser) {
+        const userSocket = await io(`${process.env.NEXT_PUBLIC_server}/?userId=${fetchedUser?.username}`);
+        setSocket(userSocket);
+      }
+    })();
+  }, [fetchedUser]);
+
+
+  useEffect(() => {
     if (socket && fetchedUser && fetchedUser?.isAdmin) {
       socket.on('newReport', (newNotification) => {
-
         setAllNotifications((prev) => [newNotification, ...prev]);
         setNotificationsCount((prev) => prev ? prev + 1 : 1)
       });
@@ -54,14 +63,6 @@ const Navbar = () => {
     }
   }, [socket, fetchedUser, setAllNotifications, setNotificationsCount])
 
-  useEffect(() => {
-    (async () => {
-      if (fetchedUser) {
-        const userSocket = await io(`${process.env.NEXT_PUBLIC_server}/?userId=${fetchedUser?.username}`);
-        setSocket(userSocket);
-      }
-    })();
-  }, [fetchedUser]);
 
   useEffect(() => {
     if (socket && fetchedUser) {
@@ -114,6 +115,7 @@ const Navbar = () => {
     };
   }, [showNotificationMenu]);
 
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
@@ -154,10 +156,18 @@ const Navbar = () => {
   }
   const handleNotificationsClick = async (id, read, commentID = null, replyID = null) => {
     if (!fetchedUser) {
-      return toast.error("login to continue");
+      return;
     }
     if (read === false) {
-      const data = await axios.post("/api/readnotification", { id, username: fetchedUser.username })
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, username: fetchedUser.username }),
+      };
+      const response = await fetch('/api/readnotification', requestOptions);
+      const data = await response.json();
       if (data.status === 200) {
         const totalNotificationFromPostID = allNotifications?.filter((n) => n?.postID === id && n?.read === false)?.length || 1;
 
@@ -191,7 +201,8 @@ const Navbar = () => {
   // if (loading) {
   //   return <LoadingNavbar />
   // }
-  const logoSrc = theme === "dark" ? logoForDarkMode : logoForDayMode;
+  // const logoSrc = theme === "dark" ? logoForDarkMode : logoForDayMode;
+  const logoSrc = logoForDarkMode;
   return (
     <div className="flex min-h-[50px] md:px-10 px-2 justify-between items-center shadow-xl font-semibold z-50" ref={navRef}>
       <Link href={"/"}>
@@ -229,7 +240,7 @@ const Navbar = () => {
           <li>
             <label htmlFor="darkModeToggle" className="swap swap-rotate lg:ml-2">
               <input
-               id="darkModeToggle"
+                id="darkModeToggle"
                 onChange={toggleTheme}
                 type="checkbox"
                 checked={theme === "dark"}
@@ -266,7 +277,7 @@ const Navbar = () => {
       {
         fetchedUser && showNotificationMenu && <div className={`rounded-md px-1 z-50 shadow-xl absolute mx-2 right-0 top-14 w-[70vw] bg-gray-300 transition-all duration-1000 dark:bg-slate-900 lg:w-[unset] lg:bg-white text-sm dark:lg:bg-slate-900 max-h-[80vh] overflow-auto scrollforchat`}>
           {loadingNotifications ?
-            <LoadingNotificaions />
+            <LoadingNotifications />
             : allNotifications.length > 0 ? <ul>
               {allNotifications && allNotifications.length > 0 && allNotifications?.map((n, index) => (
                 <li

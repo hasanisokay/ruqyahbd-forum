@@ -14,7 +14,7 @@ const makeUrlsClickable = (text, theme) => {
     },
   };
 
-  const linkStyle = `color: ${themes[theme].color}; font-weight: ${themes[theme].fontWeight};`;
+  const linkStyle = `min-width: 48px; min-height: 48px; color: ${themes[theme].color}; font-weight: ${themes[theme].fontWeight};`;
 
   // Regex patterns for different types of URLs
   // const urlRegex = /(?:https?:\/\/[^\s]+)|(www\.[^\s]+)|(facebook\.com[^\s]+|fb\.com[^\s]+)|(youtube\.com[^\s]+|youtu\.be[^\s]+)|((\b(?:[a-z0-9-]+\.)*[a-z0-9-]+\.com(?:\/[^\s]*)?(?:\b|$)))|((\b(?:[a-z0-9-]+\.)*[a-z0-9-]+\.org(?:\/[^\s]*)?(?:\b|$)))|((\b(?:[a-z0-9-]+\.)*[a-z0-9-]+\.net(?:\/[^\s]*)?(?:\b|$)))|((\b(?:[a-z0-9-]+\.)*[a-z0-9-]+\.io(?:\/[^\s]*)?(?:\b|$)))|((\b(?:[a-z0-9-]+\.)*[a-z0-9-]+\.gov(?:\/[^\s]*)?(?:\b|$)))|((\b(?:[a-z0-9-]+\.)*[a-z0-9-]+\.edu(?:\/[^\s]*)?(?:\b|$)))/gi;

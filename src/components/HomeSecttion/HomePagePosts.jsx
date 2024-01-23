@@ -1,43 +1,29 @@
 'use client'
 import dynamic from 'next/dynamic';
 import formatRelativeDate from '@/utils/formatDate';
-// import { BsThreeDotsVertical } from "react-icons/bs";
 import { useRef, useContext, useState, useEffect } from 'react';
-// import Image from 'next/image'
-// import { FaUserLarge } from "react-icons/fa6"
 import AuthContext from '@/contexts/AuthContext';
-// import LoadingCards from '../LoadingCards';
 import truncateText from '@/utils/trancatText';
 import formatDateForUserJoined from '@/utils/formatDateForUserJoined';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-// import ModalUser from '../ModalUser';
-// import LikersModal from '../LikersModal';
-// import DeleteConfirmationModal from '../DeleteConfirmationModal';
-// import PhotosInPost from '../PhotosInPost';
-// import VideosInPost from '../video-components/VideosInPost';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import Link from 'next/link';
-import copyToClipboard from '@/utils/copyToClipboard';
-import ReportModal from '../ReportModal';
-import getPosts from '@/utils/getPosts';
 import makeUrlsClickable from '@/utils/makeUrlsClickable';
-// import LinkPreview from '../LinkPreview';
 import useTheme from '@/hooks/useTheme';
-
-const BsThreeDotsVertical = dynamic(() => import('react-icons/bs').then(module => module.BsThreeDotsVertical));
-const FaUserLarge = dynamic(() => import('react-icons/fa6').then(module => module.FaUserLarge));
-const Image = dynamic(() => import('next/image'));
+import getPosts from '@/utils/getPosts';
+import Image from 'next/image';
+import toast from 'react-hot-toast';
+import copyToClipboard from '@/utils/copyToClipboard';
+import { FaUserLarge } from 'react-icons/fa6';
+import ReportModal from '../ReportModal';
+import ModalUser from '../ModalUser';
+import DeleteConfirmationModal from '../DeleteConfirmationModal';
+import LikersModal from '../LikersModal';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+// dynamic imports
 const LoadingCards = dynamic(() => import('../LoadingCards'));
-const ModalUser = dynamic(() => import('../ModalUser'));
-const LikersModal = dynamic(() => import('../LikersModal'));
-const DeleteConfirmationModal = dynamic(() => import('../DeleteConfirmationModal'));
 const PhotosInPost = dynamic(() => import('../PhotosInPost'));
 const VideosInPost = dynamic(() => import('../video-components/VideosInPost'));
 const LinkPreview = dynamic(() => import('../LinkPreview'));
-
-
-
 
 const HomePagePosts = ({ tenPostsArray }) => {
     const { fetchedUser, showDeleteModal, setShowDeleteModal, showReportModal, setShowReportModal } = useContext(AuthContext);
@@ -78,10 +64,10 @@ const HomePagePosts = ({ tenPostsArray }) => {
 
 
     useEffect(() => {
-        if (size < 2) return;
-        (async () => {
+        const fetchPosts = async () => {
             setLoadingPosts(true);
             const data = await getPosts(size);
+            console.log({data});
             setLoadingPosts(false)
             if (data?.message) {
                 return setError(true);
@@ -90,7 +76,11 @@ const HomePagePosts = ({ tenPostsArray }) => {
                 setError(false);
                 setPosts((prev) => [...prev, ...data])
             }
-        })()
+        }
+        if (size < 2) return;
+        else {
+            fetchPosts()
+        }
     }, [size])
 
 
@@ -155,7 +145,16 @@ const HomePagePosts = ({ tenPostsArray }) => {
             postID: id, action: "dislike", actionByUsername: fetchedUser?.username
         }
         try {
-            const { data } = await axios.post("/api/posts/reaction", dataToSend);
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend),
+            };
+
+            const response = await fetch('/api/posts/reaction', requestOptions);
+            const data = await response.json();
 
             if (data.status === 200) {
                 // Update the likes array in the posts
@@ -186,7 +185,17 @@ const HomePagePosts = ({ tenPostsArray }) => {
             postID: id, action: "like", actionByUsername: fetchedUser?.username, postAuthor
         }
         try {
-            const { data } = await axios.post("/api/posts/reaction", dataToSend);
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend),
+            };
+
+            const response = await fetch('/api/posts/reaction', requestOptions);
+            const { data } = await response.json();
+
             if (data.status === 200) {
                 const updatedPosts = posts.map((post) => {
                     if (post._id === id) {
@@ -238,8 +247,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                             loading='lazy'
                                             quality={100}
                                             className='w-[45px] h-[45px] rounded-full border-gray-400 border-2'
-                                            sizes="10vw"
-                                            layout="fixed"
+                                            sizes="(max-width: 768px) 100vw, 33vw"
                                         />
                                         : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'><FaUserLarge className='' /></div>
                                 }
@@ -248,7 +256,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                 <p onClick={() => handleShowUser(post?.authorInfo?.username)} className='cursor-pointer font-semibold'>{post?.authorInfo?.name}</p>
                                 <div className='text-xs flex gap-2 items-center'>
                                     <p>@{post?.authorInfo?.username}</p>
-                                    <p title={formatDateInAdmin(new Date(post?.date))}> <Link className='hover:underline' href={`/${post?._id}`}>{formatRelativeDate(new Date(post?.date))}</Link></p>
+                                    <p title={formatDateInAdmin(new Date(post?.date))}> <Link className='hover:underline min-w-[48px] min-h-[48px]' href={`/${post?._id}`}>{formatRelativeDate(new Date(post?.date))}</Link></p>
                                 </div>
                                 {
                                     fetchedUser?.isAdmin && <div>
