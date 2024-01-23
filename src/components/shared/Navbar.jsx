@@ -195,18 +195,18 @@ const Navbar = () => {
   return (
     <div className="flex min-h-[50px] md:px-10 px-2 justify-between items-center shadow-xl font-semibold z-50" ref={navRef}>
       <Link href={"/"}>
-        <Image 
-        width={150} 
-        height={50} 
-        sizes="(max-width: 768px) 100vw, 33vw"
-        placeholder="blur" 
-        blurDataURL={`${process.env.NEXT_PUBLIC_BASEURL}/_next/image?${logoForDarkMode}?w=20&h=20`} 
-        className="text-black py-1" 
-        loading="lazy" 
-        src={logoSrc} 
-        alt="logo" />
-
-        </Link>
+        <Image
+          width={150}
+          height={50}
+          sizes="(max-width: 768px) 100vw, 33vw"
+          placeholder="blur"
+          blurDataURL={`${process.env.NEXT_PUBLIC_BASEURL}/_next/image?${logoForDarkMode}?w=20&h=20`}
+          className={`dark:filter dark:brightness-0 dark:invert py-1 `}
+          loading="lazy"
+          src={logoSrc}
+          unoptimized
+          alt="logo" />
+      </Link>
       <div
         className={`z-40 absolute ${navToggle ? "right-0" : "left-[-120%]"
           } top-[4.5rem] w-[40vw] flex justify-center items-center bg-slate-200 py-3 rounded-xl transition-all duration-1000 dark:bg-slate-900 lg:static lg:w-[unset] lg:flex-row lg:bg-transparent lg:pb-0 lg:pt-0 dark:lg:bg-transparent`}
