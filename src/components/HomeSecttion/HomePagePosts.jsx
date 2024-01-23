@@ -1,28 +1,43 @@
 'use client'
+import dynamic from 'next/dynamic';
 import formatRelativeDate from '@/utils/formatDate';
-import { BsThreeDotsVertical } from "react-icons/bs";
+// import { BsThreeDotsVertical } from "react-icons/bs";
 import { useRef, useContext, useState, useEffect } from 'react';
-import Image from 'next/image'
-import { FaUserLarge } from "react-icons/fa6"
+// import Image from 'next/image'
+// import { FaUserLarge } from "react-icons/fa6"
 import AuthContext from '@/contexts/AuthContext';
-import LoadingCards from '../LoadingCards';
+// import LoadingCards from '../LoadingCards';
 import truncateText from '@/utils/trancatText';
 import formatDateForUserJoined from '@/utils/formatDateForUserJoined';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import ModalUser from '../ModalUser';
-import LikersModal from '../LikersModal';
-import DeleteConfirmationModal from '../DeleteConfirmationModal';
-import PhotosInPost from '../PhotosInPost';
-import VideosInPost from '../video-components/VideosInPost';
+// import ModalUser from '../ModalUser';
+// import LikersModal from '../LikersModal';
+// import DeleteConfirmationModal from '../DeleteConfirmationModal';
+// import PhotosInPost from '../PhotosInPost';
+// import VideosInPost from '../video-components/VideosInPost';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import Link from 'next/link';
 import copyToClipboard from '@/utils/copyToClipboard';
 import ReportModal from '../ReportModal';
 import getPosts from '@/utils/getPosts';
 import makeUrlsClickable from '@/utils/makeUrlsClickable';
-import LinkPreview from '../LinkPreview';
+// import LinkPreview from '../LinkPreview';
 import useTheme from '@/hooks/useTheme';
+
+const BsThreeDotsVertical = dynamic(() => import('react-icons/bs').then(module => module.BsThreeDotsVertical));
+const FaUserLarge = dynamic(() => import('react-icons/fa6').then(module => module.FaUserLarge));
+const Image = dynamic(() => import('next/image'));
+const LoadingCards = dynamic(() => import('../LoadingCards'));
+const ModalUser = dynamic(() => import('../ModalUser'));
+const LikersModal = dynamic(() => import('../LikersModal'));
+const DeleteConfirmationModal = dynamic(() => import('../DeleteConfirmationModal'));
+const PhotosInPost = dynamic(() => import('../PhotosInPost'));
+const VideosInPost = dynamic(() => import('../video-components/VideosInPost'));
+const LinkPreview = dynamic(() => import('../LinkPreview'));
+
+
+
 
 const HomePagePosts = ({ tenPostsArray }) => {
     const { fetchedUser, showDeleteModal, setShowDeleteModal, showReportModal, setShowReportModal } = useContext(AuthContext);
