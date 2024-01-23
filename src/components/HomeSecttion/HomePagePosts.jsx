@@ -239,6 +239,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                             quality={100}
                                             className='w-[45px] h-[45px] rounded-full border-gray-400 border-2'
                                             sizes="10vw"
+                                            layout="fixed"
                                         />
                                         : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'><FaUserLarge className='' /></div>
                                 }

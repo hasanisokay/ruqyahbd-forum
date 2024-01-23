@@ -364,6 +364,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
                   height: "45px",
                   borderRadius: '50%',
                 }}
+                layout="fixed"
                 className='border-gray-400 border-2'
               />
               : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'><FaUserLarge className='' /></div>
