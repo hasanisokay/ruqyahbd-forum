@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import LoadingLoginPage from './LoadingLoginPage';
 
 const LoginForm = () => {
-    const { signIn, fetchedUser, setFetchedUser } = useContext(AuthContext);
+    const { signIn, loading, fetchedUser, setFetchedUser } = useContext(AuthContext);
     const [disableForm, setDisableForm] = useState(false);
     const search = useSearchParams();
     const from = search.get("redirectUrl") || "/";
@@ -63,9 +63,9 @@ const LoginForm = () => {
             return false;
         }
     };
-
-
-    return (
+if(!fetchedUser && loading) return <LoadingLoginPage />
+if(fetchedUser) return push("/")
+   if(!fetchedUser && !loading) return (
         <>
             <form
                 onSubmit={handleSubmit}
