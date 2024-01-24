@@ -4,13 +4,13 @@ import { useRouter } from 'next/navigation';
 import React, { useRef, useCallback, useContext, useState } from 'react';
 import useSWRInfinite from 'swr/infinite';
 import Image from 'next/image'
-import { FaUserLarge } from "react-icons/fa6"
 import AuthContext from '@/contexts/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { mutate } from 'swr';
 import LoadinginAdminActivity from './LoadingAdminActivity';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
+import UserIcon from '@/components/SVG/UserIcon';
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const AdminActivity = () => {
     const { fetchedUser } = useContext(AuthContext);
@@ -152,7 +152,10 @@ const AdminActivity = () => {
                                         }}
                                         className='border-gray-400 border-2'
                                     />
-                                    : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'><FaUserLarge className='' /></div>
+                                    : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'>
+                                          <UserIcon height={"35px"} width={"35px"} />
+                                        
+                                        </div>
                             }
                         </div>
                         <div className='py-2'>

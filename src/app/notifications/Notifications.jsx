@@ -4,7 +4,6 @@ import formatRelativeDate from '@/utils/formatDate';
 import { useRouter } from 'next/navigation';
 import { useRef, useCallback, useContext, useState, useEffect } from 'react';
 import useSWRInfinite from 'swr/infinite';
-import { FaUserLarge, FaHeart } from "react-icons/fa6"
 import AuthContext from '@/contexts/AuthContext';
 import LoadingCards from '@/components/LoadingCards';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
@@ -12,6 +11,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import notificationMaker from '@/utils/notificationMaker';
 import LoadingNotifications from '@/components/LoadingNotificaions';
+import UserIcon from '@/components/SVG/UserIcon';
 
 const fetcher = async (url) => await fetch(url).then((res) => res.json());
 
@@ -141,7 +141,9 @@ const Notifications = () => {
                                         }}
                                         className='border-gray-400 border-[1.5px]'
                                     />
-                                    : <div className='flex items-center justify-center rounded-full border-gray-400 border-[1.5px] w-[30px] h-[30px] p-[4px]'><FaUserLarge /></div>
+                                    : <div className='flex items-center justify-center rounded-full border-gray-400 border-[1.5px] w-[30px] h-[30px] p-[4px]'>
+                                           <UserIcon height={"25px"} width={"25px"} />
+                                           </div>
                                 }
                                 <div className="flex flex-col">
                                     <p>

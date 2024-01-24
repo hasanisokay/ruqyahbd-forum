@@ -1,22 +1,23 @@
 'use client'
 import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import Image from "next/image";
-import { FaHeart, FaRegHeart, FaUserLarge } from "react-icons/fa6";
-import { FaReply } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "@/contexts/AuthContext";
 import toast from "react-hot-toast";
-import { RiSendPlane2Fill } from "react-icons/ri";
 import TextareaAutosize from 'react-textarea-autosize';
 import axios from "axios";
 import Replies from "./Replies";
-import { BsDot } from "react-icons/bs";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import CommentEditModal from "./CommentEditModal";
 import ReportModal from "./ReportModal";
 import makeUrlsClickable from "@/utils/makeUrlsClickable";
 import useTheme from "@/hooks/useTheme";
 import LinkPreview from "./LinkPreview";
+import HeartIcon from "./SVG/HeartIcon";
+import SendMessageIcon from "./SVG/SendMessageIcon";
+import UserIcon from "./SVG/UserIcon";
+import ReplyIcon from "./SVG/ReplyIcon";
+import DotIcon from "./SVG/DotIcon";
 const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: commentID, replies, setLikersArray, handleDislike, hanldleLike, postID, setPost }) => {
   const [replyText, setReplyText] = useState("");
   const [replyCount, setReplyCount] = useState(replies);
@@ -144,7 +145,9 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
 
                     className='border-gray-400 border-2 w-[35px] h-[35px] rounded-full'
                   />
-                  : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[35px] h-[35px]'><FaUserLarge className='' /></div>
+                  : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[35px] h-[35px]'>
+                    <UserIcon height={"25px"} width={"25px"} />
+                  </div>
               }
             </div>
             <div id={commentID} className='bg-gray-200 dark:bg-[#3a3b3c] px-4 py-1 rounded-xl max-w-full min-w-[200px]'>
@@ -157,7 +160,7 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
               </div>
               {fetchedUser && <div onClick={() => setShowCommentOptions(!showCommentOptions)} className="relative cursor-pointer">
                 <div className="absolute top-0 -right-4">
-                  <BsDot />
+                  <DotIcon />
                 </div>
               </div>}
               <div className={`relative ${commentID}`}>
@@ -181,11 +184,14 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
           {/* comment reply and like section */}
           <div className="flex items-center gap-6 pt-[1px] text-xs pb-1 pl-[43px] text-[14px]">
             <div onClick={() => setShowReplyInput(!showReplyInput)} className='flex items-center cursor-pointer flex-col' >
-              <FaReply className="rotate-180" />
+              <ReplyIcon fill={ replyCount > 0  ? "#7637e7" : (theme==="dark" ? "#ffffff":"#494a54")}/>
               <span className='text-[10px]'>{replyCount || 0} Replies</span>
             </div>
             <div className='flex flex-col items-center'>
-              {likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ? <FaHeart title='You Liked this. Click to dislike' onClick={() => handleDislike(c._id)} className=' text-red-600 cursor-pointer' /> : <FaRegHeart title='Click to Like' onClick={() => hanldleLike(c?._id)} className='cursor-pointer' />}
+              {likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
+                <HeartIcon width={"20px"} height={"20px"} classes={"stroke-2 stroke-red-600 fill-red-600"} title={'You Liked this. Click to dislike'} handleOnclick={() => handleDislike(c._id)} />
+                :
+                <HeartIcon width={"20px"} height={"20px"} handleOnclick={() => hanldleLike(c?._id)} title={'Click to Like'} classes={"stroke-2 stroke-black dark:stroke-white fill-transparent"} />}
               <span className='text-[10px] cursor-pointer' onClick={() => setLikersArray(likes)}>{likes?.length || 0} Likes</span>
             </div>
           </div>
@@ -211,20 +217,20 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 placeholder={`Reply as ${fetchedUser.name}`}
-                className='py-[6px] resize-none pl-2 bg-slate-200 dark:bg-[#3b3b3b] rounded-xl placeholder:text-[10px] text-sm pr-[44px] focus:outline-none bordered w-full'
+                className='py-[6px] resize-none pl-2 bg-slate-200 dark:bg-[#3b3b3b] scrollforchat rounded-xl placeholder:text-[10px] text-sm pr-[34px] focus:outline-none bordered w-full'
               />
               <div className="absolute bottom-[25%]  right-2">
                 <button
                   title="click to comment"
                   disabled={loadingNewReply}
-
-                  className={`forum-btn1`}
+                  className={`${replyText === "" && "cursor-default"}`}
                   type="submit"
                 >
-                  < RiSendPlane2Fill className={` ${replyText === ""
-                    ? "text-slate-500 cursor-default"
-                    : "text-[#1ab744] active:text-[#0a4421] text:hover:text-[#0a4421]"
-                    }`} />
+                  <SendMessageIcon
+                    fill={replyText === "" ? "#494a54" : (theme === "dark" ? "#ffffff" : "#22c55e")}
+                    width={"14px"}
+                    height={"14px"}
+                  />
                 </button>
               </div>
             </form>

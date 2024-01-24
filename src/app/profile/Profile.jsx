@@ -1,5 +1,6 @@
 'use client'
 import LoadingProfile from "@/components/LoadingProfile";
+import UserIcon from "@/components/SVG/UserIcon";
 import AuthContext from "@/contexts/AuthContext";
 import resizeImage from "@/utils/resizeImage";
 import axios from "axios";
@@ -7,7 +8,7 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaUserLarge } from "react-icons/fa6"
+
 const Profile = () => {
     const { fetchedUser, loading } = useContext(AuthContext)
     const { replace, refresh, push } = useRouter()
@@ -75,7 +76,9 @@ const Profile = () => {
     if (fetchedUser) return (
         <div className="flex flex-col items-center gap-4">
             <div>
-                {photoURL ? <Image src={photoURL} width={300} height={300} priority={true} className="h-[300px] w-[300px] border-4 border-gray-500 rounded-lg" alt="profile photo" /> : <FaUserLarge />}            </div>
+                {photoURL ? <Image src={photoURL} width={300} height={300} priority={true} className="h-[300px] w-[300px] border-4 border-gray-500 rounded-lg" alt="profile photo" /> : 
+                   <UserIcon height={"150px"} width={"150px"} />}            
+                </div>
             {
                 <div className="w-full py-4 text-center">
                     <label className="cursor-pointer greenbg lg:hover:bg-[#0f2216] text-white py-2 px-4 rounded-lg text-center">

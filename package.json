@@ -11,9 +11,10 @@
   "dependencies": {
     "axios": "^1.6.5",
     "bcrypt": "^5.1.1",
-    "cheerio": "^1.0.0-rc.12",
+    "critters": "^0.0.20",
     "crypto-js": "^4.2.0",
     "daisyui": "^4.6.0",
+    "htmlparser2": "^9.1.0",
     "jose": "^5.2.0",
     "mongodb": "^6.3.0",
     "next": "14.1.0",
@@ -21,7 +22,6 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
-    "react-icons": "^5.0.1",
     "react-loading-skeleton": "^3.3.1",
     "react-textarea-autosize": "^8.5.3",
     "server-only": "^0.0.1",
@@ -36,6 +36,7 @@
     "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
+    "next-bundle-analyzer": "^0.6.8",
     "postcss": "^8",
     "tailwindcss": "^3.3.0"
   }

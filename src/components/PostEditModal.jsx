@@ -6,8 +6,9 @@ import axios from "axios";
 import Image from "next/image";
 import { useContext, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { FaPhotoFilm, FaVideo } from "react-icons/fa6";
 import TextareaAutosize from 'react-textarea-autosize';
+import FilmIcon from "./SVG/FilmIcon";
+import PhotoIcon from "./SVG/PhotoIcon";
 
 
 const PostEditModal = ({ setterFunction, post, setPost }) => {
@@ -23,7 +24,7 @@ const PostEditModal = ({ setterFunction, post, setPost }) => {
     const [mediaFiles, setMediaFiles] = useState(post?.photos?.length > 0 ? post?.photos : []);
     let newPhotosArray = post?.photos?.length > 0 ? post?.photos : []
     const [videoLink, setVideoLink] = useState(post?.videos?.length > 0 ? post?.videos[0] : "")
-    
+
     useEffect(() => {
         const handleKeyDown = (event) => {
             if (event.key === "Escape" || event.keyCode === 27) {
@@ -103,7 +104,7 @@ const PostEditModal = ({ setterFunction, post, setPost }) => {
             const { data } = await axios.post(`/api/posts/editpost`, dataToSend);
             toast.dismiss(toastId);
             if (data.status === 200) {
-                setPost((prev) => ({ ...prev, post: editedText, photos: newPhotosArray, videos: videoLink?.length > 0 ?  [videoLink] :[] }))
+                setPost((prev) => ({ ...prev, post: editedText, photos: newPhotosArray, videos: videoLink?.length > 0 ? [videoLink] : [] }))
                 setterFunction(false);
                 toast.success(data.message);
             }
@@ -193,10 +194,10 @@ const PostEditModal = ({ setterFunction, post, setPost }) => {
                         }
                         <div className=" mt-2 flex items-center justify-center gap-2">
                             <button type="button" disabled={loadingEditedPost} onClick={() => setShowUploadArea(!showUploadArea)}>
-                                <FaPhotoFilm className="w-6 h-6" />
+                                <PhotoIcon />
                             </button>
                             {fetchedUser?.isAdmin && <button type="button" disabled={loadingEditedPost} onClick={() => setVideoShowUploadArea(!showVideoUploadArea)}>
-                                <FaVideo className="w-6 h-6" />
+                                <FilmIcon />
                             </button>}
                         </div>
 

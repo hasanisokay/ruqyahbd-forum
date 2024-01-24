@@ -64,11 +64,35 @@ export const GET = async (request) => {
 
     return NextResponse.json({ status: 200, user: result[0] });
   } else if (allpostby) {
+    const aggregationPipeline = [
+      // Match posts by author username
+      {
+        $match: { "author.username": allpostby },
+      },
+      {
+        $project: {
+          _id: 1,
+          date: 1,
+          post: 1,
+          status: 1,
+          approveDate: 1,
+          photos:1,
+          videos:1,
+          comment: { $size: "$comment" },
+          likes: 1,
+        },
+      },
+      {
+        $sort: { date: -1 },
+      },
+    ];
+
     const result = await postCollection
-      .find({ "author.username": allpostby }).sort({date: -1})
+      .aggregate(aggregationPipeline)
       .toArray();
+
     if (result) {
-      return NextResponse.json({ status: 200, posts: result});
+      return NextResponse.json({ status: 200, posts: result });
     } else {
       return NextResponse.json({ status: 404, message: "Server Error" });
     }

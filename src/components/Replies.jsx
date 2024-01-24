@@ -2,11 +2,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import Image from "next/image";
-import { FaUserLarge } from "react-icons/fa6";
 import LoadingModalUser from "./LoadingModal";
 import ReplyText from "./ReplyText";
 import { useSearchParams } from "next/navigation";
 import LinkPreview from "./LinkPreview";
+import UserIcon from "./SVG/UserIcon";
 
 const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount, socket }) => {
     const pageRef = useRef(1);
@@ -37,7 +37,7 @@ const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount,
                 }
             }
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [replyIDFromParams, fetchedReplies]);
 
 
@@ -67,7 +67,7 @@ const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount,
         } finally {
             setLoading(false);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [commentID, postID]);
 
     useEffect(() => {
@@ -115,7 +115,9 @@ const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount,
                                         width={20} height={20} loading="lazy" sizes="(max-width: 768px) 100vw, 33vw"
                                         className='border-gray-400 rounded-full border-2 w-[20px] h-[20px]'
                                     />
-                                    : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[20px] h-[20px]'><FaUserLarge className='w-full h-full' /></div>
+                                    : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[20px] h-[20px]'>
+                                        <UserIcon height={"12px"} width={"12px"} />
+                                    </div>
                             }
                         </div>
                         <div id={reply?._id} className='bg-gray-200 dark:bg-[#3a3b3c] px-4 py-1 rounded-xl max-w-full min-w-[200px]'>

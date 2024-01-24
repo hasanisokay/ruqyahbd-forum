@@ -2,7 +2,6 @@
 // DeclinedPosts.js
 import useSWRInfinite from 'swr/infinite';
 import Image from 'next/image';
-import { FaUserLarge } from 'react-icons/fa6';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import truncateText from '@/utils/trancatText';
@@ -12,6 +11,7 @@ import { useRef, useCallback, useContext, useState, useEffect } from 'react';
 import { mutate } from 'swr';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import PhotosInPost from '@/components/PhotosInPost';
+import UserIcon from '@/components/SVG/UserIcon';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -200,7 +200,9 @@ const DeclinedPosts = () => {
                                             }}
                                             className='border-gray-400 border-2'
                                         />
-                                        : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'><FaUserLarge className='' /></div>
+                                        : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'>
+      <UserIcon height={"35px"} width={"35px"} />
+                                            </div>
                                 }
                             </div>
                             <div className='py-2'>

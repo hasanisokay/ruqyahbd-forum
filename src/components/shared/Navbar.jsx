@@ -1,5 +1,4 @@
 'use client'
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import NavLink from "./NavLink";
 import { afterLoginNavData, beforeLoginNavData, commonNavData } from "@/data/navData";
@@ -14,10 +13,8 @@ import formatRelativeDate from "@/utils/formatDate";
 import notificationMaker from "@/utils/notificationMaker";
 import LoadingNotifications from "../LoadingNotificaions";
 import Image from "next/image";
-
-// Dynamic imports
-const FaBell = dynamic(() => import('react-icons/fa6').then(module => module.FaBell));
-const FaUserLarge = dynamic(() => import('react-icons/fa6').then(module => module.FaUserLarge));
+import BellIcon from "../SVG/BellIcon";
+import UserIcon from "../SVG/UserIcon";
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
@@ -183,15 +180,15 @@ const Navbar = () => {
       }
     }
     setShowNotificationMenu(false)
-    if (replyID) {
-      return router.push(`/${id}?commentID=${commentID}&replyID=${replyID}`, { scroll: false })
-    }
-    else if (commentID) {
-      return router.push(`/${id}?commentID=${commentID}`, { scroll: false })
-    }
-    else {
-      router.push(`/${id}`,)
-    }
+    // if (replyID) {
+    //   return router.push(`/${id}?commentID=${commentID}&replyID=${replyID}`, { scroll: false })
+    // }
+    // else if (commentID) {
+    //   return router.push(`/${id}?commentID=${commentID}`, { scroll: false })
+    // }
+    // else {
+    //   router.push(`/${id}`,)
+    // }
   };
 
   const clickSeeAll = () => {
@@ -207,13 +204,9 @@ const Navbar = () => {
     <div className="flex min-h-[50px] md:px-10 px-2 justify-between items-center shadow-xl font-semibold z-50" ref={navRef}>
       <Link href={"/"}>
         <Image
-          width={150}
-          height={50}
-          sizes="(max-width: 768px) 100vw, 33vw"
           placeholder="blur"
           blurDataURL={`${process.env.NEXT_PUBLIC_BASEURL}/_next/image?${logoForDarkMode}?w=20&h=20`}
-          className={`dark:filter dark:brightness-0 dark:invert py-1 `}
-          loading="lazy"
+          className={`dark:filter w-[150px] h-auto dark:brightness-0 dark:invert py-1 `}
           src={logoSrc}
           unoptimized
           alt="logo" />
@@ -266,8 +259,14 @@ const Navbar = () => {
             fetchedUser && <div className="lg:block hidden">
               <div tabIndex={0} role="button">
                 <div className=" relative">
-                  <FaBell onClick={() => setShowNotificationMenu(!showNotificationMenu)} title="notifications" className={`${notificationsCount > 0 ? "text-red-500" : ""}`} />
-                  <div className="text-red-400 absolute -right-[40%] cursor-default  font-semibold -top-[40%] text-[8px]">{notificationsCount > 0 ? notificationsCount : ""}</div>
+                  <BellIcon
+                    count={5}
+                    title={"notifications"}
+                    handleOnclick={() => setShowNotificationMenu(!showNotificationMenu)}
+                    fill={notificationsCount > 0 ? "#f60002" : "#000000"}
+                  />
+
+                  <div className="text-red-400 absolute -right-[30%] cursor-default  font-semibold -top-[40%] text-[10px]">{notificationsCount > 0 ? notificationsCount : ""}</div>
                 </div>
               </div>
             </div>
@@ -286,28 +285,32 @@ const Navbar = () => {
                   title={`On ${formatDateInAdmin(new Date(n?.date))}`}
                   className={`p-2 font-normal  rounded-lg lg:hover:bg-slate-800 lg:hover:text-white cursor-pointer my-2 ${n.read === false ? "dark:text-white" : "text-gray-400 lg:hover:text-gray-400"
                     }`}
-                > <div className="flex gap-[6px] items-center">
-                    {n?.author?.photoURL ?
-                      <Image src={n?.author?.photoURL} blurDataURL='' alt={`profile photo of ${n?.author?.name}`}
-                        width={30} height={0} priority={true}
-                        style={{
-                          width: "25px",
-                          height: "25px",
-                          borderRadius: '50%',
-                        }}
-                        className='border-gray-400 border-[1.5px]'
-                      />
-                      : <div className='flex items-center justify-center rounded-full border-gray-400 border-[1.5px] w-[25px] h-[25px] p-[4px]'><FaUserLarge /></div>
-                    }
-                    <div className="flex flex-col">
-                      <p>
-                        {notificationMaker(n?.author?.name, n?.type, n?.commentAuthor && n?.commentAuthor[0]?.username, n?.postAuthor && n?.postAuthor[0]?.username, fetchedUser?.username, n?.content)}
-                      </p>
-                      <p className={`text-[10px] ${n.read === false ? "text-blue-600" : "text-gray-400"} `}>
-                        {formatRelativeDate(new Date(n.date)) + " ago"}
-                      </p>
+                > <Link scroll={(n?.replyID || n?.commentID) && false} href={(n?.replyID && `/${id}?commentID=${commentID}&replyID=${replyID}`) || (n?.commentID && `/${id}?commentID=${commentID}`) || `/${id}`} >
+                    <div className="flex gap-[6px] items-center">
+                      {n?.author?.photoURL ?
+                        <Image src={n?.author?.photoURL} blurDataURL='' alt={`profile photo of ${n?.author?.name}`}
+                          width={30} height={0} priority={true}
+                          style={{
+                            width: "25px",
+                            height: "25px",
+                            borderRadius: '50%',
+                          }}
+                          className='border-gray-400 border-[1.5px]'
+                        />
+                        : <div className='flex items-center justify-center rounded-full border-gray-400 border-[1.5px] w-[25px] h-[25px] p-[4px]'>
+                          <UserIcon width={"25px"} height={"25px"} />
+                        </div>
+                      }
+                      <div className="flex flex-col">
+                        <p>
+                          {notificationMaker(n?.author?.name, n?.type, n?.commentAuthor && n?.commentAuthor[0]?.username, n?.postAuthor && n?.postAuthor[0]?.username, fetchedUser?.username, n?.content)}
+                        </p>
+                        <p className={`text-[10px] ${n.read === false ? "text-blue-600" : "text-gray-400"} `}>
+                          {formatRelativeDate(new Date(n.date)) + " ago"}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
 
                 </li>
               ))}
@@ -323,8 +326,13 @@ const Navbar = () => {
           fetchedUser && <div className="lg:hidden">
             <div tabIndex={0} role="button" className="">
               <div className=" relative">
-                <FaBell onClick={handleBellClick} title="notifications" className={`${notificationsCount > 0 ? "text-red-500" : ""}`} />
-                <div className="text-red-400 absolute -right-[40%] cursor-default  font-semibold -top-[40%] text-[8px]">{notificationsCount > 0 ? notificationsCount : ""}</div>
+                <BellIcon
+                  count={5}
+                  title={"notifications"}
+                  handleOnclick={handleBellClick}
+                  fill={notificationsCount > 0 ? "#f60002" : "#000000"}
+                />
+                <div className="text-red-400 absolute -right-[30%] cursor-default  font-semibold -top-[40%] text-[10px]">{notificationsCount > 0 ? notificationsCount : ""}</div>
               </div>
             </div>
           </div>

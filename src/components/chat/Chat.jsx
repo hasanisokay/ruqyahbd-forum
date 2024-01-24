@@ -7,8 +7,9 @@ import { useEffect, useState, useRef, useContext } from 'react';
 import toast from 'react-hot-toast';
 import io from 'socket.io-client';
 import useSWRInfinite from 'swr/infinite';
-import { RiSendPlane2Fill } from "react-icons/ri";
 import getAdmins from '@/utils/getAdmins';
+import SendMessageIcon from '../SVG/SendMessageIcon';
+import useTheme from '@/hooks/useTheme';
 
 
 const Loader = () => <div className="text-center text-gray-500 py-2">Loading...</div>;
@@ -20,7 +21,7 @@ const fetcher = async (url) => {
 };
 const decryptMessage = (text) => AES.decrypt(text, process.env.ENCRYPTION_KEY).toString(enc.Utf8);
 const Chat = () => {
-
+  const { theme } = useTheme();
   const { fetchedUser, loading } = useContext(AuthContext);
   const [inputText, setInputText] = useState('');
   const [selectedGroup, setSelectedGroup] = useState(fetchedUser?.gender === "female" ? "group2" : "group1");
@@ -49,7 +50,7 @@ const Chat = () => {
     return () => {
       newSocket.disconnect();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGroup]);
 
   useEffect(() => {
@@ -160,10 +161,11 @@ const Chat = () => {
             className={`forum-btn1`}
             type="submit"
           >
-            < RiSendPlane2Fill className={` ${inputText === ""
-              ? "text-slate-500 cursor-default"
-              : "text-[#1ab744] active:text-[#0a4421] text:hover:text-[#0a4421]"
-              } w-[22px] h-[22px]`} />
+            <SendMessageIcon
+              fill={inputText === "" ? "#494a54" : (theme === "dark" ? "#ffffff" : "#22c55e")}
+              width={"22px"}
+              height={"22px"}
+            />
           </button>
 
 

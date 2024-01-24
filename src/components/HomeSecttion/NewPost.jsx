@@ -3,11 +3,12 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import TextareaAutosize from 'react-textarea-autosize';
-import { FaPhotoFilm, FaVideo } from "react-icons/fa6";
 import Image from "next/image";
 import resizeImage from "@/utils/resizeImage";
 import imageUpload from "@/utils/imageUpload";
 import AuthContext from "@/contexts/AuthContext";
+import FilmIcon from "../SVG/FilmIcon";
+import PhotoIcon from "../SVG/PhotoIcon";
 
 const NewPost = () => {
     const [newPostData, setNewPostData] = useState("");
@@ -215,12 +216,12 @@ const NewPost = () => {
                                 </div>
                             }
 
-                            <div className=" mt-2 flex items-center justify-center gap-2">
+                            <div className=" mt-2 flex items-center justify-center gap-4">
                                 <button type="button" disabled={loadingNewPost} onClick={() => setShowUploadArea(!showUploadArea)}>
-                                    <FaPhotoFilm className="w-6 h-6" />
+                                    <PhotoIcon />
                                 </button>
                                 {fetchedUser?.isAdmin && <button type="button" disabled={loadingNewPost} onClick={() => setShowVideoUploadArea(!showVideoUploadArea)}>
-                                    <FaVideo className="w-6 h-6" />
+                                    <FilmIcon />
                                 </button>}
                             </div>
 
@@ -230,8 +231,8 @@ const NewPost = () => {
                                         title="Post"
                                         disabled={loadingNewPost}
                                         className={`forum-btn1 ${newPostData === ""
-                                            ? "bg-slate-500 cursor-default"
-                                            : "greenbg active:bg-[#3c975e] lg:hover:bg-[#3c975e]"
+                                            ? "bg-[#494a54] cursor-default"
+                                            : "greenbg active:bg-[#22c55e] lg:hover:bg-[#3c975e]"
                                             }`}
                                         type="submit"
                                     >

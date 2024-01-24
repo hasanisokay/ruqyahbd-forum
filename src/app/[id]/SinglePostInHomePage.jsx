@@ -9,8 +9,6 @@ import formatDateForUserJoined from '@/utils/formatDateForUserJoined';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import useTheme from '@/hooks/useTheme';
 import makeUrlsClickable from '@/utils/makeUrlsClickable';
-import {FaRegComment, FaRegHeart} from "react-icons/fa";
-import { FaUserLarge, FaHeart } from "react-icons/fa6";
 import copyToClipboard from '@/utils/copyToClipboard';
 import Image from 'next/image';
 import ModalUser from '@/components/ModalUser';
@@ -18,8 +16,11 @@ import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
 import PostEditModal from '@/components/PostEditModal';
 import ReportModal from '@/components/ReportModal';
 import LikersModal from '@/components/LikersModal';
-import {BsThreeDotsVertical} from "react-icons/bs"
-import { RiSendPlane2Fill } from 'react-icons/ri';
+import UserIcon from '@/components/SVG/UserIcon';
+import HeartIcon from '@/components/SVG/HeartIcon';
+import CommentIcon from '@/components/SVG/CommentIcon';
+import ThreeDotsIcon from '@/components/SVG/ThreeDotsIcon';
+import SendMessageIcon from '@/components/SVG/SendMessageIcon';
 
 // dynamic imports
 const TextareaAutosize = dynamic(() => import('react-textarea-autosize'));
@@ -340,7 +341,12 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
   return (
     <div className='p-2 cursor-default bg-[#fffef9] dark:bg-[#242526] m-2 rounded-lg dark:border-gray-400 cardinhome shadow-xl'>
       <div className='relative'>
-        <BsThreeDotsVertical onClick={() => setSelectedPostIdForOptions(id)} className='absolute right-0 cursor-pointer' />
+        <ThreeDotsIcon
+          handleOnclick={() => setSelectedPostIdForOptions(id)}
+          height={"20px"}
+          width={"20px"}
+          classes={'absolute right-0 cursor-pointer'}
+        />
         {selectedPostIdForOptions === id && (
           <div className='absolute text-sm right-0 top-2 mt-2 p-1 max-w-[200px] z-10 shadow-xl rounded-md bg-[#f3f2f0] dark:bg-[#1c1c1c]'>
             <div className='flex flex-col justify-start items-start gap-2 dark:text-white text-black  '>
@@ -357,7 +363,8 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
           {
             post?.authorInfo?.photoURL ?
               <Image src={post?.authorInfo?.photoURL} blurDataURL='' alt='User Profile Photo'
-                width={64} height={0} loading='lazy'
+                width={64} height={0}
+                priority={true}
                 style={{
                   width: "45px",
                   height: "45px",
@@ -366,7 +373,8 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
                 sizes="(max-width: 768px) 100vw, 33vw"
                 className='border-gray-400 border-2'
               />
-              : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'><FaUserLarge className='' /></div>
+              : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'>
+                <UserIcon height={"35px"} width={"35px"} /></div>
           }
         </div>
         <div className='py-2'>
@@ -415,11 +423,13 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       {/*like section */}
       <div className='flex items-center gap-6 mt-2'>
         <div className='flex items-center flex-col'>
-          <FaRegComment className='' />
+          <CommentIcon fill={(post?.comment?.length > 0 && post?.comment[0].author?.authorInfo?.name)  ? "#7637e7":"#000000"} />
           <span className='text-xs'>{(post?.comment && post?.comment[0]?.author?.authorInfo?.name && post?.comment?.length) || 0} Comments</span>
         </div>
         <div className='flex flex-col items-center'>
-          {post?.likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ? <FaHeart title='You Liked this. Click to dislike' onClick={() => handleDislike()} className=' text-red-600 cursor-pointer' /> : <FaRegHeart title='Click to Like' onClick={() => hanldleLike()} className='cursor-pointer' />}
+          {post?.likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
+            <HeartIcon title={"You Liked this. Click to dislike"} handleOnclick={() => handleDislike()} classes={'stroke-2 stroke-red-600 fill-red-600'} /> :
+            <HeartIcon title={"Click to Like"} handleOnclick={() => hanldleLike()} classes={"stroke-2 stroke-black dark:stroke-white fill-transparent"} />}
           <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.likes)}>{post?.likes?.length || 0} Likes</span>
         </div>
 
@@ -437,20 +447,21 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
               onKeyDown={handleKeyDown}
               onChange={(e) => setNewCommentData(e.target.value)}
               placeholder={`Comment as ${fetchedUser.name}`}
-              className="pl-2 resize-none py-[10px] bg-slate-200 dark:bg-[#3b3b3b] pr-[44px] rounded-xl placeholder:text-[12px] text-sm focus:outline-none w-full"
+              className="pl-2 resize-none py-[10px] scrollforchat bg-slate-200 dark:bg-[#3b3b3b] pr-[34px] rounded-xl placeholder:text-[12px] text-sm focus:outline-none w-full"
 
             />
             <div className="absolute bottom-[20%]  right-2">
               <button
                 title="click to comment"
                 disabled={loadingNewComment}
-                className={`forum-btn1`}
+                className={`${newCommentData === "" && "cursor-default"}`}
                 type="submit"
               >
-                < RiSendPlane2Fill className={` ${newCommentData === ""
-                  ? "text-slate-500 cursor-default"
-                  : "text-[#1ab744] active:text-[#0a4421] text:hover:text-[#0a4421]"
-                  } w-[22px] h-[22px]`} />
+                  <SendMessageIcon 
+                  fill={newCommentData === "" ? "#494a54":(theme==="dark" ? "#ffffff" :"#22c55e")}
+                  width={"22px"}
+                  height={"22px"}
+                  />
               </button>
             </div>
           </form>

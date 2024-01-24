@@ -7,7 +7,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaHeart, FaRegComment, FaRegHeart, FaUserLarge } from "react-icons/fa6";
 import LoadingModalUser from "./LoadingModal";
 import LoadingModalData from "./LoadingModalData";
 import axios from "axios";
@@ -16,6 +15,9 @@ import useTheme from "@/hooks/useTheme";
 import LinkPreview from "./LinkPreview";
 import VideosInPost from "./video-components/VideosInPost";
 import makeUrlsClickable from "@/utils/makeUrlsClickable";
+import HeartIcon from "./SVG/HeartIcon";
+import CommentIcon from "./SVG/CommentIcon";
+import UserIcon from "./SVG/UserIcon";
 
 const ModalUser = ({ username, setterFunction }) => {
     const { theme } = useTheme();
@@ -158,7 +160,9 @@ const ModalUser = ({ username, setterFunction }) => {
                                                                 }}
                                                                 className='border-gray-400 border-2'
                                                             />
-                                                            : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'><FaUserLarge className='' /></div>
+                                                            : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'>
+                                                                <UserIcon height={"35px"} width={"35px"} />
+                                                            </div>
                                                     }
                                                 </div>
                                                 <div className='py-2'>
@@ -209,11 +213,14 @@ const ModalUser = ({ username, setterFunction }) => {
                                             {
                                                 post?.status === "approved" && <div className='flex items-center gap-6 mt-2'>
                                                     <div className='flex items-center flex-col'>
-                                                        <FaRegComment className='' />
-                                                        <span className='text-xs'>{(post?.comment?.length) || 0} Comments</span>
+                                                        <CommentIcon fill={post?.comment > 0 ? "#7637e7" : "#000000"} />
+                                                        <span className='text-xs'>{(post?.comment) || 0} Comments</span>
                                                     </div>
                                                     <div className='flex flex-col items-center'>
-                                                        {post?.likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ? <FaHeart title='You Liked this.' className=' text-red-600' /> : <FaRegHeart />}
+                                                        {post?.likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
+                                                            <HeartIcon classes={"stroke-2 stroke-red-600 fill-red-600"} title={'You Liked this.'} />
+                                                            :
+                                                            <HeartIcon title={'You did not like this'} classes={"stroke-2 stroke-black dark:stroke-white fill-transparent"} />}
                                                         <span className='text-xs'>{post?.likes?.length || 0} Likes</span>
                                                     </div>
                                                 </div>

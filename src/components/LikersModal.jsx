@@ -3,8 +3,8 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaUserLarge } from "react-icons/fa6";
 import LoadingLikers from "./LoadingLikers";
+import UserIcon from "./SVG/UserIcon";
 
 const LikersModal = ({ usernames, setterFunction }) => {
     const [likers, setLikers] = useState([])
@@ -41,7 +41,9 @@ const LikersModal = ({ usernames, setterFunction }) => {
                                         height: "30px",
                                         borderRadius: '50%',
                                     }}
-                                        width={30} height={30} src={user?.photoURL} alt="user photo" /> : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[30px] h-[30px]'><FaUserLarge className='' /></div>}
+                                        width={30} height={30} src={user?.photoURL} alt="user photo" /> : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[30px] h-[30px]'>
+                                           <UserIcon height={"25px"} width={"25px"} />
+                                            </div>}
                                 </div>
                                 <div>
                                     <p><span className="text-[14px]">{user?.name}</span></p>

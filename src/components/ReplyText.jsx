@@ -1,5 +1,4 @@
 'use client'
-import { BsDot } from "react-icons/bs";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "@/contexts/AuthContext";
@@ -7,6 +6,7 @@ import ReplyEditModal from "./ReplyEditModal";
 import ReportModal from "./ReportModal";
 import makeUrlsClickable from "@/utils/makeUrlsClickable";
 import useTheme from "@/hooks/useTheme";
+import DotIcon from "./SVG/DotIcon";
 
 const ReplyText = ({ text, replyID, commentID, postID, setFetchedReplies, setReplyCount, replyAuthor }) => {
     const { showDeleteModal, setShowDeleteModal, fetchedUser, reportingReplyId, setReportingReplyId, reportingCommentId, setReportingCommentId, showReportModal, setShowReportModal } = useContext(AuthContext);
@@ -43,7 +43,7 @@ const ReplyText = ({ text, replyID, commentID, postID, setFetchedReplies, setRep
         <div>
             {fetchedUser && <div onClick={() => setShowReplyOptions(!showReplyOptions)} className="relative cursor-pointer">
                 <div className="absolute top-0 -right-4">
-                    <BsDot />
+                <DotIcon />
                 </div>
             </div>}
             <div className={`relative ${replyID}`}>
