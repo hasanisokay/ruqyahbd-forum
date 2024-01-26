@@ -41,7 +41,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
     const [posts, setPosts] = useState(tenPostsArray);
     const [loadingPosts, setLoadingPosts] = useState(false);
     const [noMorePosts, setNoMorePosts] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState(null);
 
 
     useEffect(() => {
@@ -72,10 +72,10 @@ const HomePagePosts = ({ tenPostsArray }) => {
             console.log({ data });
             setLoadingPosts(false)
             if (data?.message) {
-                return setError(true);
+                return setError(data?.message);
             }
             else {
-                setError(false);
+                setError("");
                 setPosts((prev) => [...prev, ...data])
             }
         }
@@ -163,7 +163,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                 const updatedPosts = posts.map((post) => {
                     if (post._id === id) {
                         // Remove fetchedUser.username from the likes array
-                        post.likes = post.likes.filter((person) => person !== fetchedUser.username);
+                        post.likes = post.likes.filter((person) => person !== fetchedUser?.username);
                     }
                     return post;
                 });
@@ -202,10 +202,10 @@ const HomePagePosts = ({ tenPostsArray }) => {
                 const updatedPosts = posts.map((post) => {
                     if (post._id === id) {
                         if (post?.likes?.length > 0) {
-                            post.likes = [...post.likes, fetchedUser.username]
+                            post.likes = [...post.likes, fetchedUser?.username]
                         }
                         else {
-                            post.likes = [fetchedUser.username]
+                            post.likes = [fetchedUser?.username]
                         }
                     }
                     return post;
@@ -333,8 +333,8 @@ const HomePagePosts = ({ tenPostsArray }) => {
                 No more posts
             </div>}
             {
-                error && <div className='text-center'>
-                    Error occured fetching more posts. Please reload the page.
+                error && error?.length > 0 && <div className='text-center'>
+                     <p>{error} Please reload the page.</p>
                 </div>
             }
             {/* Infinite scrolling trigger */}

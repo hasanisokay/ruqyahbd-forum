@@ -5,7 +5,8 @@ import NewPost from "./NewPost";
 
 const NewPostSection = () => {
     const { fetchedUser } = useContext(AuthContext);
-    if (fetchedUser && !fetchedUser?.blocked) return <NewPost />
+    if (fetchedUser === null) return
+    else if (fetchedUser && !fetchedUser?.blocked) return <NewPost />
 };
 
 export default NewPostSection;

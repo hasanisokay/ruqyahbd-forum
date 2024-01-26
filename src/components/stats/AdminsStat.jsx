@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, FreeMode, EffectCreative } from 'swiper/modules';
+import { Autoplay, EffectCreative } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/effect-creative';
-
 
 import Image from "next/image";
 import getAdmins from "@/utils/getAdmins";
@@ -48,20 +47,6 @@ const AdminsStat = () => {
                     disableOnInteraction: true,
                 }}
                 modules={[Autoplay, EffectCreative]}
-            // breakpoints={{
-            //     320: {
-            //         slidesPerView: 1,
-            //     },
-            //     640: {
-            //         slidesPerView: 2,
-            //     },
-            //     // 768: {
-            //     //     slidesPerView: 3,
-            //     // },
-            //     // 1024: {
-            //     //     slidesPerView: 4,
-            //     // },
-            // }}
             >
                 {
                     !loadingAdminsData && adminsData && adminsData?.map((admin, index) => <div key={admin?._id}>

@@ -1,6 +1,7 @@
+'use server'
 const createJWT = async (payload) => {
     try {
-      const res = await fetch("/api/auth", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/api/auth`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

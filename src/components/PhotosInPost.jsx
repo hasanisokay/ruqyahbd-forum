@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ImageModal from "./ImageModal";
 
+
 const PhotosInPost = ({ photosArray, alt }) => {
 
     const [showSeeMore, setShowSeeMore] = useState(false);

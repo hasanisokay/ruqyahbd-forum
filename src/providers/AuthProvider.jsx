@@ -1,6 +1,5 @@
 'use client'
 import AuthContext from "@/contexts/AuthContext";
-import axios from "axios";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 import getUser from "./getUser";
@@ -25,21 +24,12 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const handleSocketConnection = async () => {
             try {
-                if (fetchedUser) {
+                if (fetchedUser && !loading) {
                     const userSocket = await io(`${process.env.NEXT_PUBLIC_server}/?userId=${fetchedUser?.username}`);
                     setSocket(userSocket);
-
-                    // Handle socket disconnection
-                    // userSocket.on('disconnect', () => {
-                    //     console.log('disconnected');
-                    // });
                 } else {
                     const anonymousSocket = await io(process.env.NEXT_PUBLIC_server);
                     setSocket(anonymousSocket);
-
-                    // anonymousSocket.on('disconnect', () => {
-                    //     console.log('Socket disconnected');
-                    // });
                 }
             } catch (error) {
                 console.error('Socket connection error:', error);
@@ -54,7 +44,7 @@ const AuthProvider = ({ children }) => {
             }
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetchedUser]);
+    }, [fetchedUser, loading]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -107,22 +97,18 @@ const AuthProvider = ({ children }) => {
             },
             body: JSON.stringify({ username, password }),
         });
-
         const data = await response.json();
         return data;
     }
     const logOut = async () => {
         setLoading(true);
-
         const response = await fetch("/api/auth/logout");
         const data = await response.json();
-
         setFetchedUser(null)
         toast.success(data.message)
         setLoggedOut(true)
         setLoading(false);
     }
-
 
     const value = {
         fetchedUser,
