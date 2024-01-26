@@ -1,13 +1,17 @@
 import getPost from "@/utils/getPost";
-import SinglePostInHomePage from "./SinglePostInHomePage";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import LoadingCards from "@/components/LoadingCards";
-
+import { unstable_noStore } from "next/cache";
+import dynamic from "next/dynamic";
+const SinglePostInHomePage = dynamic(() => import('@/components/SinglePostInHomePage'));
 export async function generateMetadata({ params }) {
-  const postID = params?.id;
+  const postID = params?.id || null;
   let id = postID;
-  const post = await getPost(id);
+  let post
+  if(id){
+    post = await getPost(id);
+  }
   return {
     title: (post?.authorInfo?.name || "Not Found") + " - " + "Ruqyah Forum",
     description:
@@ -41,9 +45,13 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function singlePost({ params }) {
+  unstable_noStore();
   const postID = params?.id;
   let id = postID;
-  const post = await getPost(id);
+  let post 
+  if(id){
+    post = await getPost(id);
+  }
   if (
     post?.status === 500 ||
     post?.status === 400 ||

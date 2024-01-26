@@ -1,5 +1,5 @@
-import localFont from 'next/font/local';
+// import localFont from 'next/font/local';
 
-const SegoeUIHistoric_init = localFont({ src: "../../public/fonts/Segoe UI Historic/Segoe UI Historic.woff2", display:"optional", variable:"--segoe-ui-historic", preload:true, });
+// const SegoeUIHistoric_init = localFont({ src: "../../public/fonts/Segoe UI Historic/Segoe UI Historic.woff2", display:"optional", variable:"--segoe-ui-historic", preload:true, });
 
-export const SegoeUIHistoric = SegoeUIHistoric_init.className;
+// export const SegoeUIHistoric = SegoeUIHistoric_init.className;

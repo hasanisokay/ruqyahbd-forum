@@ -423,7 +423,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       {/*like section */}
       <div className='flex items-center gap-6 mt-2'>
         <div className='flex items-center flex-col'>
-          <CommentIcon fill={(post?.comment?.length > 0 && post?.comment[0].author?.authorInfo?.name)  ? "#7637e7":"#000000"} />
+          <CommentIcon fill={(post?.comment?.length > 0 && post?.comment[0].author?.authorInfo?.name)  ? "#7637e7":theme==="dark"?"#ffffff":"#000000"} />
           <span className='text-xs'>{(post?.comment && post?.comment[0]?.author?.authorInfo?.name && post?.comment?.length) || 0} Comments</span>
         </div>
         <div className='flex flex-col items-center'>

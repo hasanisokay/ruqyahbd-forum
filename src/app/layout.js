@@ -1,8 +1,8 @@
 import "./globals.css";
-import Navbar from "@/components/shared/Navbar";
+
 import Toaster from "@/components/Toaster";
+import Navbar from "@/components/shared/Navbar";
 import Providers from "@/providers/Providers";
-import { SegoeUIHistoric } from "@/utils/localFont";
 
 export const metadata = {
   title: "Ruqyah Forum",
@@ -32,7 +32,7 @@ export const metadata = {
 const RootLayout = ({ children }) => {
   return (
     <html lang="en" data-theme={"dark"} className="transition-all">
-      <body className={SegoeUIHistoric}>
+      <body>
         <Providers>
           <Navbar></Navbar>
           <main className="mt-5">{children}</main>

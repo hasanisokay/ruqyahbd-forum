@@ -13,7 +13,7 @@ const LoginForm = () => {
     const search = useSearchParams();
     const from = search.get("redirectUrl") || "/";
     const router = useRouter();
-    const { replace, refresh, push } = router;
+    const { refresh, push } = router;
     const { theme } = useTheme();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -114,5 +114,4 @@ if(fetchedUser) return push("/")
         </>
     );
 };
-
 export default LoginForm;

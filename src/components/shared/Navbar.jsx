@@ -180,15 +180,15 @@ const Navbar = () => {
       }
     }
     setShowNotificationMenu(false)
-    // if (replyID) {
-    //   return router.push(`/${id}?commentID=${commentID}&replyID=${replyID}`, { scroll: false })
-    // }
-    // else if (commentID) {
-    //   return router.push(`/${id}?commentID=${commentID}`, { scroll: false })
-    // }
-    // else {
-    //   router.push(`/${id}`,)
-    // }
+    if (replyID) {
+      return router.push(`/${id}?commentID=${commentID}&replyID=${replyID}`, { scroll: false })
+    }
+    else if (commentID) {
+      return router.push(`/${id}?commentID=${commentID}`, { scroll: false })
+    }
+    else {
+      router.push(`/${id}`,)
+    }
   };
 
   const clickSeeAll = () => {
@@ -280,12 +280,12 @@ const Navbar = () => {
             : allNotifications.length > 0 ? <ul>
               {allNotifications && allNotifications.length > 0 && allNotifications?.map((n, index) => (
                 <li
-                  key={index}
+                key={index}
                   onClick={() => handleNotificationsClick(n?.postID, n?.read, n?.commentID, n?.replyID)}
                   title={`On ${formatDateInAdmin(new Date(n?.date))}`}
                   className={`p-2 font-normal  rounded-lg lg:hover:bg-slate-800 lg:hover:text-white cursor-pointer my-2 ${n.read === false ? "dark:text-white" : "text-gray-400 lg:hover:text-gray-400"
                     }`}
-                > <Link scroll={(n?.replyID || n?.commentID) && false} href={(n?.replyID && `/${id}?commentID=${commentID}&replyID=${replyID}`) || (n?.commentID && `/${id}?commentID=${commentID}`) || `/${id}`} >
+                > 
                     <div className="flex gap-[6px] items-center">
                       {n?.author?.photoURL ?
                         <Image src={n?.author?.photoURL} blurDataURL='' alt={`profile photo of ${n?.author?.name}`}
@@ -310,9 +310,8 @@ const Navbar = () => {
                         </p>
                       </div>
                     </div>
-                  </Link>
-
                 </li>
+                
               ))}
               {
                 allNotifications?.length < 1 ? <li className="p-2 font-normal  rounded-lg lg:hover:bg-slate-500 lg:hover:text-white cursor-pointer my-1 text-center dark:bg-slate-950">No notification available</li> : <li onClick={clickSeeAll} className="p-2 font-normal  rounded-lg lg:hover:bg-slate-800 lg:hover:text-white cursor-pointer my-1 text-center dark:bg-slate-800 dark:lg:hover:bg-slate-700">See All</li>

@@ -1,8 +1,8 @@
-import AdminsStat from "./AdminsStat";
-import DeveloperContact from "./DeveloperContact";
-import OnlineUsersCounter from "./OnlineUsersCounter";
-import PostStat from "./PostStat";
-
+import dynamic from "next/dynamic";
+const PostStat = dynamic(() => import('./PostStat'));
+const  AdminsStat = dynamic(() => import('./AdminsStat'));
+const  DeveloperContact = dynamic(() => import('./DeveloperContact'));
+const  OnlineUsersCounter = dynamic(() => import('./OnlineUsersCounter'));
 
 const Stats = () => {
     return (

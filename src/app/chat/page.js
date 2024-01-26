@@ -1,11 +1,11 @@
-import Chat from "@/components/chat/Chat";
+import ChatProvider from "./ChatProvider";
 
 const chatPage = () => {
-  return (
-    <div>
-      <Chat />
-    </div>
-  );
+    return (
+        <div>
+       <ChatProvider/>
+        </div>
+    );
 };
 
 export default chatPage;

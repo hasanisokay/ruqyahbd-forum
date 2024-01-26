@@ -1,5 +1,6 @@
-import Profile from "./Profile";
+import dynamic from "next/dynamic";
 
+const Profile = dynamic(() => import("./Profile"));
 export const metadata = {
   title: "Profile | Ruqyah Forum",
   description:

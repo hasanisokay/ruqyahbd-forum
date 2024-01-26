@@ -1,3 +1,4 @@
+'use server'
 const getPosts = async (pageIndex) => {
   try {
     let apiUrl;

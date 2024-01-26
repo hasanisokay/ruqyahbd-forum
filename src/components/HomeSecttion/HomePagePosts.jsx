@@ -305,7 +305,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                     <div className='flex items-center p-2 gap-6 mt-2'>
                         <div>
                             <Link href={`/${post?._id}`} className='flex items-center flex-col'>
-                            <CommentIcon fill={post?.comment > 0 ? "#7637e7" :"#000000"} />
+                            <CommentIcon fill={post?.comment > 0 ? "#7637e7" : theme==="dark"?"#ffffff":"#000000"} />
                                 <span className='text-xs'>{post?.comment || 0} Comments</span>
                             </Link>
                         </div>

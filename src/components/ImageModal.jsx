@@ -1,7 +1,6 @@
 'use client'
 import Image from 'next/image';
 import 'swiper/css';
-import "swiper/css/effect-fade";
 import 'swiper/css/pagination';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -64,7 +63,7 @@ const ImageModal = ({ activeIndex, photosArray, setterFunction, alt }) => {
     return (
         <div>
             <dialog id="imageModal" className="modal">
-                <div className="modal-box p-0 scrollforchat rounded-none max-h-[90vh] md:min-w-[50vw] sm:min-w-[70vw] min-w-[100vw] sm:min-h-[60vh] min-h-[50vh] md:min-h-[85vh] lg:min-h-[90vh] bg-gray-600">
+                <div className="modal-box p-0 rounded-none max-h-[90vh] md:min-w-[50vw] sm:min-w-[70vw] min-w-[100vw] sm:min-h-[60vh] min-h-[50vh] md:min-h-[85vh] lg:min-h-[90vh] bg-gray-600">
                     <Swiper ref={swiperRef} initialSlide={activeIndex}
                         keyboard
                         pagination={{
@@ -73,7 +72,6 @@ const ImageModal = ({ activeIndex, photosArray, setterFunction, alt }) => {
                         onSlideChange={handleSlideChange}
                         onAfterInit={handleSlideChange}
                         modules={[Pagination]}
-
                     >
                         {photosArray?.map((url, index) => <SwiperSlide
                             key={index} >
