@@ -209,6 +209,7 @@ const Navbar = () => {
           className={`dark:filter w-[150px] h-auto dark:brightness-0 dark:invert py-1 `}
           src={logoSrc}
           unoptimized
+          priority={true}
           alt="logo" />
       </Link>
       <div

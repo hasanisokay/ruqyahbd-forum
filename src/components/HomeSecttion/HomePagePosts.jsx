@@ -247,7 +247,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                             <div onClick={() => handleShowUser(post?.authorInfo?.username)} className='cursor-pointer'>
                                 {
                                     post?.authorInfo?.photoURL ?
-                                        <Image src={post?.authorInfo?.photoURL} alt='Users Profile Photo'
+                                        <Image src={post?.authorInfo?.photoURL} alt='User Profile Photo'
                                             width={41}
                                             placeholder='empty'
                                             height={41}

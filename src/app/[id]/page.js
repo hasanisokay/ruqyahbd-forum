@@ -1,10 +1,10 @@
+'use server'
 import getPost from "@/utils/getPost";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import LoadingCards from "@/components/LoadingCards";
-import { unstable_noStore } from "next/cache";
-import dynamic from "next/dynamic";
-const SinglePostInHomePage = dynamic(() => import('@/components/SinglePostInHomePage'));
+import SinglePostInHomePage from "@/components/SinglePostInHomePage";
+
 export async function generateMetadata({ params }) {
   const postID = params?.id || null;
   let id = postID;
@@ -45,7 +45,6 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function singlePost({ params }) {
-  unstable_noStore();
   const postID = params?.id;
   let id = postID;
   let post 
