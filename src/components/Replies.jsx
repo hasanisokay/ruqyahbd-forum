@@ -1,15 +1,19 @@
 'use client'
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import Image from "next/image";
 import LoadingModalUser from "./LoadingModal";
 import ReplyText from "./ReplyText";
 import { useSearchParams } from "next/navigation";
-import LinkPreview from "./LinkPreview";
 import UserIcon from "./SVG/UserIcon";
+import AuthContext from "@/contexts/AuthContext";
+import dynamic from "next/dynamic";
 
-const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount, socket }) => {
+const LinkPreview = dynamic(() => import('./LinkPreview'));
+
+const Replies = ({ postID, commentID, setReplyCount, replyCount}) => {
     const pageRef = useRef(1);
+    const {onlineUsers, setSelectedUsernameToShowDetails, socket } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [fetchedReplies, setFetchedReplies] = useState([]);
@@ -108,20 +112,20 @@ const Replies = ({ postID, commentID, setReplyCount, handleShowUser, replyCount,
             {fetchedReplies.map((reply, index) => (
                 <div key={index} className="mb-[10px]">
                     <div className="flex gap-2 ">
-                        <div onClick={() => handleShowUser(reply?.authorInfo?.username)} className='cursor-pointer min-w-[20px]'>
+                        <div onClick={() => setSelectedUsernameToShowDetails(reply?.authorInfo?.username)} className='cursor-pointer min-w-[20px]'>
                             {
                                 reply?.authorInfo?.photoURL ?
                                     <Image src={reply.authorInfo?.photoURL} blurDataURL='' alt='User Profile Photo'
                                         width={20} height={20} loading="lazy" sizes="(max-width: 768px) 100vw, 33vw"
-                                        className='border-gray-400 rounded-full border-2 w-[20px] h-[20px]'
+                                        className={`${onlineUsers?.includes(reply?.authorInfo?.username) ? "online-border-color":"offline-border-color" } rounded-full  w-[20px] h-[20px]`}
                                     />
-                                    : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[20px] h-[20px]'>
+                                    : <div className={`flex items-center justify-center rounded-full ${onlineUsers?.includes(reply?.authorInfo?.username) ? "online-border-color":"offline-border-color" } w-[20px] h-[20px]`}>
                                         <UserIcon height={"12px"} width={"12px"} />
                                     </div>
                             }
                         </div>
                         <div id={reply?._id} className='bg-gray-200 dark:bg-[#3a3b3c] px-4 py-1 rounded-xl max-w-full min-w-[200px]'>
-                            <p><span className=''> <span onClick={() => handleShowUser(reply?.authorInfo?.username)} className='text-[14px] font-semibold cursor-pointer'>{reply?.authorInfo?.name}</span> </span>
+                            <p><span className=''> <span onClick={() => setSelectedUsernameToShowDetails(reply?.authorInfo?.username)} className='text-[14px] font-semibold cursor-pointer'>{reply?.authorInfo?.name}</span> </span>
                             </p>
                             <div className='text-xs flex gap-2 items-center'>
                                 <p className=''>@{reply?.authorInfo?.username}</p>

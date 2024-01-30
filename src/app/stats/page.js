@@ -1,5 +1,4 @@
 import Stats from "@/components/stats/Stats";
-
 export const metadata = {
   title: "Stats - Ruqyah Forum",
   description:
@@ -14,14 +13,24 @@ export const metadata = {
     "values",
   ],
   author: "Ruqyah Support BD",
-  image: "https://i.ibb.co/wh2mk56/Whats-App-Image-2023-12-16-at-20-32-41.jpg",
-  url: "https://www.forum.ruqyahbd.org/stats",
+  other: {
+    "theme-color": { dark: "#8a8080", light: "#555" },
+    "color-scheme": ["dark", "light"],
+    "twitter:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+    "twitter:card": "summary_large_image",
+    "og-url":  `${process.env.NEXT_PUBLIC_BASEURL}/stats`,
+    "og:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+    "og:type": "website",
+  },
+  image: process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+  url: `${process.env.NEXT_PUBLIC_BASEURL}/stats`,
 };
 
-const statsPage = () => {
+const statsPage = async () => {
+
   return (
     <div>
-      <Stats />
+      <Stats/>
     </div>
   );
 };

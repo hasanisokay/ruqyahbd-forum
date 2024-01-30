@@ -21,9 +21,9 @@ const PostShowingFormat = ({ post, fetchedUser }) => {
                                     height: "45px",
                                     borderRadius: '50%',
                                 }}
-                                className='border-gray-400 border-2'
+                                className={`${onlineUsers?.includes(fetchedUser?.username) ? "online-border-color" : "offline-border-color"}`}
                             />
-                            : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'>
+                            : <div className={`flex items-center justify-center rounded-full  w-[45px] h-[45px] ${onlineUsers?.includes(fetchedUser?.username) ? "online-border-color" : "offline-border-color"}`}>
                                 <UserIcon height={"35px"} width={"35px"} />
                             </div>
                     }

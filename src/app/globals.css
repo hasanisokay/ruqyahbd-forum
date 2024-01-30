@@ -1,9 +1,10 @@
-@tailwind  base;
-@tailwind  components;
-@tailwind  utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-body{
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 /* Autofill Styles */
 input:-webkit-autofill,
@@ -80,8 +81,6 @@ input:-webkit-autofill:active {
   }
 }
 
-
-
 [data-theme="dark"] {
   @apply bg-[#4c4c4c] text-[#e3ebdb];
 }
@@ -90,6 +89,9 @@ input:-webkit-autofill:active {
 }
 .forum-btn1 {
   @apply text-white px-4 py-1 rounded-lg cursor-pointer;
+}
+.forum-btn-sm2 {
+  @apply text-white px-2 py-1 rounded-lg cursor-pointer font-semibold text-xs;
 }
 .forum-btn2 {
   @apply lg:hover:text-white duration-300 px-4 py-1 rounded-lg cursor-pointer w-full;
@@ -117,12 +119,29 @@ input:-webkit-autofill:active {
 .highlightedClass {
   background-color: #888 !important;
 }
-.greenbg{
-  @apply bg-[#22c55e]
+.greenbg {
+  @apply bg-[#22c55e];
 }
-
-
-
+.online-border-color {
+  border-color: #7637e7;
+  border-width: 2px;
+}
+.offline-border-color {
+  border-color: gray;
+  border-width: 2px;
+}
+.online-color {
+  background-color: #27c93f;
+}
+.online-text-color {
+  color: #27c93f;
+  font-size: 10px;
+  font-weight: 400;
+  display: inline;
+}
+.stats-card{
+  @apply bg-[#fffef9] shadow-xl dark:bg-[#242526] cardinhome py-4 min-h-[300px]
+}
 .scroll-reveal {
   white-space: pre-wrap;
   overflow-wrap: break-word;
@@ -131,11 +150,11 @@ input:-webkit-autofill:active {
   background-repeat: no-repeat;
   background-size: 0% 100%;
   animation: scroll-reveal linear forwards;
- color: hsla(0, 12%, 97%, 0.5);
-animation-timeline: view();
+  color: hsla(0, 12%, 97%, 0.5);
+  animation-timeline: view();
   animation-range: cover;
-  animation-range-start: 10vh;
-  animation-range-end: 35vh;
+  animation-range-start: 5vh;
+  animation-range-end: 20vh;
 }
 .scroll-reveal {
   [data-theme="light"] & {

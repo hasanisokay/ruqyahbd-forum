@@ -9,8 +9,6 @@ export const GET = async (request) => {
 
   const db = await dbConnect();
   const adminActivityCollection = db?.collection("admin-activity");
-  const usersCollection = db?.collection("users");
-
   const pageSize = 10;
   const skip = (page - 1) * pageSize;
   let query = {};

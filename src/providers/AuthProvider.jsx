@@ -17,10 +17,10 @@ const AuthProvider = ({ children }) => {
     const [showReportModal, setShowReportModal] = useState(false);
     const [reportingCommentId, setReportingCommentId] = useState(null);
     const [reportingReplyId, setReportingReplyId] = useState(null);
-    const [socket, setSocket] = useState(null)
-
-
-
+    const [socket, setSocket] = useState(null);
+    const [selectedUsernameToShowDetails, setSelectedUsernameToShowDetails] = useState(null);
+    const [onlineUsers, setOnlineUsers] = useState([]);
+    const [anonymousUsers, setAnonymousUsers] = useState(0);
     useEffect(() => {
         const handleSocketConnection = async () => {
             try {
@@ -43,7 +43,7 @@ const AuthProvider = ({ children }) => {
                 socket.disconnect();
             }
         };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchedUser, loading]);
 
     useEffect(() => {
@@ -87,7 +87,42 @@ const AuthProvider = ({ children }) => {
         }
     }, [fetchedUser])
 
+    useEffect(() => {
+        if (selectedUsernameToShowDetails) {
+            document.getElementById('userModal').showModal();
+        }
+    }, [selectedUsernameToShowDetails]);
 
+    useEffect(() => {
+        if (socket) {
+            socket.on('userConnected', async ({ anonymousUsersCount, loggedUsers }) => {
+                setOnlineUsers(loggedUsers);
+                setAnonymousUsers(anonymousUsersCount);
+            });
+
+            socket.on('userDisconnected', async ({ anonymousUsersCount, loggedUsers }) => {
+                setOnlineUsers(loggedUsers);
+                setAnonymousUsers(anonymousUsersCount);
+            });
+
+            socket.on('anonymousUserConnected', async ({ anonymousUsersCount, loggedUsers }) => {
+                setOnlineUsers(loggedUsers);
+                setAnonymousUsers(anonymousUsersCount);
+            });
+
+            socket.on('anonymousUserDisconnected', async ({ anonymousUsersCount, loggedUsers }) => {
+                setOnlineUsers(loggedUsers);
+                setAnonymousUsers(anonymousUsersCount);
+            });
+        }
+        return () => {
+            socket?.off("userConnected")
+            socket?.off("userDisconnected")
+            socket?.off("anonymousUserConnected")
+            socket?.off("anonymousUserDisconnected")
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetchedUser])
 
     const signIn = async (username, password) => {
         const response = await fetch(`/api/auth/login`, {
@@ -131,7 +166,11 @@ const AuthProvider = ({ children }) => {
         setReportingCommentId,
         reportingReplyId,
         setReportingReplyId,
-        socket
+        socket,
+        onlineUsers,
+        anonymousUsers,
+        selectedUsernameToShowDetails, 
+        setSelectedUsernameToShowDetails
     };
 
     return (

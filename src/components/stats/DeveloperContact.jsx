@@ -1,4 +1,4 @@
-
+"use server"
 const DeveloperContact = () => {
     return (
         <div className="my-4 py-4 text-center bg-[#fffef9] cardinhome shadow-xl dark:bg-[#242526]">

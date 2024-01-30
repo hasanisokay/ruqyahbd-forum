@@ -1,6 +1,5 @@
 'use client'
 import dynamic from 'next/dynamic';
-import { io } from 'socket.io-client';
 import { useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import AuthContext from '@/contexts/AuthContext';
@@ -33,11 +32,9 @@ const LinkPreview = dynamic(() => import('@/components/LinkPreview'));
 const SinglePostInHomePage = ({ fetchedPost }) => {
   const id = fetchedPost?._id;
   const [likersArray, setLikersArray] = useState(null);
-  const { fetchedUser, showDeleteModal, setShowDeleteModal, showReportModal, setShowReportModal, isReportingPost, setIsReportingPost } = useContext(AuthContext);
-  const [socket, setSocket] = useState(null)
+  const {socket, fetchedUser, onlineUsers, showDeleteModal, setShowDeleteModal, showReportModal, selectedUsernameToShowDetails, setSelectedUsernameToShowDetails, setShowReportModal, isReportingPost, setIsReportingPost } = useContext(AuthContext);
   const [newCommentData, setNewCommentData] = useState("");
   const [loadingNewComment, setLoadingNewComment] = useState(false);
-  const [selectedUsernameToShowDetails, setSelectedUsernameToShowDetails] = useState(null)
   const [post, setPost] = useState(fetchedPost);
   const [selectedPostIdForOptions, setSelectedPostIdForOptions] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -68,19 +65,6 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       }
     }
   }, [commentID, scrolledToComment, post]);
-
-
-  useEffect(() => {
-    (async () => {
-      if (fetchedUser) {
-        const userSocket = await io(`${process.env.NEXT_PUBLIC_server}/?userId=${fetchedUser?.username}`);
-        setSocket(userSocket);
-      } else {
-        const anonymousSocket = await io(process.env.NEXT_PUBLIC_server);
-        setSocket(anonymousSocket);
-      }
-    })();
-  }, [fetchedUser]);
 
   useEffect(() => {
     if (likersArray) {
@@ -134,12 +118,6 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
   }, [selectedPostIdForOptions]);
 
   useEffect(() => {
-    if (selectedUsernameToShowDetails) {
-      document.getElementById('userModal').showModal();
-    }
-  }, [selectedUsernameToShowDetails]);
-
-  useEffect(() => {
     if (showEditModal) document?.getElementById('editModal')?.showModal()
   }, [showEditModal])
 
@@ -175,7 +153,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       const response = await fetch('/api/posts/comment', requestOptions);
       const { data } = await response.json();
 
-      if (data.status === 200) {
+      if (data?.status === 200) {
         // send comment with socket
         const dataToSendInSocket = {
           comment: newCommentData,
@@ -216,7 +194,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
           socket.emit("newCommentNotification", { newCommentNotification });
         }
       }
-      if (data.status === 500) {
+      if (data?.status === 500) {
         toast.error(data?.message || "error")
       }
     } catch (error) {
@@ -249,23 +227,20 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
 
       const response = await fetch('/api/posts/reaction', requestOptions);
       const { data } = await response.json();
-
-      if (commentID && data.status === 200) {
-        if (data.status === 200 && commentID) {
-          setPost((prevPost) => ({
-            ...prevPost,
-            comment: prevPost.comment.map((c) =>
-              c._id === commentID
-                ? {
-                  ...c,
-                  likes: c.likes.filter((uname) => uname !== fetchedUser.username),
-                }
-                : c
-            ),
-          }))
-        }
+      if (data?.status === 200 && commentID) {
+        setPost((prevPost) => ({
+          ...prevPost,
+          comment: prevPost.comment.map((c) =>
+            c._id === commentID
+              ? {
+                ...c,
+                likes: c.likes.filter((uname) => uname !== fetchedUser.username),
+              }
+              : c
+          ),
+        }))
       }
-      if (data.status === 200 && !commentID) {
+      if (data?.status === 200 && !commentID) {
         const filteredLikesArray = post?.likes?.filter((uname) => uname !== fetchedUser.username)
         setPost(prevPost => ({ ...prevPost, likes: filteredLikesArray }));
       }
@@ -296,7 +271,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       const response = await fetch('/api/posts/reaction', requestOptions);
       const { data } = await response.json();
 
-      if (data.status === 200 && commentID) {
+      if (data?.status === 200 && commentID) {
         setPost((prevPost) => ({
           ...prevPost,
           comment: prevPost.comment.map((c) =>
@@ -309,7 +284,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
           ),
         }))
       }
-      if (data.status === 200 && !commentID) {
+      if (data?.status === 200 && !commentID) {
         if (post._id === id) {
           if (post?.likes?.length > 0) {
             setPost(prevPost => ({ ...prevPost, likes: [...prevPost?.likes, fetchedUser?.username] }));
@@ -362,7 +337,10 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
         <div onClick={() => handleShowUser(post?.authorInfo?.username)} className='cursor-pointer'>
           {
             post?.authorInfo?.photoURL ?
-              <Image src={post?.authorInfo?.photoURL} blurDataURL='' alt='User Profile Photo'
+              <Image
+                src={post?.authorInfo?.photoURL}
+                blurDataURL=''
+                alt='User Profile Photo'
                 width={64} height={0}
                 priority={true}
                 style={{
@@ -371,15 +349,14 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
                   borderRadius: '50%',
                 }}
                 sizes="(max-width: 768px) 100vw, 33vw"
-                className='border-gray-400 border-2'
+                className={`${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color" : "offline-border-color"}`}
               />
-              : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'>
+              : <div className={`flex items-center justify-center rounded-full w-[45px] h-[45px] ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color" : "offline-border-color"}`}>
                 <UserIcon height={"35px"} width={"35px"} /></div>
           }
         </div>
         <div className='py-2'>
           <p onClick={() => handleShowUser(post?.authorInfo?.username)} className='font-semibold cursor-pointer'>{post?.authorInfo?.name}</p>
-
           <div className='text-xs'>
             <p className=''>@{post?.authorInfo?.username}</p>
             {post?.authorInfo?.joined && <p> <span>{post?.authorInfo?.isAdmin ? "Admin" : "Member"} since</span> {formatDateForUserJoined(new Date(post?.authorInfo?.joined || new Date()))}</p>}
@@ -423,7 +400,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       {/*like section */}
       <div className='flex items-center gap-6 mt-2'>
         <div className='flex items-center flex-col'>
-          <CommentIcon fill={(post?.comment?.length > 0 && post?.comment[0].author?.authorInfo?.name)  ? "#7637e7":theme==="dark"?"#ffffff":"#000000"} />
+          <CommentIcon fill={(post?.comment?.length > 0 && post?.comment[0].author?.authorInfo?.name) ? "#7637e7" : theme === "dark" ? "#ffffff" : "#000000"} />
           <span className='text-xs'>{(post?.comment && post?.comment[0]?.author?.authorInfo?.name && post?.comment?.length) || 0} Comments</span>
         </div>
         <div className='flex flex-col items-center'>
@@ -457,11 +434,11 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
                 className={`${newCommentData === "" && "cursor-default"}`}
                 type="submit"
               >
-                  <SendMessageIcon 
-                  fill={newCommentData === "" ? "#494a54":(theme==="dark" ? "#ffffff" :"#22c55e")}
+                <SendMessageIcon
+                  fill={newCommentData === "" ? "#494a54" : (theme === "dark" ? "#ffffff" : "#22c55e")}
                   width={"22px"}
                   height={"22px"}
-                  />
+                />
               </button>
             </div>
           </form>
@@ -480,7 +457,6 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
               replies={c?.replies}
               likes={c?.likes}
               postAuthor={post?.authorInfo?.username}
-              handleShowUser={handleShowUser}
               setLikersArray={setLikersArray}
               handleDislike={handleDislike}
               hanldleLike={hanldleLike}
@@ -498,7 +474,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
         showDeleteModal && <DeleteConfirmationModal id={id} isAuthorized={fetchedUser?.isAdmin || fetchedUser?.username === post?.authorInfo?.username} setterFunction={setShowDeleteModal} />
       }
       {likersArray && <LikersModal usernames={likersArray} setterFunction={setLikersArray} />}
-      {selectedUsernameToShowDetails && <ModalUser username={selectedUsernameToShowDetails} setterFunction={setSelectedUsernameToShowDetails} />}
+      {selectedUsernameToShowDetails && <ModalUser />}
       <div />
     </div >
   );

@@ -10,19 +10,25 @@ import toast from "react-hot-toast";
 import LoadingModalUser from "./LoadingModal";
 import LoadingModalData from "./LoadingModalData";
 import axios from "axios";
-import PhotosInPost from "./PhotosInPost";
 import useTheme from "@/hooks/useTheme";
-import LinkPreview from "./LinkPreview";
-import VideosInPost from "./video-components/VideosInPost";
 import makeUrlsClickable from "@/utils/makeUrlsClickable";
 import HeartIcon from "./SVG/HeartIcon";
 import CommentIcon from "./SVG/CommentIcon";
 import UserIcon from "./SVG/UserIcon";
+import dynamic from "next/dynamic";
+import handleApprovePost from "@/utils/handleApprovePost";
+import handleDeclinePost from "@/utils/handleDeclinePost";
 
-const ModalUser = ({ username, setterFunction }) => {
+// dynamic imports
+const PhotosInPost = dynamic(() => import('./PhotosInPost'));
+const VideosInPost = dynamic(() => import('./video-components/VideosInPost'));
+const LinkPreview = dynamic(() => import('./LinkPreview'));
+
+
+const ModalUser = () => {
     const { theme } = useTheme();
     const [user, setUser] = useState({});
-    const { fetchedUser } = useContext(AuthContext);
+    const { fetchedUser, onlineUsers, selectedUsernameToShowDetails, setSelectedUsernameToShowDetails } = useContext(AuthContext);
     const [postsByUser, setPostsByUser] = useState([]);
     const [loadingUser, setLoadingUser] = useState(true);
     const [seeAllPostsClicked, setSeeAllPostsClicked] = useState(false);
@@ -30,7 +36,7 @@ const ModalUser = ({ username, setterFunction }) => {
     const router = useRouter();
     const handleSeeAllPost = async () => {
         setLoadingPostData(true);
-        const res = await fetch(`/api/userdetails?allpostby=${username}`)
+        const res = await fetch(`/api/userdetails?allpostby=${selectedUsernameToShowDetails}`)
         const data = await res.json();
         setLoadingPostData(false);
         if (fetchedUser?.isAdmin) {
@@ -41,37 +47,13 @@ const ModalUser = ({ username, setterFunction }) => {
         }
         setSeeAllPostsClicked(true);
     }
-    const handleDeclinePost = async (id, username) => {
-        const dataToSend = { actionBy: fetchedUser.username, postAuthorUsername: username, postID: id, action: "decline" }
-        const toastID = toast.loading("Declining...")
-        const { data } = await axios.post("/api/posts/changestatus", dataToSend)
-        toast.dismiss(toastID)
-        if (data.status === 200) {
-            toast.success(data.message)
-            setPostsByUser((prevPosts) => prevPosts.filter((post) => post._id !== id));
-        }
-        else {
-            toast.error("Internal Server Error. Please try again")
-        }
-    }
-    const handleApprovePost = async (id, username) => {
-        const dataToSend = { actionBy: fetchedUser.username, postAuthorUsername: username, postID: id, action: "approve" }
-        const toastID = toast.loading("Approving...")
-        const { data } = await axios.post("/api/posts/changestatus", dataToSend)
-        toast.dismiss(toastID)
-        if (data.status === 200) {
-            toast.success(data.message)
-            setPostsByUser((prevPosts) => prevPosts.filter((post) => post._id !== id));
-        }
-        else {
-            toast.error("Internal Server Error. Please try again")
-        }
-    }
+
+
     useEffect(() => {
-        if (username) {
+        if (selectedUsernameToShowDetails) {
             (async () => {
                 setLoadingUser(true);
-                const res = await fetch(`/api/userdetails?username=${username}`)
+                const res = await fetch(`/api/userdetails?username=${selectedUsernameToShowDetails}`)
                 const data = await res?.json();
                 if (data?.status === 200) {
                     setUser(data?.user)
@@ -79,23 +61,23 @@ const ModalUser = ({ username, setterFunction }) => {
                 }
                 else {
                     toast.error("Server Error.")
-                    setterFunction(null);
+                    setSelectedUsernameToShowDetails(null);
                 }
             })()
         }
-    }, [username, setterFunction])
+    }, [selectedUsernameToShowDetails, setSelectedUsernameToShowDetails])
 
     useEffect(() => {
         const handleCloseModal = (event) => {
             if (event.target.classList.contains("modal-backdrop")) {
-                setterFunction(null);
+                setSelectedUsernameToShowDetails(null);
             }
         };
         document.addEventListener("click", handleCloseModal);
         return () => {
             document.removeEventListener("click", handleCloseModal);
         };
-    }, [setterFunction]);
+    }, [setSelectedUsernameToShowDetails]);
 
     return (
         <div>
@@ -104,7 +86,7 @@ const ModalUser = ({ username, setterFunction }) => {
                 <div className="modal-box scrollforchat">
                     <div className="modal-action">
                         <form method="dialog">
-                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-0" onClick={() => setterFunction(null)}>✕</button>
+                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-0" onClick={() => setSelectedUsernameToShowDetails(null)}>✕</button>
                         </form>
                     </div>
                     {
@@ -115,6 +97,7 @@ const ModalUser = ({ username, setterFunction }) => {
                             <div className="flex justify-start items-center flex-col mt-4">
                                 <p className="font-semibold"><span>{user?.name}</span></p>
                                 <p className="text-xs">@{user?.username}</p>
+                                <p >{onlineUsers && onlineUsers?.includes(user?.username) && <span className="online-text-color">online</span>}</p>
                                 <p className="text-xs"><span>{user?.isAdmin ? "Admin" : "Member"} since</span> {formatDateForUserJoined(new Date(user?.joined || new Date()))}</p>
                                 <p className="text-xs">Gender: {user?.gender}</p>
                             </div>
@@ -151,16 +134,16 @@ const ModalUser = ({ username, setterFunction }) => {
                                                 <div>
                                                     {
                                                         user?.photoURL ?
-                                                            <Image src={user?.photoURL} blurDataURL='' alt='User Profile Photo'
+                                                            <Image src={user?.photoURL} alt='User Profile Photo'
                                                                 width={64} height={60} priority={true}
                                                                 style={{
                                                                     width: "45px",
                                                                     height: "45px",
                                                                     borderRadius: '50%',
                                                                 }}
-                                                                className='border-gray-400 border-2'
+                                                                className={`${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color" : "offline-border-color"}`}
                                                             />
-                                                            : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'>
+                                                            : <div className={`flex items-center justify-center rounded-full ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color" : "offline-border-color"} w-[45px] h-[45px]`}>
                                                                 <UserIcon height={"35px"} width={"35px"} />
                                                             </div>
                                                     }
@@ -205,7 +188,7 @@ const ModalUser = ({ username, setterFunction }) => {
                                             {
                                                 fetchedUser?.isAdmin && <div className="text-xs my-2">
                                                     {
-                                                        post?.status === "pending" && <div> <span onClick={() => handleApprovePost(post._id, username)} className="greenbg rounded-md mr-4 px-[4px] py-[2px] text-white cursor-pointer">Approve</span>  <span onClick={() => handleDeclinePost(post._id, username)} className="bg-red-700 rounded-md px-[4px] py-[2px] text-white cursor-pointer">Decline</span> </div>
+                                                        post?.status === "pending" && <div> <span onClick={() => handleApprovePost({ actionBy: fetchedUser?.username, postAuthorUsername: selectedUsernameToShowDetails, postID: post?._id, action: "approve" }, setPostsByUser)} className="greenbg rounded-md mr-4 px-[4px] py-[2px] text-white cursor-pointer">Approve</span>  <span onClick={() => handleDeclinePost({ actionBy: fetchedUser.username, postAuthorUsername: selectedUsernameToShowDetails, postID: post?._id, action: "decline" }, setPostsByUser)} className="bg-red-700 rounded-md px-[4px] py-[2px] text-white cursor-pointer">Decline</span> </div>
                                                     }
                                                 </div>
                                             }

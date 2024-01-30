@@ -1,13 +1,14 @@
 'use client'
 import { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
-import LoadingAdmin from './LoadingAdmin';
+import LoadingAdmin from '../../app/admin/LoadingAdmin';
 import SearchUserForm from '@/components/SearchUserForm';
 import toast from 'react-hot-toast';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import AuthContext from '@/contexts/AuthContext';
 import handleAdminAction from '@/utils/handleAdminAction';
 import getStats from '@/utils/getStats';
+import handleRemoveAdmin from '@/utils/handleRemoveAdmin';
 const Dashboard = () => {
     const [postData, setPostData] = useState(null);
     const { fetchedUser } = useContext(AuthContext);
@@ -25,7 +26,7 @@ const Dashboard = () => {
             }
             toast.success("Success to retrieve user data.")
             setRetrievedUser(userData)
-            document.getElementById('userModal').showModal();
+            document.getElementById('userModalInAdmin').showModal();
         } catch (error) {
             console.error(error);
         }
@@ -44,7 +45,11 @@ const Dashboard = () => {
 
         fetchData();
     }, []);
-
+const removeAdmin = async(username)=>{
+    const {message, status} = await handleRemoveAdmin(username);
+    if(status===200) return toast.success(message);
+    else return toast.error(message)
+}
     return (
         <div className='cardinhome'>
             <h2 className='font-semibold text-center text-lg mt-6'>Total counts</h2>
@@ -66,7 +71,7 @@ const Dashboard = () => {
                 <SearchUserForm onSearch={(username) => handleSearch(username)} />
             </div>
 
-            <dialog id="userModal" className="modal modal-bottom sm:modal-middle">
+            <dialog id="userModalInAdmin" className="modal modal-bottom sm:modal-middle">
                 <div className="modal-box">
                     {<div>
                         <div className='flex items-center justify-center'>
@@ -81,7 +86,10 @@ const Dashboard = () => {
                             !retrievedUser?.isAdmin && <button onClick={() => handleAdminAction(retrievedUser.username, "make-admin", fetchedUser.username)} className='forum-btn1 greenbg text-white mr-2' >Make Admin</button>
                         }
                         {
-                            !retrievedUser?.blocked ? <button onClick={() => handleAdminAction(retrievedUser.username, "block", fetchedUser.username)} className='forum-btn1 bg-red-600'>Block</button> : <button onClick={() => handleAdminAction(retrievedUser?.username, "unblock", fetchedUser?.username)} className='forum-btn1 greenbg text-white'>Unblock</button>
+                            !retrievedUser?.blocked ? <button onClick={() => handleAdminAction(retrievedUser.username, "block", fetchedUser.username)} className='forum-btn1 bg-red-500 mr-2 hover:bg-red-600'>Block</button> : <button onClick={() => handleAdminAction(retrievedUser?.username, "unblock", fetchedUser?.username)} className='forum-btn1 greenbg text-white mr-2'>Unblock</button>
+                        }
+                        {
+                            (fetchedUser?.username ==="admin" || fetchedUser?.username ==="hasan") && retrievedUser?.isAdmin && <button onClick={()=>removeAdmin(retrievedUser?.username)} className='forum-btn1 bg-red-500 hover:bg-red-600'>Remove as Admin</button>
                         }
                         <p>Gender: {retrievedUser?.gender}</p>
                         <p>Joined: {formatDateInAdmin(new Date(retrievedUser?.joined))}</p>

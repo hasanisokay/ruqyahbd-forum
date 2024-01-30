@@ -1,17 +1,15 @@
-import dynamic from "next/dynamic";
-const PostStat = dynamic(() => import('./PostStat'));
-const  AdminsStat = dynamic(() => import('./AdminsStat'));
-const  DeveloperContact = dynamic(() => import('./DeveloperContact'));
-const  OnlineUsersCounter = dynamic(() => import('./OnlineUsersCounter'));
+'use server'
+import PostStat from "./PostStat";
+import DeveloperContact from "./DeveloperContact";
+import RealtimeUsers from "./RealtimeUsers";
+import getAdmins from "@/utils/getAdmins";
 
-const Stats = () => {
+const Stats = async () => {
+    const allAdmins = await getAdmins();
     return (
         <div className="mb-10">
-            <OnlineUsersCounter />
             <PostStat />
-            <div className="bg-[#fffef9] shadow-xl dark:bg-[#242526] cardinhome py-4 min-h-[300px]  ">
-                <AdminsStat />
-            </div>
+            <RealtimeUsers allAdmins={allAdmins}/>
             <DeveloperContact />
         </div>
     );

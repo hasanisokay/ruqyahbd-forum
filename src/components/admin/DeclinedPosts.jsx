@@ -1,148 +1,95 @@
 'use client'
-// DeclinedPosts.js
-import useSWRInfinite from 'swr/infinite';
 import Image from 'next/image';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import truncateText from '@/utils/trancatText';
-import LoadinginPenginPosts from '../pending-posts/LoadingPendingPost';
 import AuthContext from '@/contexts/AuthContext';
-import { useRef, useCallback, useContext, useState, useEffect } from 'react';
-import { mutate } from 'swr';
+import { useRef, useContext, useState, useEffect } from 'react';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import PhotosInPost from '@/components/PhotosInPost';
 import UserIcon from '@/components/SVG/UserIcon';
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
+import LoadingCards from '../LoadingCards';
+import handleShowLess from '@/utils/handleShowLess';
+import handleToggleExpand from '@/utils/handleToggleExpand';
+import changeStatus from '@/utils/changeStatus';
+import handleApprovePost from '@/utils/handleApprovePost';
 
 const DeclinedPosts = () => {
-    const { fetchedUser } = useContext(AuthContext);
+    const { fetchedUser, onlineUsers } = useContext(AuthContext);
     const [sortOrder, setSortOrder] = useState('desc'); // Default sorting order is descending
     const [searchTerm, setSearchTerm] = useState('');
     const [searchText, setSearchText] = useState('');
+    const [expandedPosts, setExpandedPosts] = useState([]);
+    const [error, setError] = useState(null);
     const infiniteScrollRef = useRef();
     const [posts, setPosts] = useState([])
-    const [expandedPosts, setExpandedPosts] = useState([]);
-    const getKey = (pageIndex, previousPageData) => {
-        if (previousPageData && previousPageData.length === 0) return null;
-        return `/api/admin/declinedposts?page=${pageIndex + 1}`;
-    };
+    const [loadingPosts, setloadingPosts] = useState(false);
+    const [noMorePosts, setNoMorePosts] = useState(false)
+    const [size, setSize] = useState(0);
+
     const handleSortChange = (event) => {
         setSortOrder(event.target.value);
     };
 
-    const { data, error, size, setSize, isValidating } = useSWRInfinite(
-        (pageIndex, previousPageData) => {
-            if (previousPageData && previousPageData.length === 0) return null;
-
+    const getPosts = async () => {
+        setNoMorePosts(false)
+        try {
             const params = new URLSearchParams();
-            params.append('page', pageIndex + 1);
+            params.append('page', size + 1);
             params.append('sortOrder', sortOrder);
             params.append('searchTerm', searchTerm);
-
-            return `/api/admin/declinedposts?${params.toString()}`;
-        },
-        fetcher
-    );
-
-    const pageSize = 10;
-    useEffect(()=>{
-        if(data){
-            setPosts(data.flat())
-        }
-    },[data])
-    const handleToggleExpand = (postId) => {
-        setExpandedPosts((prevExpandedPosts) => {
-            if (prevExpandedPosts.includes(postId)) {
-                // Post is expanded, so collapse it
-                return prevExpandedPosts.filter((id) => id !== postId);
-            } else {
-                // Post is collapsed, so expand it
-                return [...prevExpandedPosts, postId];
+            const response = await fetch(`/api/admin/declinedposts?${params.toString()}`);
+            const newData = await response.json();
+            if (!newData) {
+                return setError(true)
             }
-        });
-    };
-    const handleShowLess = (postId) => {
-        setExpandedPosts((prevExpandedPosts) => prevExpandedPosts.filter((id) => id !== postId));
-    };
-    const handleScroll = useCallback(() => {
-        // Check if the user has scrolled to the bottom
-        if (
-            infiniteScrollRef.current &&
-            window.innerHeight + window.scrollY >= infiniteScrollRef.current.offsetTop
-        ) {
-            if (size > 0 && (data && (data[size - 1]?.length == undefined || data[size - 1]?.length === 0))) {
-                return
+            if (newData?.length < 1) {
+                return setNoMorePosts(true);
             }
-            setSize(size + 1)
+            setPosts((prev) => [...prev, ...newData])
         }
-    }, [setSize, size, data]);
-
-    // Attach the scroll event listener
+        catch {
+            setError(true);
+        }
+    }
     useEffect(() => {
+        if (posts?.length % 10 === 0) {
+            getPosts()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [size, searchTerm, sortOrder])
+
+
+    useEffect(() => {
+        const handleScroll = () => {
+            // Check if the user has scrolled to the bottom
+            if (
+                infiniteScrollRef.current &&
+                window.innerHeight + window.scrollY >= infiniteScrollRef.current.offsetTop
+            ) {
+                try {
+                    if (error || noMorePosts) return;
+                    setSize(size + 1);
+                } catch {
+                }
+            }
+        };
         window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [handleScroll]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    if (error) return <div>Error loading posts</div>;
-    if (!data) return <div>
-        <LoadinginPenginPosts />
-    </div>
     const handleDeletePermanently = async (id, username,) => {
         const dataToSend = { actionBy: fetchedUser.name, postAuthorUsername: username, postID: id, action: "delete" }
-        const toastID = toast.loading("Declining...")
-        const { data } = await axios.post("/api/posts/changestatus", dataToSend)
-        toast.dismiss(toastID)
-        mutate()
-        if (data.status === 200) {
-            toast.success(data.message)
-        }
-        else {
-            toast.error("Internal Server Error. Please try again")
-        }
-    }
-    const handleApprovePost = async (id, username) => {
-        const dataToSend = { actionBy: fetchedUser?.name, postAuthorUsername: username, postID: id, action: "approve", updateActivityLogID:true }
-        const toastID = toast.loading("Approving...")
-        const { data } = await axios.post("/api/posts/changestatus", dataToSend)
-        toast.dismiss(toastID)
-        mutate()
-
-        if (data.status === 200) {
-            toast.success(data.message)
-        }
-        else {
-            toast.error("Internal Server Error. Please try again")
-        }
-
+        await changeStatus(dataToSend)
     }
     const handleDeleteAll = async () => {
-        const dataToSend = { deleteAll: true, actionBy:fetchedUser?.name}
-        const toastID = toast.loading("Deleting...")
-        const { data } = await axios.post("/api/posts/changestatus", dataToSend)
-        toast.dismiss(toastID)
-        mutate()
-        if (data.status === 200) {
-            toast.success(data.message)
-        }
-        else {
-            toast.error("Internal Server Error. Please try again")
-        }
+        const dataToSend = { deleteAll: true, actionBy: fetchedUser?.name }
+        await changeStatus(dataToSend)
     }
-    const sortedPosts = posts.sort((a, b) => {
-        const dateA = new Date(a.date).getTime();
-        const dateB = new Date(b.date).getTime();
 
-        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-    });
-
-    const filteredPosts = searchTerm
-        ? sortedPosts.filter((post) =>
-            post.author.username.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        : sortedPosts;
     return (
         <div>
             <div className="my-4 flex flex-col md:flex-row gap-2 items-center justify-center">
@@ -167,7 +114,7 @@ const DeclinedPosts = () => {
                         onChange={(e) => setSearchText(e.target.value)}
                     />
                 </form>
-       
+
                 {
                     posts?.length > 0 && <div className='text-center my-2 ml-1 '>
                         <button className='forum-btn1 bg-red-600' onClick={() => document.getElementById('my_modal_2').showModal()}>Delete All Permanently</button>
@@ -191,18 +138,18 @@ const DeclinedPosts = () => {
                                 {
                                     post?.authorInfo?.photoURL ?
                                         <Image src={post?.authorInfo?.photoURL} blurDataURL='' alt='User Profile Photo'
-                                            width={64} height={0} 
+                                            width={64} height={0}
                                             priority={true}
                                             style={{
                                                 width: "45px",
                                                 height: "45px",
                                                 borderRadius: '50%',
                                             }}
-                                            className='border-gray-400 border-2'
+                                            className={` ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color" : "offline-border-color"}`}
                                         />
-                                        : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[45px] h-[45px]'>
-      <UserIcon height={"35px"} width={"35px"} />
-                                            </div>
+                                        : <div className={`flex items-center justify-center rounded-full w-[45px] h-[45px] ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color" : "offline-border-color"}`}>
+                                            <UserIcon height={"35px"} width={"35px"} />
+                                        </div>
                                 }
                             </div>
                             <div className='py-2'>
@@ -215,20 +162,20 @@ const DeclinedPosts = () => {
                                 <p className='text-xs'> Declined Date: {formatDateInAdmin(new Date(post?.declineDate))}</p>
                             </div>
                         </div>
-                        <p style={{ whiteSpace: "pre-wrap" }}>{expandedPosts.includes(post?._id) ? post?.post : truncateText(post?.post)}
+                        <p className='whitespace-pre-wrap break-words'>{expandedPosts.includes(post?._id) ? post?.post : truncateText(post?.post)}
                             {!expandedPosts.includes(post._id) && post?.post?.length > 200 && (
-                                <button onClick={() => handleToggleExpand(post?._id)} className='text-xs font-semibold'>... Show more</button>
+                                <button onClick={() => handleToggleExpand(setExpandedPosts, post?._id)} className='text-xs font-semibold'>... Show more</button>
                             )}
                             {expandedPosts.includes(post._id) && (
-                                <button onClick={() => handleShowLess(post?._id)} className='text-xs font-semibold pl-1'>Show less </button>
+                                <button onClick={() => handleShowLess(setExpandedPosts, post?._id)} className='text-xs font-semibold pl-1'>Show less </button>
                             )}
                         </p>
                         {
-                            post?.photos && < PhotosInPost photosArray={post?.photos}/>
+                            post?.photos && < PhotosInPost photosArray={post?.photos} />
                         }
                         <div className='flex items-center gap-6 mt-2'>
                             <div className='flex items-center flex-col cursor-pointer' >
-                                <span onClick={() => handleApprovePost( post?._id, post?.authorInfo?.username)} className='forum-btn1 greenbg lg:hover:bg-[#45a167]'> Approve</span>
+                                <span onClick={() => handleApprovePost({actionBy: fetchedUser?.name, postAuthorUsername: post?.authorInfo?.username, postID: post?._id, action: "approve", updateActivityLogID: true }, null)} className='forum-btn1 greenbg lg:hover:bg-[#45a167]'> Approve</span>
                             </div>
                             <div className='flex flex-col items-center'>
                                 <span onClick={() => handleDeletePermanently(post?._id, post?.authorInof?.username)} className='forum-btn1 bg-red-500 lg:hover:bg-red-600'> Delete Permanently</span>
@@ -237,12 +184,7 @@ const DeclinedPosts = () => {
                     </div>
                 ))}
             </div>
-
-            {isValidating && (data[size - 1]?.length != undefined || data[size - 1]?.length != 0) && (
-                <div>
-                    <LoadinginPenginPosts />
-                </div>
-            )}
+            {loadingPosts && <LoadingCards />}
 
             {size > 0 && !isValidating && (data && (data[size - 1]?.length == undefined || data[size - 1]?.length === 0)) && (
                 <div className='py-1 text-center'>

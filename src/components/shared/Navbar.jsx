@@ -7,7 +7,6 @@ import { useContext, useEffect, useRef, useState, useTransition } from "react";
 import AuthContext from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import logoForDarkMode from "@/../public/images/bd-support-1.png"
-import { io } from "socket.io-client";
 import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import formatRelativeDate from "@/utils/formatDate";
 import notificationMaker from "@/utils/notificationMaker";
@@ -20,13 +19,12 @@ const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
   const [showNotificationMenu, setShowNotificationMenu] = useState(false)
   const { theme, toggleTheme } = useTheme()
-  const { fetchedUser, loading, logOut, loggedOut, notificationsCount, allNotifications, setAllNotifications, setNotificationsCount } = useContext(AuthContext);
+  const { fetchedUser, loading, logOut, loggedOut, notificationsCount, socket, allNotifications, setAllNotifications, setNotificationsCount } = useContext(AuthContext);
   const [navData, setNavData] = useState()
   const router = useRouter();
   const [loadingNotifications, setLoadingNotifications] = useState(false);
   const [isPending, startTransition] = useTransition()
   const navRef = useRef(null);
-  const [socket, setSocket] = useState(null)
   useEffect(() => {
     if (loading) {
       setNavData(commonNavData)
@@ -35,15 +33,6 @@ const Navbar = () => {
       setNavData(fetchedUser ? afterLoginNavData : beforeLoginNavData)
     }
   }, [fetchedUser, loggedOut, loading])
-
-  useEffect(() => {
-    (async () => {
-      if (fetchedUser) {
-        const userSocket = await io(`${process.env.NEXT_PUBLIC_server}/?userId=${fetchedUser?.username}`);
-        setSocket(userSocket);
-      }
-    })();
-  }, [fetchedUser]);
 
 
   useEffect(() => {

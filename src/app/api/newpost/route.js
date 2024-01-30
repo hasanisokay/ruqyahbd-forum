@@ -11,12 +11,12 @@ export const POST = async (request) => {
   try {
     const username = body?.author?.username;
     const previousPostCount = await postCollection.countDocuments({'author.username': username, status:"pending"})
-    if(previousPostCount === 2 || previousPostCount > 2){
-      return NextResponse.json({
-        status: 401,
-        message: "You have 2 posts pending already. New post is not allowed.",
-      });
-    }
+    // if(previousPostCount === 2 || previousPostCount > 2){
+    //   return NextResponse.json({
+    //     status: 401,
+    //     message: "You have 2 posts pending already. New post is not allowed.",
+    //   });
+    // }
     if (!body?.status) {
       body.status = "pending";
     }

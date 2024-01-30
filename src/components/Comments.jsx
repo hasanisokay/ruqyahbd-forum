@@ -5,8 +5,6 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "@/contexts/AuthContext";
 import toast from "react-hot-toast";
 import TextareaAutosize from 'react-textarea-autosize';
-import axios from "axios";
-import Replies from "./Replies";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import CommentEditModal from "./CommentEditModal";
 import ReportModal from "./ReportModal";
@@ -18,11 +16,14 @@ import SendMessageIcon from "./SVG/SendMessageIcon";
 import UserIcon from "./SVG/UserIcon";
 import ReplyIcon from "./SVG/ReplyIcon";
 import DotIcon from "./SVG/DotIcon";
-const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: commentID, replies, setLikersArray, handleDislike, hanldleLike, postID, setPost }) => {
+import dynamic from "next/dynamic";
+
+const  Replies = dynamic(() => import('./Replies'));
+const Comments = ({ c, postAuthor, likes, commentId: commentID, replies, setLikersArray, handleDislike, hanldleLike, postID, setPost }) => {
   const [replyText, setReplyText] = useState("");
   const [replyCount, setReplyCount] = useState(replies);
   const [showReplyInput, setShowReplyInput] = useState(null);
-  const { fetchedUser, showDeleteModal, setShowDeleteModal, showReportModal, setShowReportModal, reportingCommentId, setReportingCommentId, reportingReplyId } = useContext(AuthContext);
+  const { fetchedUser, onlineUsers, socket, setSelectedUsernameToShowDetails, showDeleteModal, setShowDeleteModal, showReportModal, setShowReportModal, reportingCommentId, setReportingCommentId, reportingReplyId } = useContext(AuthContext);
   const [showCommentOptions, setShowCommentOptions] = useState(false);
   const [showCommentEditModal, setShowCommentEditModal] = useState(false);
   const [loadingNewReply, setLoadingNewReply] = useState(false);
@@ -51,7 +52,14 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
     }
     try {
       setLoadingNewReply(true);
-      const { data } = await axios.post("/api/newreply", dataToSend);
+      const response = await fetch("/api/newreply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+      const data = await response.json();
       if (data.status === 200) {
         // send data with socket
         const dataToSendInSocket = {
@@ -137,21 +145,21 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
       {
         c?.author?.authorInfo?.name && <>
           <div className='flex gap-2'>
-            <div onClick={() => handleShowUser(c?.author?.username)} className='cursor-pointer min-w-[35px] h-[35px] rounded-full'>
+            <div onClick={() => setSelectedUsernameToShowDetails(c?.author?.username)} className='cursor-pointer min-w-[35px] h-[35px] rounded-full'>
               {
                 c?.author?.authorInfo?.photoURL ?
                   <Image src={c?.author?.authorInfo?.photoURL} blurDataURL='' alt='User Profile Photo'
                     width={35} height={35} loading="lazy" sizes="(max-width: 768px) 100vw, 33vw"
 
-                    className='border-gray-400 border-2 w-[35px] h-[35px] rounded-full'
+                    className={`w-[35px] h-[35px] rounded-full ${onlineUsers?.includes(c?.author?.username) ? "online-border-color":"offline-border-color"}`}
                   />
-                  : <div className='flex items-center justify-center rounded-full border-gray-400 border-2 w-[35px] h-[35px]'>
+                  : <div className={`flex items-center justify-center rounded-full w-[35px] h-[35px] ${onlineUsers?.includes(c?.author?.username) ? "online-border-color":"offline-border-color"} `}>
                     <UserIcon height={"25px"} width={"25px"} />
                   </div>
               }
             </div>
             <div id={commentID} className='bg-gray-200 dark:bg-[#3a3b3c] px-4 py-1 rounded-xl max-w-full min-w-[200px]'>
-              <p><span className=''> <span onClick={() => handleShowUser(c?.author?.username)} className='text-[14px] font-semibold cursor-pointer'>{c?.author?.authorInfo?.name}</span> </span> <span className='text-[10px]'>{(c?.author?.username === postAuthor && "Author")}</span>
+              <p><span className=''> <span onClick={() => setSelectedUsernameToShowDetails(c?.author?.username)} className='text-[14px] font-semibold cursor-pointer'>{c?.author?.authorInfo?.name}</span> </span> <span className='text-[10px]'>{(c?.author?.username === postAuthor && "Author")}</span>
                 <span className='text-[9px]'> {(c?.author?.authorInfo?.isAdmin && "Admin")} </span>
               </p>
               <div className='text-[9px] flex gap-2 items-center'>
@@ -203,8 +211,6 @@ const Comments = ({ c, postAuthor, handleShowUser, likes, socket, commentId: com
                 replyCount={replyCount}
                 setReplyCount={setReplyCount}
                 commentID={commentID}
-                handleShowUser={handleShowUser}
-                socket={socket}
               />
             }
           </div>

@@ -4,8 +4,8 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import TextareaAutosize from 'react-textarea-autosize';
-const Notice = () => {
-    const { fetchedUser, loading } = useContext(AuthContext);
+const NewNotice = () => {
+    const { fetchedUser } = useContext(AuthContext);
     const [newNoticeData, setNewNoticeData] = useState("");
     const [loadingNewNotice, setLoadingNewNotice] = useState(false);
     const [noticeTitle, setNoticeTitle] = useState("")
@@ -69,4 +69,4 @@ const Notice = () => {
     );
 };
 
-export default Notice;
+export default NewNotice;

@@ -1,65 +1,79 @@
 'use client'
-
-import { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectCreative } from 'swiper/modules';
-
-import 'swiper/css';
-import 'swiper/css/effect-creative';
-
+import AuthContext from "@/contexts/AuthContext";
 import Image from "next/image";
-import getAdmins from "@/utils/getAdmins";
-import LoadingModalData from "../LoadingModalData";
+import { useContext, useEffect, useState } from "react";
+import UserIcon from "../SVG/UserIcon";
+import ModalUser from "../ModalUser";
 
-const AdminsStat = () => {
-    const [loadingAdminsData, setLoadingAdminsData] = useState(false);
-    const [adminsData, setAdminsData] = useState([])
+const AdminsStat = ({ allAdmins,  }) => {
+    const { onlineUsers, selectedUsernameToShowDetails, setSelectedUsernameToShowDetails } = useContext(AuthContext)
+    const [onlineAdmins, setOnlineAdmins] = useState([])
+    const [offlineAdmins, setOfflineAdmins] = useState([])
     useEffect(() => {
-        (async () => {
-            setLoadingAdminsData(true);
-            const data = await getAdmins();
-            setAdminsData(data)
-            setLoadingAdminsData(false);
-        })()
-    }, [])
-    if (loadingAdminsData) return <div className="flex items-center justify-center flex-col overflow-hidden">
-        <LoadingModalData />
-    </div>
+        if (allAdmins) {
+            setOnlineAdmins(allAdmins?.filter((i) => onlineUsers.includes(i?.username)))
+            setOfflineAdmins(allAdmins?.filter((i) => !onlineUsers.includes(i?.username)))
+        }
+    }, [onlineUsers, allAdmins])
     return (
-        <div className="w-[250px] h-[200px] mx-auto">
+        <div className="bg-[#fffef9] shadow-xl dark:bg-[#242526] cardinhome py-4 min-h-[300px] mb-4">
             <h1 className="statsHeaderTitle mb-4">Admins</h1>
-            <Swiper
-                grabCursor={true}
-                effect={'creative'}
-                creativeEffect={{
-                    prev: {
-                        shadow: true,
-                        translate: [0, 0, -400],
-                    },
-                    next: {
-                        translate: ['100%', 0, 0],
-                    },
-                }}
-                className="mySwiper"
-
-                autoplay={{
-                    delay: 2000,
-                    disableOnInteraction: true,
-                }}
-                modules={[Autoplay, EffectCreative]}
-            >
+            <h3 className="text-center my-2">Online Admins ({onlineAdmins?.length})</h3>
+            <div className="flex flex-wrap justify-center gap-2">
                 {
-                    !loadingAdminsData && adminsData && adminsData?.map((admin, index) => <div key={admin?._id}>
-                        <SwiperSlide>
-                            <div className="relative w-[250px] h-[200px]">
-                                {<Image fill className="w-full h-full" sizes="100vw" width={0} height={0} src={admin?.photoURL || "https://i.ibb.co/4msrfNF/Screenshot-2023-12-05-112036.png"} alt="users dp" />
-                                }
-                            </div>
-                            <h3 className="font-semibold text-lg text-center" >{admin?.name}</h3>
-                        </SwiperSlide>
+                    onlineAdmins?.map((user) => <div title={`Click to see ${user?.name}'s profile`} onClick={() => setSelectedUsernameToShowDetails(user?.username)} className="flex flex-col items-center justify-center cursor-pointer" key={user?._id}>
+                        {
+                            user?.photoURL ?
+                                <Image src={user?.photoURL} alt='Admin Profile Photo'
+                                    width={100}
+                                    placeholder='empty'
+                                    height={100}
+                                    priority={true}
+                                    quality={100}
+                                    className={`w-[100px] h-[100px] border-2 border-gray-600 online-border-color`}
+                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                />
+                                : <div className={`flex items-center justify-center w-[100px] h-[100px] online-border-color`}>
+                                    <UserIcon height={"100px"} width={"100px"} />
+                                </div>
+                        }
+                        <div className="flex flex-col items-center justify-center">
+                            <p className="font-semibold">{user.name}</p>
+                            <p className="text-xs">@{user.username}</p>
+                        </div>
                     </div>)
                 }
-            </Swiper>
+            </div>
+            <h3 className="text-center my-2">Offline Admins ({offlineAdmins?.length})</h3>
+            <div className="flex flex-wrap justify-center gap-2">
+                {
+                    offlineAdmins?.map((user) => <div onClick={() => setSelectedUsernameToShowDetails(user?.username)} title={`Click to see ${user?.name}'s profile`} className="flex flex-col items-center justify-center cursor-pointer" key={user?._id}>
+                        <div>
+                            {
+                                user?.photoURL ?
+                                    <Image src={user?.photoURL} alt='Admin Profile Photo'
+                                        width={100}
+                                        placeholder='empty'
+                                        height={100}
+                                        priority={true}
+                                        quality={100}
+                                        className={`w-[100px] h-[100px] offline-border-color`}
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                    />
+                                    : <div className={`flex items-center justify-center w-[100px] h-[100px] offline-border-color`}>
+                                        <UserIcon height={"100px"} width={"100px"} />
+                                    </div>
+                            }
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                            <p className="font-semibold">{user.name}</p>
+                            <p className="text-xs">@{user.username}</p>
+                        </div>
+                    </div>)
+                }
+            </div>
+            {selectedUsernameToShowDetails && <ModalUser />}
+             
         </div>
     );
 };
