@@ -15,13 +15,13 @@ export async function generateMetadata() {
     other: {
       "theme-color": { dark: "#8a8080", light: "#555" },
       "color-scheme": ["dark", "light"],
-      "twitter:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+      "twitter:image": "https://i.ibb.co/wMNWD0s/donate-page.jpg",
       "twitter:card": "summary_large_image",
       "og-url": `${process.env.NEXT_PUBLIC_BASEURL}/donate`,
-      "og:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+      "og:image": "https://i.ibb.co/wMNWD0s/donate-page.jpg",
       "og:type": "website",
     },
-    image: process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+    image: "https://i.ibb.co/wMNWD0s/donate-page.jpg",
     url: `${process.env.NEXT_PUBLIC_BASEURL}/donate`,
   };
 }
