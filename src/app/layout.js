@@ -2,7 +2,7 @@ import "./globals.css";
 import Toaster from "@/components/Toaster";
 import Navbar from "@/components/shared/Navbar";
 import Providers from "@/providers/Providers";
-
+import "react-loading-skeleton/dist/skeleton.css";
 export const metadata = {
   title: "Ruqyah Forum",
   description:

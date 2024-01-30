@@ -6,7 +6,7 @@ import AuthContext from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import formatDateForUserJoined from '@/utils/formatDateForUserJoined';
-import PhotosInPost from '@/components/PhotosInPost';
+import dynamic from 'next/dynamic';
 import UserIcon from '@/components/SVG/UserIcon';
 import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
 import handleToggleExpand from '@/utils/handleToggleExpand';
@@ -15,6 +15,8 @@ import handleShowLess from '@/utils/handleShowLess';
 import changeStatus from '@/utils/changeStatus';
 import handleApprovePost from '@/utils/handleApprovePost';
 import handleDeclinePost from '@/utils/handleDeclinePost';
+
+const PhotosInPost = dynamic(() => import('@/components/PhotosInPost'));
 
 const PendingPost = () => {
     const { fetchedUser, onlineUsers, selectedUsernameToShowDetails, setSelectedUsernameToShowDetails } = useContext(AuthContext);

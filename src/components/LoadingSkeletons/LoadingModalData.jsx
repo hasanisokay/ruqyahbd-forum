@@ -1,7 +1,6 @@
 'use client'
 import useTheme from "@/hooks/useTheme";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 const LoadingModalData = () => {
     const { theme } = useTheme();
     const baseColor = theme ==="dark" ? "#7d7d7d":"#f4f4f4" 

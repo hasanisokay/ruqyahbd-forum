@@ -4,13 +4,14 @@ import truncateText from '@/utils/trancatText';
 import AuthContext from '@/contexts/AuthContext';
 import { useRef, useContext, useState, useEffect } from 'react';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
-import PhotosInPost from '@/components/PhotosInPost';
 import UserIcon from '@/components/SVG/UserIcon';
 import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
 import handleShowLess from '@/utils/handleShowLess';
 import handleToggleExpand from '@/utils/handleToggleExpand';
 import changeStatus from '@/utils/changeStatus';
 import handleApprovePost from '@/utils/handleApprovePost';
+import dynamic from 'next/dynamic';
+const PhotosInPost = dynamic(() => import('@/components/PhotosInPost'));
 
 const DeclinedPosts = () => {
     const { fetchedUser, onlineUsers } = useContext(AuthContext);
