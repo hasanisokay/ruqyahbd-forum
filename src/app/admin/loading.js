@@ -3,9 +3,9 @@
 import LoadingAdmin from './LoadingAdmin';
 const loadingAdminDashboard = () => {
     return (
-        <div>
+        <>
           <LoadingAdmin/>
-        </div>
+        </>
     );
 };
 

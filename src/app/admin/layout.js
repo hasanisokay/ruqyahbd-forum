@@ -1,11 +1,11 @@
-import Sidebar from "./Sidebar";
+import Sidebar from "@/components/admin/Sidebar";
 
 const layout = ({children}) => {
     return (
-        <div>
+        <>
             <Sidebar />
             {children}
-        </div>
+        </>
     );
 };
 

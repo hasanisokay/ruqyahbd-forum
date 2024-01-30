@@ -8,7 +8,7 @@ import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import formatDateForUserJoined from '@/utils/formatDateForUserJoined';
 import PhotosInPost from '@/components/PhotosInPost';
 import UserIcon from '@/components/SVG/UserIcon';
-import LoadingCards from '../LoadingCards';
+import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
 import handleToggleExpand from '@/utils/handleToggleExpand';
 import ModalUser from '../ModalUser';
 import handleShowLess from '@/utils/handleShowLess';
@@ -41,6 +41,7 @@ const PendingPost = () => {
     };
     const getPosts = async () => {
         setNoMorePosts(false)
+        setloadingPosts(true)
         try {
             const params = new URLSearchParams();
             params.append('page', size + 1);
@@ -58,6 +59,9 @@ const PendingPost = () => {
         }
         catch {
             setError(true);
+        }
+        finally {
+            setloadingPosts(false)
         }
     }
     useEffect(() => {
@@ -162,13 +166,13 @@ const PendingPost = () => {
             </dialog>
 
             {/* top form and other options ends */}
-            
-            {searchTerm && !loadingPosts && posts?.length >0 && <p className='text-center'>Showing posts by {searchTerm}</p> }
-            {posts?.length > 0 && <p className='text-center'>Now showing {posts?.length} posts.</p> }
+
+            {searchTerm && !loadingPosts && posts?.length > 0 && <p className='text-center'>Showing posts by {searchTerm}</p>}
+            {posts?.length > 0 && <p className='text-center'>Now showing {posts?.length} posts.</p>}
             {posts && posts?.map((post) => (
                 <div key={post?._id} className='p-2 cursor-default border-2 m-2 rounded-lg dark:border-gray-400 cardinhome '>
                     <div className='flex gap-2 items-center'>
-                        <div className='cursor-pointer' onClick={()=>setSelectedUsernameToShowDetails(post?.author?.username)}>
+                        <div className='cursor-pointer' onClick={() => setSelectedUsernameToShowDetails(post?.author?.username)}>
                             {
                                 post?.authorInfo?.photoURL ?
                                     <Image src={post?.authorInfo?.photoURL} blurDataURL='' alt='User Profile Photo'

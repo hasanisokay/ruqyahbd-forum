@@ -3,8 +3,8 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import LoadingLikers from "./LoadingLikers";
 import UserIcon from "./SVG/UserIcon";
+import LoadingLikers from "./LoadingSkeletons/LoadingLikers";
 
 const LikersModal = ({ usernames, setterFunction }) => {
     const [likers, setLikers] = useState([])

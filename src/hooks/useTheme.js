@@ -1,7 +1,6 @@
 import ThemeContext from "@/contexts/ThemeContext";
 import { useContext } from "react";
 
-
 const useTheme = () => {
   const theme = useContext(ThemeContext);
   const isClient = typeof window !== "undefined";

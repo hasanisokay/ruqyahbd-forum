@@ -1,5 +1,6 @@
 'use client'
-import LoadingProfile from "@/components/LoadingProfile";
+
+import LoadingProfile from "@/components/LoadingSkeletons/LoadingProfile";
 import AuthContext from "@/contexts/AuthContext";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";

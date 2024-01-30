@@ -24,7 +24,7 @@ import CommentIcon from '../SVG/CommentIcon';
 import handleShowLess from '@/utils/handleShowLess';
 import handleToggleExpand from '@/utils/handleToggleExpand';
 // dynamic imports
-const LoadingCards = dynamic(() => import('../LoadingCards'));
+const LoadingCards = dynamic(() => import('../LoadingSkeletons/LoadingCards'));
 const PhotosInPost = dynamic(() => import('../PhotosInPost'));
 const VideosInPost = dynamic(() => import('../video-components/VideosInPost'));
 const LinkPreview = dynamic(() => import('../LinkPreview'));

@@ -1,6 +1,8 @@
+'use server'
 import DeclinedPosts from "@/components/admin/DeclinedPosts";
 
-export const metadata = {
+export async function generateMetadata() {
+  return {
     title: "Declined Posts - Ruqyah Forum",
     description: "Manage and oversee the declined posts as an administrator. Access powerful tools, monitor community activities, and ensure the smooth functioning of the forum.",
     keywords: ["admin", "Ruqyah Forum", "community management", "administrator","admin-activity"],
@@ -15,14 +17,14 @@ export const metadata = {
     },
     image: process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
     url: `${process.env.NEXT_PUBLIC_BASEURL}/admin/declined-posts`,
-  };
+}}
 
 
 const declinedPostsPage = () => {
     return (
-        <div>
-            {/* <DeclinedPosts/> */}
-        </div>
+        <>
+            <DeclinedPosts/>
+        </>
     );
 };
 

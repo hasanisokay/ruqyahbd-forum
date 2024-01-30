@@ -1,4 +1,4 @@
-import LoadingProfile from "@/components/LoadingProfile";
+import LoadingProfile from "@/components/LoadingSkeletons/LoadingProfile";
 
 const ProfileLoading = () => {
   return (

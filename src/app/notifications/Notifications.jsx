@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useRef, useCallback, useContext, useState, useEffect } from 'react';
 import useSWRInfinite from 'swr/infinite';
 import AuthContext from '@/contexts/AuthContext';
-import LoadingCards from '@/components/LoadingCards';
+import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import notificationMaker from '@/utils/notificationMaker';
-import LoadingNotifications from '@/components/LoadingNotificaions';
 import UserIcon from '@/components/SVG/UserIcon';
+import LoadingNotifications from '@/components/LoadingSkeletons/LoadingNotificaions';
 
 const fetcher = async (url) => await fetch(url).then((res) => res.json());
 

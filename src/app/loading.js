@@ -1,9 +1,9 @@
-import "react-loading-skeleton/dist/skeleton.css";
-import LoadingCards from "@/components/LoadingCards";
+import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
+
 const RootLoading = () => {
   return (
     <div>
-      <LoadingCards></LoadingCards>
+      <LoadingCards/>
     </div>
   );
 };

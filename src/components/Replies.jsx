@@ -2,12 +2,12 @@
 import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import Image from "next/image";
-import LoadingModalUser from "./LoadingModal";
 import ReplyText from "./ReplyText";
 import { useSearchParams } from "next/navigation";
 import UserIcon from "./SVG/UserIcon";
 import AuthContext from "@/contexts/AuthContext";
 import dynamic from "next/dynamic";
+import LoadingModalUser from "./LoadingSkeletons/LoadingModalUser";
 
 const LinkPreview = dynamic(() => import('./LinkPreview'));
 

@@ -6,7 +6,7 @@ import { Suspense } from "react";
 
 const HomePagePosts = dynamic(() => import('@/components/HomeSecttion/HomePagePosts'));
 const NewPostSection = dynamic(() => import('@/components/HomeSecttion/NewPostSection'));
-const LoadingCards = dynamic(() => import('@/components/LoadingCards'));
+const LoadingCards = dynamic(() => import('@/components/LoadingSkeletons/LoadingCards'));
 
 const HomePage = async () => {
   unstable_noStore()

@@ -2,8 +2,9 @@
 import AuthContext from "@/contexts/AuthContext";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
-import getUser from "./getUser";
+
 import toast from "react-hot-toast";
+import getUser from "@/utils/getUser";
 
 
 const AuthProvider = ({ children }) => {

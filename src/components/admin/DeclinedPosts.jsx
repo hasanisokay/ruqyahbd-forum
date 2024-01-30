@@ -1,14 +1,12 @@
 'use client'
 import Image from 'next/image';
-import axios from 'axios';
-import toast from 'react-hot-toast';
 import truncateText from '@/utils/trancatText';
 import AuthContext from '@/contexts/AuthContext';
 import { useRef, useContext, useState, useEffect } from 'react';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import PhotosInPost from '@/components/PhotosInPost';
 import UserIcon from '@/components/SVG/UserIcon';
-import LoadingCards from '../LoadingCards';
+import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
 import handleShowLess from '@/utils/handleShowLess';
 import handleToggleExpand from '@/utils/handleToggleExpand';
 import changeStatus from '@/utils/changeStatus';
@@ -33,6 +31,7 @@ const DeclinedPosts = () => {
 
     const getPosts = async () => {
         setNoMorePosts(false)
+        setloadingPosts(true)
         try {
             const params = new URLSearchParams();
             params.append('page', size + 1);
@@ -50,6 +49,9 @@ const DeclinedPosts = () => {
         }
         catch {
             setError(true);
+        }
+        finally{
+            setloadingPosts(false);
         }
     }
     useEffect(() => {

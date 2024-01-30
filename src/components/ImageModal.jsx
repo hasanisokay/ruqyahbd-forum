@@ -76,7 +76,7 @@ const ImageModal = ({ activeIndex, photosArray, setterFunction, alt }) => {
                         {photosArray?.map((url, index) => <SwiperSlide
                             key={index} >
                             <div className='relative max-h-[90vh]  md:min-w-[50vw] sm:min-w-[70vw] min-w-[100vw] min-h-[50vh] sm:min-h-[60vh] md:min-h-[85vh] lg:min-h-[90vh]'>
-                                <div className='z-10 absolute top-2 right-2 bg-black bg-opacity-40 hover:bg-opacity-100' title='click to download this image'>
+                                <div className='z-10 absolute top-2 right-2 bg-black bg-opacity-40 hover:bg-opacity-100 cursor-pointer' title='click to download this image'>
                                     <DownloadIcon handleOnClick={() => handleDownloadImage(url)} />
                                 </div>
                                 <Image

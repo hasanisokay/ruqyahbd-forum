@@ -2,8 +2,8 @@
 import getPost from "@/utils/getPost";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import LoadingCards from "@/components/LoadingCards";
 import SinglePostInHomePage from "@/components/SinglePostInHomePage";
+import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
 
 export async function generateMetadata({ params }) {
   const postID = params?.id || null;
@@ -60,10 +60,10 @@ export default async function singlePost({ params }) {
   )
     return notFound();
   return (
-    <div>
+    <>
       <Suspense fallback={<LoadingCards />}>
         <SinglePostInHomePage fetchedPost={post} />
       </Suspense>
-    </div>
+    </>
   );
 }

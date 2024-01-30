@@ -10,10 +10,10 @@ import logoForDarkMode from "@/../public/images/bd-support-1.png"
 import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import formatRelativeDate from "@/utils/formatDate";
 import notificationMaker from "@/utils/notificationMaker";
-import LoadingNotifications from "../LoadingNotificaions";
 import Image from "next/image";
 import BellIcon from "../SVG/BellIcon";
 import UserIcon from "../SVG/UserIcon";
+import LoadingNotifications from "../LoadingSkeletons/LoadingNotificaions";
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
@@ -184,9 +184,7 @@ const Navbar = () => {
     setShowNotificationMenu(false);
     return router.push("/notifications");
   }
-  // if (loading) {
-  //   return <LoadingNavbar />
-  // }
+
   // const logoSrc = theme === "dark" ? logoForDarkMode : logoForDayMode;
   const logoSrc = logoForDarkMode;
   return (

@@ -1,5 +1,5 @@
 'use client'
-import LoadingProfile from "@/components/LoadingProfile";
+import LoadingProfile from "@/components/LoadingSkeletons/LoadingProfile";
 import UserIcon from "@/components/SVG/UserIcon";
 import AuthContext from "@/contexts/AuthContext";
 import resizeImage from "@/utils/resizeImage";

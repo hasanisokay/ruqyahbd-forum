@@ -7,9 +7,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import LoadingModalUser from "./LoadingModal";
-import LoadingModalData from "./LoadingModalData";
-import axios from "axios";
 import useTheme from "@/hooks/useTheme";
 import makeUrlsClickable from "@/utils/makeUrlsClickable";
 import HeartIcon from "./SVG/HeartIcon";
@@ -18,6 +15,8 @@ import UserIcon from "./SVG/UserIcon";
 import dynamic from "next/dynamic";
 import handleApprovePost from "@/utils/handleApprovePost";
 import handleDeclinePost from "@/utils/handleDeclinePost";
+import LoadingModalUser from "./LoadingSkeletons/LoadingModalUser";
+import LoadingModalData from "./LoadingSkeletons/LoadingModalData";
 
 // dynamic imports
 const PhotosInPost = dynamic(() => import('./PhotosInPost'));

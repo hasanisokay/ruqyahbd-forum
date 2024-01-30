@@ -1,11 +1,11 @@
-import LoadingCards from "@/components/LoadingCards";
+import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
 
 const loadingSinglePost = () => {
-    return (
-        <div>
-                 <LoadingCards />
-        </div>
-    );
+  return (
+    <div>
+      <LoadingCards />
+    </div>
+  );
 };
 
 export default loadingSinglePost;

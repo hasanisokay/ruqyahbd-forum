@@ -1,17 +1,27 @@
-import axios from "axios";
 import toast from "react-hot-toast";
 
 const handleDeleteReply = async (postID, commentID, replyID) => {
-  const { data } = await axios.post("/api/posts/deletecomment", {
-    postID,
-    commentID,
-    replyID,
-  });
-  if (data?.status === 200) {
-    toast.success(data?.message);
-    return true;
-  } else {
-    toast.error(data?.message);
+  try {
+    const response = await fetch("/api/posts/deletecomment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ postID, commentID, replyID }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      toast.success(data?.message);
+      return true;
+    } else {
+      const data = await response.json();
+      toast.error(data?.message);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error while deleting reply:", error);
+    toast.error("An error occurred while deleting the reply");
     return false;
   }
 };

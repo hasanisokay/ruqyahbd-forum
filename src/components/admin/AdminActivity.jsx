@@ -2,12 +2,10 @@
 import React, { useRef, useContext, useState, useEffect } from 'react';
 import Image from 'next/image'
 import AuthContext from '@/contexts/AuthContext';
-import axios from 'axios';
-import toast from 'react-hot-toast';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import UserIcon from '@/components/SVG/UserIcon';
 import ModalUser from '../ModalUser';
-import LoadingCards from '../LoadingCards';
+import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
 import handleApprovePost from '@/utils/handleApprovePost';
 
 const AdminActivity = () => {
@@ -44,16 +42,15 @@ const AdminActivity = () => {
 
     const getPosts = async () => {
         setNoMorePosts(false)
+        setloadingPosts(true)
         try {
             const params = new URLSearchParams();
             params.append('page', size + 1);
             params.append('sortOrder', sortOrder);
             params.append('searchTerm', searchTerm);
             params.append('actionFilter', actionFilter);
-
             const response = await fetch(`/api/admin/adminactivity?${params.toString()}`);
             const newData = await response.json();
-console.log({newData});
             if (!newData) {
                 return setError(true)
             }
@@ -64,6 +61,9 @@ console.log({newData});
         }
         catch {
             setError(true);
+        }
+        finally {
+            setloadingPosts(false);
         }
     }
     useEffect(() => {
@@ -130,7 +130,7 @@ console.log({newData});
                     />
                 </form>
             </div>
-            {posts?.length > 0 && <p className='text-center'>Now showing {posts?.length} items.</p> }
+            {posts?.length > 0 && <p className='text-center'>Now showing {posts?.length} items.</p>}
             {posts && posts?.map((post) => (
                 <div key={post?._id} className='p-2 cursor-default border-2 m-2 rounded-lg dark:border-gray-400 cardinhome '>
                     <div className='flex gap-2 items-center'>
@@ -163,8 +163,8 @@ console.log({newData});
                             }
                             {
                                 post?.declinedBy && <div className='flex gap-4'>
-                                  
-                                    <button className='btn btn-xs text-white greenbg' onClick={() => handleApprovePost({ actionBy: fetchedUser?.username, postAuthorUsername:post?.author?.username, postID: post?.postID, action: "approve", updateActivityLogID:post?._id }, null)}>Approve</button>
+
+                                    <button className='btn btn-xs text-white greenbg' onClick={() => handleApprovePost({ actionBy: fetchedUser?.username, postAuthorUsername: post?.author?.username, postID: post?.postID, action: "approve", updateActivityLogID: post?._id }, null)}>Approve</button>
                                 </div>
                             }
                             <p className='font-semibold'>Action Date: {formatDateInAdmin(new Date(post?.timestamp))}</p>
