@@ -1,10 +1,7 @@
-import "@/../css/spinner.css";
+import LoadingSpinner from "@/components/LoadingSkeletons/LoadingSpinner";
+
 const RootLoading = () => {
-  return (
-    <div className="absolute top-1/2 right-0 left-0 bottom-1/2">
-      <span className="rootLoadingSpinner"></span>
-    </div>
-  );
+  return <LoadingSpinner />;
 };
 
 export default RootLoading;
