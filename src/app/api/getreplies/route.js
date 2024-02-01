@@ -15,10 +15,11 @@ export const GET = async (request) => {
         });
     }
 
-    const db = await dbConnect();
-    const postCollection = db.collection("posts");
 
     try {
+        const db = await dbConnect();
+        const postCollection = db.collection("posts");
+    
         const replies = await postCollection.aggregate([
             { $match: { _id: new ObjectId(postID), "comment._id": new ObjectId(commentID) } },
             { $unwind: "$comment" },

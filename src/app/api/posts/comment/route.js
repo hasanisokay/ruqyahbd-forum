@@ -5,8 +5,9 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
   const body = await request.json();
   const { comment, author, date, postID } = body;
-  const db = await dbConnect();
+
   try {
+    const db = await dbConnect();
     const postCollection = db?.collection("posts");
     const userCollection = db?.collection("users");
     const isBlocked = await userCollection.findOne(

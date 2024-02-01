@@ -5,8 +5,9 @@ import AuthContext from '@/contexts/AuthContext';
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import UserIcon from '@/components/SVG/UserIcon';
 import ModalUser from '../ModalUser';
-import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
+
 import handleApprovePost from '@/utils/handleApprovePost';
+import { LoadingCards } from '../LoadingSkeletons/Loaders';
 
 const AdminActivity = () => {
     const { fetchedUser, onlineUsers, selectedUsernameToShowDetails, setSelectedUsernameToShowDetails } = useContext(AuthContext);

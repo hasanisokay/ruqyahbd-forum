@@ -15,8 +15,9 @@ import UserIcon from "./SVG/UserIcon";
 import dynamic from "next/dynamic";
 import handleApprovePost from "@/utils/handleApprovePost";
 import handleDeclinePost from "@/utils/handleDeclinePost";
-import LoadingModalUser from "./LoadingSkeletons/LoadingModalUser";
-import LoadingModalData from "./LoadingSkeletons/LoadingModalData";
+import { LoadingModalData, LoadingModalUser } from "./LoadingSkeletons/Loaders";
+
+
 
 // dynamic imports
 const PhotosInPost = dynamic(() => import('./PhotosInPost'));

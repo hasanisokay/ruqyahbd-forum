@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import UserIcon from "./SVG/UserIcon";
 import AuthContext from "@/contexts/AuthContext";
 import dynamic from "next/dynamic";
-import LoadingModalUser from "./LoadingSkeletons/LoadingModalUser";
+import { LoadingModalUser } from "./LoadingSkeletons/Loaders";
 
 const LinkPreview = dynamic(() => import('./LinkPreview'));
 

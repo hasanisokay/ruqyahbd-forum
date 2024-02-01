@@ -19,9 +19,9 @@ export const metadata = {
 
 const page = () => {
     return (
-        <div>
+        <>
             <LoginForm />
-        </div>
+        </>
     );
 };
 

@@ -1,15 +1,14 @@
-"use server";
+"use server"
 import dynamic from 'next/dynamic';
 import getPosts from "@/utils/getPosts";
-import { unstable_noStore } from "next/cache";
 import { Suspense } from "react";
+import { LoadingCards } from '@/components/LoadingSkeletons/Loaders';
 
 const HomePagePosts = dynamic(() => import('@/components/HomeSecttion/HomePagePosts'));
 const NewPostSection = dynamic(() => import('@/components/HomeSecttion/NewPostSection'));
-const LoadingCards = dynamic(() => import('@/components/LoadingSkeletons/LoadingCards'));
+// const LoadingCards = dynamic(() => import('@/components/LoadingSkeletons/LoadingCards'));
 
 const HomePage = async () => {
-  unstable_noStore()
   const posts = await getPosts(1);
   return (
     <div>

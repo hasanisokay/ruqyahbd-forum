@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import UserIcon from "./SVG/UserIcon";
-import LoadingLikers from "./LoadingSkeletons/LoadingLikers";
+import { LoadingLikers } from "./LoadingSkeletons/Loaders";
 
 const LikersModal = ({ usernames, setterFunction }) => {
     const [likers, setLikers] = useState([])

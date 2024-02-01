@@ -2,12 +2,12 @@ import dbConnect from "@/services/DbConnect";
 import { NextResponse } from "next/server";
 
 export const GET = async () => {
-    const db = await dbConnect();
-    const postCollection = db.collection("posts");
-    const noticeCollection = db.collection("notice");
-    const usersCollection = db.collection("users");
-
     try {
+        const db = await dbConnect();
+        const postCollection = db.collection("posts");
+        const noticeCollection = db.collection("notice");
+        const usersCollection = db.collection("users");
+
         const [postStats, noticeStats, userStats] = await Promise.all([
             // Aggregate for post statistics
             postCollection.aggregate([

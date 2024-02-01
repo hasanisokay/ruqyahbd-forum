@@ -22,11 +22,11 @@ import ThreeDotsIcon from '@/components/SVG/ThreeDotsIcon';
 import SendMessageIcon from '@/components/SVG/SendMessageIcon';
 
 // dynamic imports
-const TextareaAutosize = dynamic(() => import('react-textarea-autosize'));
-const Comments = dynamic(() => import('@/components/Comments'));
-const PhotosInPost = dynamic(() => import('@/components/PhotosInPost'));
-const VideosInPost = dynamic(() => import('@/components/video-components/VideosInPost'));
-const LinkPreview = dynamic(() => import('@/components/LinkPreview'));
+const TextareaAutosize = dynamic(() => import('react-textarea-autosize'), { ssr: false });
+const Comments = dynamic(() => import('@/components/Comments'), { ssr: false });
+const PhotosInPost = dynamic(() => import('@/components/PhotosInPost'), { ssr: false });
+const VideosInPost = dynamic(() => import('@/components/video-components/VideosInPost'), { ssr: false });
+const LinkPreview = dynamic(() => import('@/components/LinkPreview'), { ssr: false });
 
 
 const SinglePostInHomePage = ({ fetchedPost }) => {

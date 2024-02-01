@@ -10,6 +10,8 @@ import Link from 'next/link';
 import makeUrlsClickable from '@/utils/makeUrlsClickable';
 import useTheme from '@/hooks/useTheme';
 import getPosts from '@/utils/getPosts';
+
+import "@/../css/spinner.css";
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import copyToClipboard from '@/utils/copyToClipboard';
@@ -23,8 +25,9 @@ import HeartIcon from '../SVG/HeartIcon';
 import CommentIcon from '../SVG/CommentIcon';
 import handleShowLess from '@/utils/handleShowLess';
 import handleToggleExpand from '@/utils/handleToggleExpand';
+import { LoadingCards } from '../LoadingSkeletons/Loaders';
 // dynamic imports
-const LoadingCards = dynamic(() => import('../LoadingSkeletons/LoadingCards'));
+// const LoadingCards = dynamic(() => import('../LoadingSkeletons/LoadingCards'));
 const PhotosInPost = dynamic(() => import('../PhotosInPost'));
 const VideosInPost = dynamic(() => import('../video-components/VideosInPost'));
 const LinkPreview = dynamic(() => import('../LinkPreview'));

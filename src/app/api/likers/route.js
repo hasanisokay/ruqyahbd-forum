@@ -4,9 +4,9 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
   const body = await request.json();
   const { usernames } = body;
-  const db = await dbConnect();
-
+  
   try {
+    const db = await dbConnect();
     const userCollection = db.collection("users");
     const userData = await userCollection
       .find(

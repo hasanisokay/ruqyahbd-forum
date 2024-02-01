@@ -1,12 +1,10 @@
-'use server'
 const getPost = async (id) => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/api/posts/${id}`, {cache:'no-store'});
     const post = await response.json();
     return post[0];
   } catch {
-    const post = { status: 500, message:"server side error occurs" };
-    return post;
+    return { status: 500, message:"server side error occurs" };
   }
 };
 

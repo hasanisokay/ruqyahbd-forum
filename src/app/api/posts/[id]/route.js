@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export const GET = async (request) => {
   const parts = request.nextUrl.pathname.split("/");
   const id = parts[parts.length - 1];
-
   if (!id || id.length !== 24) {
     return NextResponse.json({ error: "Post ID is required", status: 400 });
   }

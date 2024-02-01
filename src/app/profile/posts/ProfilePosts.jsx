@@ -1,5 +1,6 @@
 'use client'
-import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
+
+import { LoadingCards } from "@/components/LoadingSkeletons/Loaders";
 import PostShowingFormat from "@/components/PostShowingFormat";
 import AuthContext from "@/contexts/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";

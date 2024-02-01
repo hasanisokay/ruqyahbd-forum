@@ -15,8 +15,9 @@ export const POST = async (request) => {
     declineAll,
   } = body;
 
-  const db = await dbConnect();
+
   try {
+    const db = await dbConnect();
     const postCollection = db?.collection("posts");
     const userCollection = db?.collection("users");
     const adminActivityCollection = db?.collection("admin-activity");

@@ -6,6 +6,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { startTransition, useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import LoadingLoginPage from './LoadingLoginPage';
+import UserIcon from '@/components/SVG/UserIcon';
+import Image from 'next/image';
+import bgImage from "@/../public/images/bg-image-loginpage.jpg"
 
 const LoginForm = () => {
     const { signIn, loading, fetchedUser, setFetchedUser } = useContext(AuthContext);
@@ -63,55 +66,70 @@ const LoginForm = () => {
             return false;
         }
     };
-if(!fetchedUser && loading) return <LoadingLoginPage />
-if(fetchedUser) return push("/")
-   if(!fetchedUser && !loading) return (
-        <>
-            <form
-                onSubmit={handleSubmit}
-                className={`lg:w-[40vw] md:w-[80vw] w-[90vw] mx-auto mt-4 p-4 shadow-md rounded-md ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'} ${disableForm ? "opacity-50" : "opacity-100"}`}
-            >
-                <h1 className='text-xl text-center font-semibold'>Welcome Back!</h1>
-                <p className='text-center text-xs mt-2'>Login to your account</p>
-                <label htmlFor="username" className="block mt-4 mb-2 dark:text-[#999da7] ">
-                    Username
-                </label>
-                <input
-                    type="text"
-                    id="username"
-                    disabled={disableForm}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className={`${inputClasses}`}
+    if (!fetchedUser && loading) return <LoadingLoginPage />
+    if (fetchedUser) return push("/")
+    if (!fetchedUser && !loading) return (
+        <div className='relative h-[calc(100vh-58.2px)] w-full'>
+            {/* this image is not working as expected. it creates overflow.  how can i style it without overflow hidden and also it should contain the whole page */}
+            <div className='z-10'>
+                <Image
+                    src={bgImage}
+                    fill
+                    className='h-full w-full opacity-50 object-cover'
+                    sizes="100vw"
+                    alt='background image'
                 />
-                {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
-
-
-                <label htmlFor="password" className="block mt-4 mb-2 dark:text-[#999da7]">
-                    Password
-                </label>
-                <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    disabled={disableForm}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={`${inputClasses}`}
-                />
-                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-
-                <button
-                    type="submit" disabled={disableForm}
-                    className={`mt-6 w-full text-white p-2 rounded-md ${disableForm ? "bg-slate-400" : "bg-blue-500 hover:bg-blue-600"}`}
+            </div>
+            <div className='z-20 absolute top-0 left-0 right-0'>
+                <form
+                    onSubmit={handleSubmit}
+                    className={`md:mt-10 mt-6 mx-auto lg:w-[40vw] md:w-[80vw] w-[90vw] p-4 shadow-md rounded-md ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'} ${disableForm ? "opacity-50" : "opacity-100"}`}
                 >
-                    Log In
-                </button>
-                <div className='my-2  dark:text-[#999da7]'>
-                    <p className='text-sm'>Don&apos;t have an account? Please <button onClick={() => router.push("/signup")} title='goto signup' className='text-blue-600'>Sign Up</button>.</p>
-                    <p className='text-sm mt-2'>Forgotten password? <button onClick={() => router.push("/identity")} title='goto reset password' className='text-blue-600'>Reset Password</button>.</p>
-                </div>
-            </form>
-        </>
+                    <div className='flex items-center justify-center'>
+                        <UserIcon height={"100px"} width={"100px"} />
+                    </div>
+                    <h1 className='text-xl text-center font-semibold'>Welcome Back!</h1>
+                    <p className='text-center text-xs mt-2'>Login to your account</p>
+                    <label htmlFor="username" className="block mt-4 mb-2 dark:text-[#999da7] ">
+                        Username
+                    </label>
+                    <input
+                        type="text"
+                        id="username"
+                        disabled={disableForm}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className={`${inputClasses}`}
+                    />
+                    {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
+
+
+                    <label htmlFor="password" className="block mt-4 mb-2 dark:text-[#999da7]">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        disabled={disableForm}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={`${inputClasses}`}
+                    />
+                    {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+
+                    <button
+                        type="submit" disabled={disableForm}
+                        className={`mt-6 w-full text-white p-2 rounded-md ${disableForm ? "bg-slate-400" : "bg-blue-500 hover:bg-blue-600"}`}
+                    >
+                        Log In
+                    </button>
+                    <div className='my-2  dark:text-[#999da7]'>
+                        <p className='text-sm'>Don&apos;t have an account? Please <button onClick={() => router.push("/signup")} title='goto signup' className='text-blue-600'>Sign Up</button>.</p>
+                        <p className='text-sm mt-2'>Forgotten password? <button onClick={() => router.push("/identity")} title='goto reset password' className='text-blue-600'>Reset Password</button>.</p>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 export default LoginForm;

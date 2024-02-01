@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
   const body = await request.json();
   const { username, photoURL } = body;
+try{
   const db = await dbConnect();
   const userCollection = db?.collection("users");
 
@@ -16,4 +17,8 @@ export const POST = async (request) => {
   } else {
     return NextResponse.json({ message: "Error", status: 400 });
   }
+}
+catch{
+  return NextResponse.json({ message: "Server Error", status: 500 });
+}
 };

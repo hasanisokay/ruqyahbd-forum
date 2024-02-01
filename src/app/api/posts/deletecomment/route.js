@@ -5,9 +5,11 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
   const body = await request.json();
   const { postID, commentID, replyID } = body;
-  const db = await dbConnect();
-  const postCollection = db.collection("posts");
+
   try {
+    const db = await dbConnect();
+    const postCollection = db.collection("posts");
+    
     let result;
     if(replyID){
       result = await postCollection.updateOne({_id: new ObjectId(postID), 'comment._id': new ObjectId(commentID)},{

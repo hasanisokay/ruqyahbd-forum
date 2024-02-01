@@ -7,6 +7,7 @@ export const GET = async (request) => {
   const searchTerm = request.nextUrl.searchParams.get("searchTerm");
   const actionFilter = request.nextUrl.searchParams.get("actionFilter");
 
+try{
   const db = await dbConnect();
   const adminActivityCollection = db?.collection("admin-activity");
   const pageSize = 10;
@@ -64,4 +65,8 @@ export const GET = async (request) => {
     .toArray();
 
   return NextResponse.json(result);
+}
+catch{
+  return NextResponse.json({status:500, message:"server error"})
+}
 };

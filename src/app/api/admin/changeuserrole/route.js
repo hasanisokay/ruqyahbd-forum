@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
  */
 export const POST = async (request) => {
   const body = await request.json();
+try{
   const db = await dbConnect();
   const { username, action, actionBy } = body;
   const userCollection = db?.collection("users");
@@ -88,4 +89,7 @@ export const POST = async (request) => {
       message: "Something went wrong. Try again.",
     });
   }
+}catch{
+  return NextResponse.json({status:500, message:"server error"})
+}
 };

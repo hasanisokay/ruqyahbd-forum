@@ -13,7 +13,8 @@ import notificationMaker from "@/utils/notificationMaker";
 import Image from "next/image";
 import BellIcon from "../SVG/BellIcon";
 import UserIcon from "../SVG/UserIcon";
-import LoadingNotifications from "../LoadingSkeletons/LoadingNotificaions";
+import { LoadingNotifications } from "../LoadingSkeletons/Loaders";
+
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
@@ -72,18 +73,11 @@ const Navbar = () => {
   }, [fetchedUser, setAllNotifications, setNotificationsCount, socket, allNotifications]);
 
   useEffect(() => {
-    if (fetchedUser) {
-      startTransition(() => {
-        router.refresh()
-      });
-    }
-  }, [fetchedUser, router, loggedOut]);
-  useEffect(() => {
     startTransition(() => {
       router.refresh()
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading])
+  }, [loading, fetchedUser, loggedOut])
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -210,10 +204,10 @@ const Navbar = () => {
             </li>)
           }
           {
-            fetchedUser?.isAdmin && <li><NavLink activeClassName={"text-[#308853] text-semibold"} href={"/admin"}>Admin</NavLink></li>
+            fetchedUser && fetchedUser?.isAdmin && <li><NavLink activeClassName={"text-[#308853] text-semibold"} href={"/admin"}>Admin</NavLink></li>
           }
           {
-            fetchedUser?.isAdmin && <li><NavLink activeClassName={"text-[#308853] text-semibold"} href={"/chat"}>Chat</NavLink></li>
+            fetchedUser && fetchedUser?.isAdmin && <li><NavLink activeClassName={"text-[#308853] text-semibold"} href={"/chat"}>Chat</NavLink></li>
           }
           {
             fetchedUser && <li onClick={logOut} className="cursor-pointer" title="Log out from your account">LogOut</li>

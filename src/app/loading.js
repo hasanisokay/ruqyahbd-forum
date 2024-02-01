@@ -1,9 +1,8 @@
-import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
-
+import "@/../css/spinner.css";
 const RootLoading = () => {
   return (
-    <div>
-      <LoadingCards/>
+    <div className="mt-16">
+      <span className="rootLoadingSpinner"></span>
     </div>
   );
 };

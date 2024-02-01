@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 
 export const POST = async (request) => {
   const body = await request.json();
-
   const { reply, author, commentID, postID, date } = body;
   const uniqueID = new ObjectId();
   const replyData = {
@@ -14,20 +13,22 @@ export const POST = async (request) => {
     likes: [],
     date,
   };
-  const db = await dbConnect();
-  const postCollection = db.collection("posts");
-  const userCollection = db?.collection("users");
-  const isBlocked = await userCollection.findOne(
-    { username: author },
-    { projection: { blocked: 1 } }
-  );
-  if (isBlocked?.blocked) {
-    return NextResponse.json({
-      status: 500,
-      message: "You are blocked from commenting. Contact support.",
-    });
-  }
+
   try {
+    const db = await dbConnect();
+    const postCollection = db.collection("posts");
+    const userCollection = db?.collection("users");
+    const isBlocked = await userCollection.findOne(
+      { username: author },
+      { projection: { blocked: 1 } }
+    );
+    if (isBlocked?.blocked) {
+      return NextResponse.json({
+        status: 500,
+        message: "You are blocked from commenting. Contact support.",
+      });
+    }
+
     await postCollection.updateOne(
       { _id: new ObjectId(postID), "comment._id": new ObjectId(commentID) },
       {

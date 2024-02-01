@@ -8,13 +8,14 @@ import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import formatDateForUserJoined from '@/utils/formatDateForUserJoined';
 import dynamic from 'next/dynamic';
 import UserIcon from '@/components/SVG/UserIcon';
-import LoadingCards from "@/components/LoadingSkeletons/LoadingCards";
+
 import handleToggleExpand from '@/utils/handleToggleExpand';
 import ModalUser from '../ModalUser';
 import handleShowLess from '@/utils/handleShowLess';
 import changeStatus from '@/utils/changeStatus';
 import handleApprovePost from '@/utils/handleApprovePost';
 import handleDeclinePost from '@/utils/handleDeclinePost';
+import { LoadingCards } from '../LoadingSkeletons/Loaders';
 
 const PhotosInPost = dynamic(() => import('@/components/PhotosInPost'));
 

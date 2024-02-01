@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
   const body = await request.json();
   const { id, editedText, previousText, newPhotosArray, videoLink } = body;
-  const db = await dbConnect();
-  const postCollection = db.collection("posts");
   try {
+    const db = await dbConnect();
+    const postCollection = db.collection("posts");
     await postCollection.updateOne(
       { _id: new ObjectId(id) },
       {
