@@ -29,16 +29,6 @@ export const metadata = {
     "og:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
     "og:type": "website",
     locale: "en_US",
-      robots: {
-        index: true,
-        follow: true,
-        nocache: true,
-        googleBot: {
-          index: true,
-          follow: true,
-          noimageindex: true,
-        },
-      },
   },
   image: process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
   url: process.env.NEXT_PUBLIC_BASEURL,

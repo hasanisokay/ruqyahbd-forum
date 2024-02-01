@@ -4,9 +4,14 @@ export const metadata = {
     title: "Public Notice - Ruqyah Forum",
     description: "Stay informed with the latest public notices from Ruqyah Forum. Find important updates, announcements, and community news to enhance your participation in the forum.",
     keywords: ["notice", "Ruqyah Forum", "community", "spiritual well-being"],
-    author: "Ruqyah Support BD",
-    image: "https://i.ibb.co/wh2mk56/Whats-App-Image-2023-12-16-at-20-32-41.jpg",
-    url: "https://www.forum.ruqyahbd.org/notice",
+    other: {
+      "twitter:image": "https://i.ibb.co/TKJFzG3/join-page.jpg",
+      "twitter:card": "summary_large_image",
+      "og-url": `${process.env.NEXT_PUBLIC_BASEURL}/login`,
+      "og:image": "https://i.ibb.co/TKJFzG3/join-page.jpg",
+    },
+    image: "https://i.ibb.co/TKJFzG3/join-page.jpg",
+    url: `${process.env.NEXT_PUBLIC_BASEURL}/login`,
   };
 
   const NoticePage = () => {

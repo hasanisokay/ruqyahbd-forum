@@ -12,9 +12,14 @@ export const metadata = {
     "user account",
     "ruqyahbd",
   ],
-  author: "Ruqyah Support BD",
-  image: "https://i.ibb.co/wh2mk56/Whats-App-Image-2023-12-16-at-20-32-41.jpg",
-  url: "https://forum.ruqyahbd.org/profile",
+  other: {
+    "twitter:image": "https://i.ibb.co/TKJFzG3/join-page.jpg",
+    "twitter:card": "summary_large_image",
+    "og-url": `${process.env.NEXT_PUBLIC_BASEURL}/login`,
+    "og:image": "https://i.ibb.co/TKJFzG3/join-page.jpg",
+  },
+  image: "https://i.ibb.co/TKJFzG3/join-page.jpg",
+  url: `${process.env.NEXT_PUBLIC_BASEURL}/login`,
 };
 const ProfilePage = () => {
   return (

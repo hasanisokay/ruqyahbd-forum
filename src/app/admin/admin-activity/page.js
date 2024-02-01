@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import AdminActivity from "../../../components/admin/AdminActivity";
 
 export async function generateMetadata() {
@@ -14,15 +14,8 @@ export async function generateMetadata() {
       "admin-activity",
     ],
     other: {
-      "theme-color": { dark: "#8a8080", light: "#555" },
-      "color-scheme": ["dark", "light"],
-      "twitter:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
-      "twitter:card": "summary_large_image",
       "og-url": `${process.env.NEXT_PUBLIC_BASEURL}/admin/admin-activity`,
-      "og:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
-      "og:type": "website",
     },
-    image: process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
     url: `${process.env.NEXT_PUBLIC_BASEURL}/admin/admin-activity`,
   };
 }

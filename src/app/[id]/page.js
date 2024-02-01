@@ -1,3 +1,4 @@
+'use server'
 import getPost from "@/utils/getPost";
 import { Suspense } from "react";
 import SinglePostInHomePage from "@/components/SinglePostInHomePage";
@@ -50,12 +51,6 @@ export async function generateMetadata({ params }) {
       post?.post ||
       "Explore a post on Ruqyah Forum. Engage with the community, share your thoughts, and stay informed on spiritual well-being topics.",
     keywords: ["post", "Ruqyah Forum", "community", "spiritual well-being"],
-    publisher: "Ruqyah Support BD",
-    authors: [
-      { name: "Ruqyah Support BD", url:"https://www.facebook.com/groups/ruqyahbd"},
-      { name: "Ruqyah Support BD", url: "https://ruqyahbd.org" },
-    ],
-    "color-scheme": ["dark", "light"],
     other: {
       "twitter:image":
         post?.photos?.length > 0
@@ -67,30 +62,10 @@ export async function generateMetadata({ params }) {
         post?.photos?.length > 0
           ? post?.photos[0]
           : process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
-      "og:type": "website",
-      locale: "en_US",
-      robots: {
-        index: true,
-        follow: true,
-        nocache: true,
-        googleBot: {
-          index: true,
-          follow: true,
-          noimageindex: true,
-        },
-      },
     },
     url: `${process.env.NEXT_PUBLIC_BASEURL}/${id}`,
   };
 }
-
-export const viewport = {
-  width: 'device-width',
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#8a8080" },
-    { media: "(prefers-color-scheme: light)", color: "#555" },
-  ],
-};
 
 export default async function page({ params }) {
   const postID = params?.id;
