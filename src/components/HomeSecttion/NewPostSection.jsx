@@ -1,5 +1,6 @@
 'use client'
 import AuthContext from "@/contexts/AuthContext";
+import dynamic from "next/dynamic";
 import { useContext } from "react";
 
 const NewPost = dynamic(() => import("./NewPost"));

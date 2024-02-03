@@ -2,7 +2,6 @@
 import AuthContext from "@/contexts/AuthContext";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
-
 import toast from "react-hot-toast";
 import getUser from "@/utils/getUser";
 
@@ -125,33 +124,12 @@ const AuthProvider = ({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchedUser])
 
-    const signIn = async (username, password) => {
-        const response = await fetch(`/api/auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username, password }),
-        });
-        const data = await response.json();
-        return data;
-    }
-    const logOut = async () => {
-        setLoading(true);
-        const response = await fetch("/api/auth/logout");
-        const data = await response.json();
-        setFetchedUser(null)
-        toast.success(data.message)
-        setLoggedOut(true)
-        setLoading(false);
-    }
-
     const value = {
         fetchedUser,
         setFetchedUser,
-        signIn,
-        logOut,
         loading,
+        setLoading,
+        setLoggedOut,
         loggedOut,
         notificationsCount,
         setNotificationsCount,

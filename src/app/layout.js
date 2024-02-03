@@ -48,7 +48,7 @@ const RootLayout = ({ children }) => {
       <body>
         <Providers>
           <Navbar></Navbar>
-          <main className="pt-5">{children}</main>
+          <main>{children}</main>
         </Providers>
         <Toaster />
       </body>

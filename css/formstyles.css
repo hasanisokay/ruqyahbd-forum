@@ -1,0 +1,184 @@
+.form-div form {
+  position: absolute;
+  inset: 4px;
+  border-radius: 4px;
+  z-index: 2;
+  padding: 50px 40px;
+}
+.form-div {
+  position: relative;
+  min-width: 300px;
+  height: auto;
+  width: auto;
+  max-height: unset;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: auto;
+}
+.form-div-signup{
+  max-width: 500px;
+  min-height: 840px;
+}
+.form-div-login{
+  max-width: 380px;
+  min-height: 500px;
+}
+.form-container {
+  min-height: calc(100vh - 58.2px);
+  height: auto;
+  max-height: unset;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+.form-div::before{
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    z-index: 1;
+    min-width: 300px;
+    max-width: 500px;
+    height: 800px; 
+}
+.form-div::after{
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  z-index: 1;
+  min-width: 300px;
+  max-width: 500px;
+  height: 800px;
+}
+
+.form-container {
+  [data-theme="light"] & {
+    background-image: linear-gradient(
+      to top,
+      #c4c5c7 0%,
+      #dcdddf 52%,
+      #ebebeb 100%
+    );
+  }
+  [data-theme="dark"] & {
+    background-image: linear-gradient(to right, #141e30, #243b55);
+  }
+}
+.gradient-bg {
+  [data-theme="light"] & {
+    background-image: linear-gradient(-20deg, #616161 0%, #9bc5c3 100%);
+  }
+  [data-theme="dark"] & {
+    background: #4b79a1; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+      to right,
+      #283e51,
+      #0f171f
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+      to right,
+      #283e51,
+      #0f171f
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+}
+/* errors */
+.errors {
+  position: relative;
+  color: red;
+  font-weight: 500;
+  animation: waviy 2s infinite;
+  animation-delay: -1s;
+}
+
+/* inputs */
+.form-input {
+  min-width: 300px;
+  width: 100%;
+  max-width: unset;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 0.375rem;
+  outline: none;
+  border: none;
+  transition: background-color 0.3s;
+  /* Focus styles */
+  &:focus {
+    border: none;
+    outline: none;
+  }
+}
+.form-input {
+  [data-theme="light"] & {
+    background-color: white;
+  }
+}
+.form-input {
+  [data-theme="dark"] & {
+    background-color: #3d404a;
+  }
+}
+
+.login-animation::before,
+.login-animation::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: 200% 200%;
+  background-repeat: no-repeat;
+  transform-origin: bottom right;
+  animation: form-animation 6s linear infinite;
+  animation-delay: -1s;
+}
+
+.login-animation::before {
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent,
+    #fad932,
+    #308853,
+    #fad932
+  );
+}
+
+.login-animation::after {
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent,
+    #9333ea,
+    #45f3ff,
+    #ffab00
+  );
+}
+@keyframes form-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes waviy {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(20px);
+  }
+  50% {
+    transform: translateX(0); /* Back to the initial position */
+  }
+  75% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(0); /* Back to the initial position */
+  }
+}

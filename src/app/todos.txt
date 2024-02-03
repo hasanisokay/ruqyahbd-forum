@@ -3,3 +3,5 @@ socket comment is not working
 after new reply its not showing on reload
 
 2 previous pending post check is off now. turn it on after check
+
+make sign in and sign out function and export it. not in the authprociver

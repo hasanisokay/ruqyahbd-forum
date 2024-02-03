@@ -6,15 +6,16 @@ import { useContext, useEffect, useState, useTransition } from 'react';
 import toast from 'react-hot-toast';
 import LoadingSignUpPage from './LoadingSignUpPage';
 import createJWT from '@/utils/createJWT';
-
+import "@/../css/formstyles.css"
+import signIn from '@/utils/signIn.mjs';
 const SignUpForm = () => {
 
-  const { fetchedUser, setFetchedUser, signIn } = useContext(AuthContext)
+  const { fetchedUser, setFetchedUser } = useContext(AuthContext)
   const search = useSearchParams();
   const from = search.get("redirectUrl") || "/";
 
   const [isPending, startTransition] = useTransition()
-  const { replace, refresh, push } = useRouter();
+  const { refresh, push } = useRouter();
   const { theme } = useTheme();
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
@@ -79,47 +80,35 @@ const SignUpForm = () => {
       gender: '',
     });
 
-    // Basic validation
     if (!name || name.length < 3) {
-      setErrors((prevErrors) => ({ ...prevErrors, name: 'Name is required' }));
-      return
+      return setErrors((prevErrors) => ({ ...prevErrors, name: 'Name is required' }));
     }
     if (name.length < 3) {
-      setErrors((prevErrors) => ({ ...prevErrors, name: 'Name length should be at least 3' }));
-      return
+      return setErrors((prevErrors) => ({ ...prevErrors, name: 'Name length should be at least 3' }));
     }
 
     if (!username) {
-      setErrors((prevErrors) => ({ ...prevErrors, username: 'Username is required' }));
-      return
+      return setErrors((prevErrors) => ({ ...prevErrors, username: 'Username is required' }));
     }
-    if (username.length < 3 ) {
-      setErrors((prevErrors) => ({ ...prevErrors, username: 'Username should be at least 3 character long' }));
-      return
+    if (username.length < 3) {
+      return setErrors((prevErrors) => ({ ...prevErrors, username: 'Username should be at least 3 character long' }));
     }
     if (!isUsernameAvailable) {
       return
     }
-
-
     if (!password) {
-      setErrors((prevErrors) => ({ ...prevErrors, password: 'Password is required' }));
-      return
+      return setErrors((prevErrors) => ({ ...prevErrors, password: 'Password is required' }));
     }
 
     if (password !== retypePassword) {
-      setErrors((prevErrors) => ({ ...prevErrors, retypePassword: 'Passwords do not match' }));
-      return
+      return setErrors((prevErrors) => ({ ...prevErrors, retypePassword: 'Passwords do not match' }));
     }
-
     if (!gender) {
-      setErrors((prevErrors) => ({ ...prevErrors, gender: 'Gender is required' }));
-      return
+      return setErrors((prevErrors) => ({ ...prevErrors, gender: 'Gender is required' }));
     }
 
-
+    const toastId = toast.loading("Loading...");
     try {
-      const toastId = toast.loading("Loading...");
       await fetch(`/api/auth/signup`, {
         method: "POST",
         headers: {
@@ -129,25 +118,64 @@ const SignUpForm = () => {
       });
       const res = await signIn(username, password)
       if (res.status === 404) {
-        toast.dismiss(toastId);
-        toast.error(res.message)
+        return toast.error(res.message)
       }
       else {
         const { username, email, isAdmin } = res;
         await createJWT({ username, email, isAdmin })
         setFetchedUser(res)
-        toast.dismiss(toastId);
         toast.success("Success");
       }
-
     } catch (error) {
       console.error('Error while sign up: ', error.message);
       return false;
     }
+    finally{
+      toast.dismiss(toastId)
+    }
   };
-
-  const inputClasses = `w-full p-2 border rounded-md focus:outline-none border-none focus:border-none ${theme === 'dark' ? 'bg-[#3d404a]' : 'bg-white'
-    } `;
+  const handleUsernameOnchange = (e) => {
+    if (errors.username.length > 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
+    }
+    setUsername(e.target.value.toLowerCase());
+  }
+  const handleNameOnchange = (e) => {
+    if (errors.name.length > 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, name: '' }));
+    }
+    setName(e.target.value);
+  }
+  const handleEmailOnchange = (e) => {
+    if (errors.email.length > 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, email: '' }));
+    }
+    setEmail(e.target.value);
+  }
+  const handlePhoneOnchange = (e) => {
+    if (errors.phone.length > 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, phone: '' }));
+    }
+    setPhone(e.target.value);
+  }
+  const handleGenderOnchange = (e) => {
+    if (errors.gender.length > 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, gender: '' }));
+    }
+    setGender(e.target.value);
+  }
+  const handlePasswordOnchange = (e) => {
+    if (errors.password.length > 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
+    }
+    setPassword(e.target.value);
+  }
+  const handleRetypePasswordOnchange = (e) => {
+    if (errors.retypePassword.length > 0) {
+      setErrors((prevErrors) => ({ ...prevErrors, retypePassword: '' }));
+    }
+    setRetypePassword(e.target.value);
+  }
   useEffect(() => {
     const checkAvailability = async () => {
       if (username?.length > 3) {
@@ -169,120 +197,124 @@ const SignUpForm = () => {
   }
   if (!fetchedUser && !isPending) {
     return (
-      <form
-        onSubmit={handleSubmit}
-        className={`lg:w-[40vw] md:w-[80vw] w-[90vw] mx-auto mt-4 p-4 shadow-md rounded-md ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'}`}
-      >
-        <h1 className='text-xl text-center font-semibold'>Create New Account</h1>
-        <p className='text-center text-xs mt-2'>Begin Your Sign-Up Process</p>
-        <label htmlFor="name" className="block mt-4 mb-2 dark:text-[#999da7]">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className={`${inputClasses}`}
-        />
-        {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-        {!errors.name && name != "" && name.length < 3 && <p className="text-red-500 text-sm">{"Name should be at least 3 character long"}</p>}
-        <label htmlFor="username" className="block mt-4 mb-2 dark:text-[#999da7]">
-          Username
-        </label>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value.toLowerCase())}
-          className={`${inputClasses} ${username !== "" && (isUsernameAvailable ? 'focus:border-blue-500' : 'border-red-500')
-            }`}
-        />
-        {
-          usernameChecking ? <p className="text-sm text-black">Checking availability <span className="loading loading-spinner loading-xs"></span></p> : (
-            !isUsernameAvailable && username.length > 3 && (
-              <p className="text-red-500 text-sm">{username} is not available. Try another.</p>
-            ) || isUsernameAvailable && username?.length > 2 && (
-              <p className="text-green-500 text-sm">{username} is available.</p>
-            ))
-        }
-        {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
+      <div className='form-container'>
+        <div className={`form-div form-div-signup ${(username !== "" || password !== "") && "login-animation"}`}>
+          <form
+            onSubmit={handleSubmit}
+            className={`gradient-bg  z-20 ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'}`}
+          >
+            <h1 className='text-xl text-center font-semibold'>Create New Account</h1>
+            <p className='text-center text-xs mt-2'>Begin Your Sign-Up Process</p>
+            <label htmlFor="name" className="block mt-4 mb-2">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => handleNameOnchange(e)}
+              className="form-input"
+            />
+            {errors.name && <p className="errors">{errors.name}</p>}
+            {!errors.name && name != "" && name.length < 3 && <p className="errors">{"Name should be at least 3 character long"}</p>}
+            <label htmlFor="username" className="block mt-4 mb-2">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => handleUsernameOnchange(e)}
+              className={`form-input ${username !== "" && (isUsernameAvailable ? 'focus:border-blue-500' : 'border-red-500')
+                }`}
+            />
+            {
+              usernameChecking ? <p className="text-sm text-black">Checking availability <span className="loading loading-spinner loading-xs"></span></p> : (
+                !isUsernameAvailable && username.length > 3 && (
+                  <p className="errors">{username} is not available. Try another.</p>
+                ) || isUsernameAvailable && username?.length > 2 && (
+                  <p className="text-green-500 text-sm">{username} is available.</p>
+                ))
+            }
+            {errors.username && <p className="errors">{errors.username}</p>}
 
-        <label htmlFor="email" className="block mt-4 mb-2 dark:text-[#999da7]">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={`${inputClasses}`}
-        />
-        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+            <label htmlFor="email" className="block mt-4 mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => handleEmailOnchange(e)}
+              className="form-input"
+            />
+            {errors.email && <p className="errors">{errors.email}</p>}
 
-        <label htmlFor="phone" className="block mt-4 mb-2 dark:text-[#999da7]">
-          Phone
-        </label>
-        <input
-          type="tel"
-          id="phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className={`${inputClasses}`}
-        />
-        {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+            <label htmlFor="phone" className="block mt-4 mb-2">
+              Phone
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              value={phone}
+              onChange={(e) => handlePhoneOnchange(e)}
+              className="form-input"
+            />
+            {errors.phone && <p className="errors">{errors.phone}</p>}
 
-        <label htmlFor="gender" className="block mt-4 mb-2 dark:text-[#999da7]">
-          Gender
-        </label>
-        <select
-          id="gender"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          className={`${inputClasses}`}
-        >
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-        {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
+            <label htmlFor="gender" className="block mt-4 mb-2">
+              Gender
+            </label>
+            <select
+              id="gender"
+              value={gender}
+              onChange={(e) => handleGenderOnchange(e)}
+              className="form-input"
+            >
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            {errors.gender && <p className="errors">{errors.gender}</p>}
 
-        <label htmlFor="password" className="block mt-4 mb-2 dark:text-[#999da7]">
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className={`${inputClasses}`}
-        />
-        {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            <label htmlFor="password" className="block mt-4 mb-2">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => handlePasswordOnchange(e)}
+              className="form-input"
+            />
+            {errors.password && <p className="errors">{errors.password}</p>}
 
-        <label htmlFor="retypePassword" className="block mt-4 mb-2 dark:text-[#999da7]">
-          Retype Password
-        </label>
-        <input
-          type="password"
-          id="retypePassword"
-          value={retypePassword}
-          onChange={(e) => setRetypePassword(e.target.value)}
-          className={`${inputClasses}`}
-        />
-        {errors.retypePassword && (
-          <p className="text-red-500 text-sm">{errors.retypePassword}</p>
-        )}
+            <label htmlFor="retypePassword" className="block mt-4 mb-2">
+              Retype Password
+            </label>
+            <input
+              type="password"
+              id="retypePassword"
+              value={retypePassword}
+              onChange={(e) => handleRetypePasswordOnchange(e)}
+              className="form-input"
+            />
+            {errors.retypePassword && (
+              <p className="errors">{errors.retypePassword}</p>
+            )}
 
-        <button
-          type="submit"
-          className="mt-6 w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-        >
-          Sign Up
-        </button>
-        <div className='my-2 dark:text-[#999da7]'>
-          <p className='text-sm'>Already have an account? Please <button onClick={() => push("/login")} title='goto login' className='text-blue-600'>login</button>.</p>
+            <button
+              type="submit"
+              className="btn-login btn-login-active"
+            >
+              Sign Up
+            </button>
+            <div className='my-2'>
+              <p className='text-sm'>Already have an account? Please <button onClick={() => push("/login")} title='goto login' className='text-blue-800 font-semibold dark:text-blue-500'>login</button>.</p>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     );
   }
 };

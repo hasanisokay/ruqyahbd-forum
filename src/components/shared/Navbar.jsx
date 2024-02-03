@@ -14,13 +14,14 @@ import Image from "next/image";
 import BellIcon from "../SVG/BellIcon";
 import UserIcon from "../SVG/UserIcon";
 import { LoadingNotifications } from "../LoadingSkeletons/Loaders";
+import logOut from "@/utils/logOut.mjs";
 
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
   const [showNotificationMenu, setShowNotificationMenu] = useState(false)
   const { theme, toggleTheme } = useTheme()
-  const { fetchedUser, loading, logOut, loggedOut, notificationsCount, socket, allNotifications, setAllNotifications, setNotificationsCount } = useContext(AuthContext);
+  const { fetchedUser, setLoading, setLoggedOut, setFetchedUser, loading, loggedOut, notificationsCount, socket, allNotifications, setAllNotifications, setNotificationsCount } = useContext(AuthContext);
   const [navData, setNavData] = useState()
   const router = useRouter();
   const [loadingNotifications, setLoadingNotifications] = useState(false);
@@ -210,7 +211,7 @@ const Navbar = () => {
             fetchedUser && fetchedUser?.isAdmin && <li><NavLink activeClassName={"text-[#308853] text-semibold"} href={"/chat"}>Chat</NavLink></li>
           }
           {
-            fetchedUser && <li onClick={logOut} className="cursor-pointer" title="Log out from your account">LogOut</li>
+            fetchedUser && <li onClick={()=>logOut(setLoading, setFetchedUser, setLoggedOut)} className="cursor-pointer" title="Log out from your account">LogOut</li>
           }
           <li>
             <label htmlFor="darkModeToggle" className="swap swap-rotate lg:ml-2">

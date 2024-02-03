@@ -5,13 +5,13 @@ import createJWT from '@/utils/createJWT';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { startTransition, useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import LoadingLoginPage from './LoadingLoginPage';
 import UserIcon from '@/components/SVG/UserIcon';
-import Image from 'next/image';
-import bgImage from "@/../public/images/bg-image-loginpage.jpg"
+import LoadingSpinner from '@/components/LoadingSkeletons/LoadingSpinner';
+import "@/../css/formstyles.css";
+import signIn from '@/utils/signIn.mjs';
 
 const LoginForm = () => {
-    const { signIn, loading, fetchedUser, setFetchedUser } = useContext(AuthContext);
+    const { loading, fetchedUser, setFetchedUser } = useContext(AuthContext);
     const [disableForm, setDisableForm] = useState(false);
     const search = useSearchParams();
     const from = search.get("redirectUrl") || "/";
@@ -20,12 +20,25 @@ const LoginForm = () => {
     const { theme } = useTheme();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const inputClasses = `w-full p-2 border rounded-md focus:outline-none border-none focus:border-none ${theme === 'dark' ? 'bg-[#3d404a]' : 'bg-white'
-        } `;
+    // const inputClasses = `w-[300px] p-2 border rounded-md focus:outline-none border-none focus:border-none ${theme === 'dark' ? 'bg-[#3d404a]' : 'bg-white'
+    //     } `;
     const [errors, setErrors] = useState({
         username: '',
         password: '',
     });
+    const handleUsernameOnchange =(e)=>{
+        // e.preventDefault();
+        if(errors.username.length>0){
+            setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
+        }
+        setUsername(e.target.value);
+    }
+    const handelPasswordOnchange =(e)=>{
+        if(errors.password.length>0){
+            setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
+        }
+        setPassword(e.target.value);
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors({
@@ -40,13 +53,12 @@ const LoginForm = () => {
             setErrors((prevErrors) => ({ ...prevErrors, password: 'Password is required' }));
             return
         }
+        const toastId = toast.loading("Loading...");
         try {
             setDisableForm(true)
-            const toastId = toast.loading("Loading...");
             const res = await signIn(username, password, from)
             if (res.status === 404) {
-                toast.dismiss(toastId);
-                toast.error(res.message)
+                return toast.error(res.message)
             }
             else {
                 const { username, email, isAdmin } = res;
@@ -56,41 +68,33 @@ const LoginForm = () => {
                     refresh()
                     push(from);
                 });
-                toast.dismiss(toastId);
                 toast.success("Success");
             }
-            setDisableForm(false)
-
         } catch (error) {
             console.error('Error while login: ', error.message);
             return false;
         }
+        finally{
+            toast.dismiss(toastId)
+            setDisableForm(false)
+        }
     };
-    if (!fetchedUser && loading) return <LoadingLoginPage />
+    if (!fetchedUser && loading) return <LoadingSpinner />
     if (fetchedUser) return push("/")
     if (!fetchedUser && !loading) return (
-        <div className='relative h-[calc(100vh-58.2px)] w-full'>
-            {/* this image is not working as expected. it creates overflow.  how can i style it without overflow hidden and also it should contain the whole page */}
-            <div className='z-10'>
-                <Image
-                    src={bgImage}
-                    fill
-                    className='h-full w-full opacity-50 object-cover'
-                    sizes="100vw"
-                    alt='background image'
-                />
-            </div>
-            <div className='z-20 absolute top-0 left-0 right-0'>
+        // min-h-[calc(100dvh-58.2px]
+        <div className='form-container'>
+            <div className={`form-div form-div-login ${(username !== "" || password !== "") && !disableForm && "login-animation"}`}>
                 <form
                     onSubmit={handleSubmit}
-                    className={`md:mt-10 mt-6 mx-auto lg:w-[40vw] md:w-[80vw] w-[90vw] p-4 shadow-md rounded-md ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'} ${disableForm ? "opacity-50" : "opacity-100"}`}
+                    className={`gradient-bg  z-20  ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'} ${disableForm ? "opacity-50" : "opacity-100"}`}
                 >
                     <div className='flex items-center justify-center'>
-                        <UserIcon height={"100px"} width={"100px"} />
+                        <UserIcon height={"50px"} width={"50px"} />
                     </div>
                     <h1 className='text-xl text-center font-semibold'>Welcome Back!</h1>
                     <p className='text-center text-xs mt-2'>Login to your account</p>
-                    <label htmlFor="username" className="block mt-4 mb-2 dark:text-[#999da7] ">
+                    <label htmlFor="username" className="block mt-4 mb-2 ">
                         Username
                     </label>
                     <input
@@ -98,13 +102,13 @@ const LoginForm = () => {
                         id="username"
                         disabled={disableForm}
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className={`${inputClasses}`}
+                        onChange={(e) => handleUsernameOnchange(e)}
+                        className={`form-input`}
                     />
-                    {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
+                    {errors.username && <p className="errors">{errors.username}</p>}
 
 
-                    <label htmlFor="password" className="block mt-4 mb-2 dark:text-[#999da7]">
+                    <label htmlFor="password" className="block mt-4 mb-2">
                         Password
                     </label>
                     <input
@@ -112,22 +116,23 @@ const LoginForm = () => {
                         id="password"
                         value={password}
                         disabled={disableForm}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className={`${inputClasses}`}
+                        onChange={(e) => handelPasswordOnchange(e)}
+                        className={`form-input`}
                     />
-                    {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                    {errors.password && <p className="errors">{errors.password}</p>}
 
                     <button
                         type="submit" disabled={disableForm}
-                        className={`mt-6 w-full text-white p-2 rounded-md ${disableForm ? "bg-slate-400" : "bg-blue-500 hover:bg-blue-600"}`}
+                        className={`btn-login ${disableForm ? "btn-login-disabled" : "btn-login-active "}`}
                     >
                         Log In
                     </button>
-                    <div className='my-2  dark:text-[#999da7]'>
-                        <p className='text-sm'>Don&apos;t have an account? Please <button onClick={() => router.push("/signup")} title='goto signup' className='text-blue-600'>Sign Up</button>.</p>
-                        <p className='text-sm mt-2'>Forgotten password? <button onClick={() => router.push("/identity")} title='goto reset password' className='text-blue-600'>Reset Password</button>.</p>
+                    <div className='mt-2'>
+                        <p className='text-sm'>Don&apos;t have an account? Please <button onClick={() => router.push("/signup")} title='goto signup' className='text-blue-800 font-semibold dark:text-blue-500'>Sign Up</button></p>
+                        <p className='text-sm mt-2'>Forgotten password? <button onClick={() => router.push("/identity")} title='goto reset password' className='text-blue-800 font-semibold dark:text-blue-500'>Reset Password</button></p>
                     </div>
                 </form>
+
             </div>
         </div>
     );
