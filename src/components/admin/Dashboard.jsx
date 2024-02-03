@@ -9,6 +9,7 @@ import AuthContext from '@/contexts/AuthContext';
 import handleAdminAction from '@/utils/handleAdminAction';
 import getStats from '@/utils/getStats';
 import handleRemoveAdmin from '@/utils/handleRemoveAdmin';
+import LoadingSpinner from '../LoadingSkeletons/LoadingSpinner';
 const Dashboard = () => {
     const [postData, setPostData] = useState(null);
     const { fetchedUser } = useContext(AuthContext);
@@ -53,7 +54,7 @@ const removeAdmin = async(username)=>{
     return (
         <div className='cardinhome'>
             <h2 className='font-semibold text-center text-lg mt-6'>Total counts</h2>
-            {loadingData && <LoadingAdmin />}
+            {loadingData && <LoadingSpinner />}
 
             {postData && (
                 <div className='flex items-center flex-col'>
