@@ -118,7 +118,7 @@ const ModalUser = () => {
                             {
                                 user?.postCounts?.total > 0 && !seeAllPostsClicked && <>
                                     {fetchedUser?.isAdmin ? <button onClick={handleSeeAllPost} className="btn-green btn-green-active">See all post</button>
-                                        : (user?.postCounts?.approved > 0 && <button onClick={handleSeeAllPost} className="btn-green-active">See all post</button>)}
+                                        : (user?.postCounts?.approved > 0 && <button onClick={handleSeeAllPost} className="btn-green btn-green-active">See all post</button>)}
                                 </>
                             }
                             {

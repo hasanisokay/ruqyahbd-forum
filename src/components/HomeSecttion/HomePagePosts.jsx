@@ -233,7 +233,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                             height={41}
                                             priority={true}
                                             quality={100}
-                                            className={`w-[45px] h-[45px] rounded-full ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color":"offline-border-color" }`}
+                                            className={`w-[45px] h-[45px] rounded-full ${ onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color":"offline-border-color" }`}
                                             sizes="(max-width: 768px) 100vw, 33vw"
                                         />
                                         : <div className={`flex items-center justify-center rounded-full ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color":"offline-border-color" } w-[45px] h-[45px]`}>

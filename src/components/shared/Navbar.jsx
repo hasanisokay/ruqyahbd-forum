@@ -184,7 +184,7 @@ const Navbar = () => {
   // const logoSrc = theme === "dark" ? logoForDarkMode : logoForDayMode;
   const logoSrc = logoForDarkMode;
   return (
-    <div className="flex min-h-[50px] md:px-10 px-2 justify-between items-center shadow-xl font-semibold z-50 nav-bg" ref={navRef}>
+    <div className="flex min-h-[50px] md:px-10 px-2 justify-between items-center font-semibold z-50 nav-bg" ref={navRef}>
       <Link href={"/"}>
         <Image
           placeholder="blur"
