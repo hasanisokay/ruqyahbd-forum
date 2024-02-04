@@ -55,9 +55,9 @@ const NewNotice = () => {
                     <button
                         title="Post"
                         disabled={loadingNewNotice}
-                        className={`forum-btn1 ${newNoticeData === ""
-                            ? "bg-slate-500 cursor-default"
-                            : "greenbg text-white active:bg-[#398156] lg:hover:bg-[#0a4421]"
+                            className={`btn-green ${newNoticeData === ""
+                            ? "btn-green-disabled"
+                            : "btn-green-active"
                             }`}
                         type="submit"
                     >

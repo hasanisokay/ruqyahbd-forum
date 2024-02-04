@@ -139,19 +139,19 @@ const PendingPost = () => {
             <div className='flex gap-4 items-center justify-center'>
                 {
                     posts?.length > 0 && <div className='text-center my-2'>
-                        <button className='forum-btn1 greenbg' onClick={() => document.getElementById('approveAllModal').showModal()}>Approve All</button>
+                        <button className='btn-green-sm' onClick={() => document.getElementById('approveAllModal').showModal()}>Approve All</button>
                     </div>
                 }
                 {
                     posts?.length > 0 && <div className='text-center my-2'>
-                        <button className='forum-btn1 bg-red-500' onClick={() => document.getElementById('declineAllModal').showModal()}>Decline All</button>
+                        <button className='forum-red' onClick={() => document.getElementById('declineAllModal').showModal()}>Decline All</button>
                     </div>
                 }
             </div>
             <dialog id="approveAllModal" className="modal">
                 <div className="modal-box text-center">
                     <h3 className="font-bold text-lg">Sure to do this?</h3>
-                    <button onClick={handleApproveAll} className='forum-btn1 greenbg text-white'>Yes, I want to approve all</button>
+                    <button onClick={handleApproveAll} className='btn-green'>Yes, I want to approve all</button>
                 </div>
                 <form method="dialog" className="modal-backdrop cursor-default">
                     <button className='cursor-default'></button>
@@ -161,7 +161,7 @@ const PendingPost = () => {
             <dialog id="declineAllModal" className="modal">
                 <div className="modal-box text-center">
                     <h3 className="font-bold text-lg">Sure to do this?</h3>
-                    <button onClick={handleDeclineAll} className='forum-btn1 bg-red-500'>Yes, I want to decline all</button>
+                    <button onClick={handleDeclineAll} className='btn-red'>Yes, I want to decline all</button>
                 </div>
                 <form method="dialog" className="modal-backdrop cursor-default">
                     <button className='cursor-default'></button>
@@ -216,10 +216,10 @@ const PendingPost = () => {
                     }
                     <div className='flex items-center gap-6 mt-1'>
                         <div className='flex items-center flex-col cursor-pointer' >
-                            <span onClick={() => handleApprovePost({ actionBy: fetchedUser?.username, postAuthorUsername: post?.author?.username, postID: post?._id, action: "approve" }, setPosts)} className='forum-btn-sm2 hover:text-black greenbg lg:hover:bg-[#41925f]'> Approve</span>
+                            <span onClick={() => handleApprovePost({ actionBy: fetchedUser?.username, postAuthorUsername: post?.author?.username, postID: post?._id, action: "approve" }, setPosts)} className='btn-green-sm'> Approve</span>
                         </div>
                         <div className='flex flex-col items-center'>
-                            <span onClick={() => handleDeclinePost({ actionBy: fetchedUser?.username, postAuthorUsername: post?.author?.username, postID: post?._id, action: "decline" }, setPosts)} className='forum-btn-sm2 hover:text-black bg-red-600 lg:hover:bg-red-900'> Decline</span>
+                            <span onClick={() => handleDeclinePost({ actionBy: fetchedUser?.username, postAuthorUsername: post?.author?.username, postID: post?._id, action: "decline" }, setPosts)} className='btn-red'> Decline</span>
                         </div>
                     </div>
                 </div>

@@ -8,9 +8,10 @@ import LoadingSignUpPage from './LoadingSignUpPage';
 import createJWT from '@/utils/createJWT';
 import "@/../css/formstyles.css"
 import signIn from '@/utils/signIn.mjs';
+import isValidEmail from '@/utils/isValidEmail.mjs';
 const SignUpForm = () => {
 
-  const { fetchedUser, setFetchedUser } = useContext(AuthContext)
+  const { fetchedUser, setFetchedUser} = useContext(AuthContext)
   const search = useSearchParams();
   const from = search.get("redirectUrl") || "/";
 
@@ -93,18 +94,20 @@ const SignUpForm = () => {
     if (username.length < 3) {
       return setErrors((prevErrors) => ({ ...prevErrors, username: 'Username should be at least 3 character long' }));
     }
+    if (!isValidEmail(email)) {
+      return setErrors((prevErrors) => ({ ...prevErrors, email: 'Email is not valid' }));
+    }
     if (!isUsernameAvailable) {
       return
+    }
+    if (!gender) {
+      return setErrors((prevErrors) => ({ ...prevErrors, gender: 'Gender is required' }));
     }
     if (!password) {
       return setErrors((prevErrors) => ({ ...prevErrors, password: 'Password is required' }));
     }
-
     if (password !== retypePassword) {
       return setErrors((prevErrors) => ({ ...prevErrors, retypePassword: 'Passwords do not match' }));
-    }
-    if (!gender) {
-      return setErrors((prevErrors) => ({ ...prevErrors, gender: 'Gender is required' }));
     }
 
     const toastId = toast.loading("Loading...");
@@ -198,7 +201,7 @@ const SignUpForm = () => {
   if (!fetchedUser && !isPending) {
     return (
       <div className='form-container'>
-        <div className={`form-div form-div-signup ${(username !== "" || password !== "") && "login-animation"}`}>
+        <div className={`form-div form-div-signup ${(username !== "" || password !== "" || name !=="" || email !=="" || password !=="" || retypePassword !=="" || gender !=="" || phone !=="") && "login-animation"}`}>
           <form
             onSubmit={handleSubmit}
             className={`gradient-bg  z-20 ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'}`}
@@ -242,7 +245,7 @@ const SignUpForm = () => {
               Email
             </label>
             <input
-              type="email"
+              type="text"
               id="email"
               value={email}
               onChange={(e) => handleEmailOnchange(e)}
@@ -305,7 +308,7 @@ const SignUpForm = () => {
 
             <button
               type="submit"
-              className="btn-login btn-login-active"
+              className="btn-green btn-green-active"
             >
               Sign Up
             </button>

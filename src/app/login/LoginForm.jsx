@@ -10,6 +10,7 @@ import LoadingSpinner from '@/components/LoadingSkeletons/LoadingSpinner';
 import "@/../css/formstyles.css";
 import signIn from '@/utils/signIn.mjs';
 
+
 const LoginForm = () => {
     const { loading, fetchedUser, setFetchedUser } = useContext(AuthContext);
     const [disableForm, setDisableForm] = useState(false);
@@ -20,8 +21,6 @@ const LoginForm = () => {
     const { theme } = useTheme();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    // const inputClasses = `w-[300px] p-2 border rounded-md focus:outline-none border-none focus:border-none ${theme === 'dark' ? 'bg-[#3d404a]' : 'bg-white'
-    //     } `;
     const [errors, setErrors] = useState({
         username: '',
         password: '',
@@ -56,7 +55,7 @@ const LoginForm = () => {
         const toastId = toast.loading("Loading...");
         try {
             setDisableForm(true)
-            const res = await signIn(username, password, from)
+            const res = await signIn(username, password)
             if (res.status === 404) {
                 return toast.error(res.message)
             }
@@ -123,7 +122,7 @@ const LoginForm = () => {
 
                     <button
                         type="submit" disabled={disableForm}
-                        className={`btn-login ${disableForm ? "btn-login-disabled" : "btn-login-active "}`}
+                        className={`btn-green ${disableForm ? "btn-green-disabled" : "btn-green-active "}`}
                     >
                         Log In
                     </button>

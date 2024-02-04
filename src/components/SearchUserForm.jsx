@@ -35,7 +35,7 @@ const SearchUserForm = ({ onSearch }) => {
             <div className='text-center'>
                 <button
                     type="submit"
-                    className="forum-btn1 greenbg"
+                    className="btn-green-sm"
                 >
                     Search
                 </button>

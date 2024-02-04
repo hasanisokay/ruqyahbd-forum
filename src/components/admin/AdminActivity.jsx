@@ -165,12 +165,12 @@ const AdminActivity = () => {
                             {
                                 post?.declinedBy && <div className='flex gap-4'>
 
-                                    <button className='btn btn-xs text-white greenbg' onClick={() => handleApprovePost({ actionBy: fetchedUser?.username, postAuthorUsername: post?.author?.username, postID: post?.postID, action: "approve", updateActivityLogID: post?._id }, null)}>Approve</button>
+                                    <button className='btn-green-active p-1 rounded-md text-[10px]' onClick={() => handleApprovePost({ actionBy: fetchedUser?.username, postAuthorUsername: post?.author?.username, postID: post?.postID, action: "approve", updateActivityLogID: post?._id }, null)}>Approve</button>
                                 </div>
                             }
                             <p className='font-semibold'>Action Date: {formatDateInAdmin(new Date(post?.timestamp))}</p>
                             {
-                                post?.postID && post?.action === "approve" && <button className='btn btn-xs btn-warning' onClick={() => router.push(`/${post.postID}`)}>Go to post</button>
+                                post?.postID && post?.action === "approve" && <button className='text-[10px] btn-blue' onClick={() => router.push(`/${post.postID}`)}>Go to post</button>
                             }
                         </div>
                     </div>

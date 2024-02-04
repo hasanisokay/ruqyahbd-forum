@@ -82,18 +82,20 @@ const removeAdmin = async(username)=>{
                         <p>Phone: {retrievedUser?.phone}</p>
                         <p>Email: {retrievedUser?.email}</p>
                         <p>Admin Status: {retrievedUser?.isAdmin ? "Admin" : "No"}</p>
+                        <div className='flex gap-2'>
                         {
-                            !retrievedUser?.isAdmin && <button onClick={() => handleAdminAction(retrievedUser.username, "make-admin", fetchedUser.username)} className='forum-btn1 greenbg text-white mr-2' >Make Admin</button>
+                            !retrievedUser?.isAdmin && <button onClick={() => handleAdminAction(retrievedUser.username, "make-admin", fetchedUser.username)} className='btn-green-sm' >Make Admin</button>
                         }
                         {
-                            !retrievedUser?.blocked ? <button onClick={() => handleAdminAction(retrievedUser.username, "block", fetchedUser.username)} className='forum-btn1 bg-red-500 mr-2 hover:bg-red-600'>Block</button> : <button onClick={() => handleAdminAction(retrievedUser?.username, "unblock", fetchedUser?.username)} className='forum-btn1 greenbg text-white mr-2'>Unblock</button>
+                            !retrievedUser?.blocked ? <button onClick={() => handleAdminAction(retrievedUser.username, "block", fetchedUser.username)} className='btn-red'>Block</button> : <button onClick={() => handleAdminAction(retrievedUser?.username, "unblock", fetchedUser?.username)} className='green-btn-sm'>Unblock</button>
                         }
                         {
-                            (fetchedUser?.username ==="admin" || fetchedUser?.username ==="hasan") && retrievedUser?.isAdmin && <button onClick={()=>removeAdmin(retrievedUser?.username)} className='forum-btn1 bg-red-500 hover:bg-red-600'>Remove as Admin</button>
+                            (fetchedUser?.username ==="anwar" ||fetchedUser?.username ==="bonjoi" || fetchedUser?.username ==="almahmud" || fetchedUser?.username ==="hasan") && retrievedUser?.isAdmin && <button onClick={()=>removeAdmin(retrievedUser?.username)} className='btn-red'>Remove as Admin</button>
                         }
+                        </div>
                         <p>Gender: {retrievedUser?.gender}</p>
                         <p>Joined: {formatDateInAdmin(new Date(retrievedUser?.joined))}</p>
-                        <button onClick={() => handleAdminAction(retrievedUser.username, "delete", fetchedUser.username)} className='forum-btn1 bg-red-700'>Delete User</button>
+                        <button onClick={() => handleAdminAction(retrievedUser.username, "delete", fetchedUser.username)} className='btn-red'>Delete User</button>
                     </div>}
                     <div className="modal-action">
                         <form method="dialog">

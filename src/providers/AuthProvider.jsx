@@ -124,11 +124,14 @@ const AuthProvider = ({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fetchedUser])
 
+
+
     const value = {
         fetchedUser,
         setFetchedUser,
         loading,
         setLoading,
+        setFetchedUser, 
         setLoggedOut,
         loggedOut,
         notificationsCount,

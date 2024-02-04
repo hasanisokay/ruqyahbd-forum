@@ -142,6 +142,8 @@ const NewPost = () => {
                     className="textarea w-full resize-none placeholder-shown:text-center bg-slate-200 dark:bg-[#3b3b3b] focus:outline-none"
                     placeholder="Write your post"
                     onClick={() => setShowNewPostModal(true)}
+                    readOnly={true}
+                    // onFocus={() => setShowNewPostModal(true)}
                 />
 
             </div>
@@ -225,14 +227,14 @@ const NewPost = () => {
                                 </button>}
                             </div>
 
-                            {newPostData && (
-                                <div className="text-center mt-4">
+                            {(
+                                <div className="text-center">
                                     <button
                                         title="Post"
-                                        disabled={loadingNewPost}
-                                        className={`forum-btn1 ${newPostData === ""
-                                            ? "bg-[#494a54] cursor-default"
-                                            : "greenbg active:bg-[#22c55e] lg:hover:bg-[#3c975e]"
+                                        disabled={ !newPostData|| loadingNewPost}
+                                        className={`btn-green ${newPostData === ""
+                                            ? "btn-green-disabled"
+                                            : "btn-green-active"
                                             }`}
                                         type="submit"
                                     >

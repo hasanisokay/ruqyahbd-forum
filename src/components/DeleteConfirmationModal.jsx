@@ -52,8 +52,8 @@ const DeleteConfirmationModal = ({ id, isAuthorized, setterFunction, commentID, 
                 <div className="modal-box">
                     <p className="text-center font-semibold">Sure to do this?</p>
                     <div className="flex gap-2 justify-center items-center">
-                        <button className="forum-btn1 bg-red-600" onClick={() => setConfirm(true)}>Hit it</button>
-                        <button className="forum-btn1 greenbg text-white" onClick={() => setConfirm(false)}>No, changed my mind</button>
+                        <button className="btn-red" onClick={() => setConfirm(true)}>Hit it</button>
+                        <button className="btn-green btn-green-active" onClick={() => setConfirm(false)}>No, changed my mind</button>
 
                     </div>
                 </div>

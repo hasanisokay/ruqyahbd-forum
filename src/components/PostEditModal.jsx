@@ -202,7 +202,7 @@ const PostEditModal = ({ setterFunction, post, setPost }) => {
                         </div>
 
                         <div className="text-center">
-                            <button type="submit" className="text-[10px] forum-btn1 greenbg">Submit edit</button>
+                            <button type="submit" className="btn-green btn-green-active">Submit edit</button>
                         </div>
                     </form>
                 </div>

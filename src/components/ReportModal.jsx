@@ -87,10 +87,10 @@ const ReportModal = ({ type, postID, commentID, replyID }) => {
                         </div>
 
                         <div className="modal-action">
-                            <button type="button" onClick={() => setShowReportModal(false)} className="px-2 py-1 rounded-md bg-slate-300 text-black text-xs">
+                            <button type="button" onClick={() => setShowReportModal(false)} className="btn-red">
                                 Close
                             </button>
-                            <button type="submit" className="px-2 py-1 rounded-md text-white  text-xs greenbg">
+                            <button type="submit" className="btn-green-sm">
                                 Submit Report
                             </button>
                         </div>

@@ -5,7 +5,7 @@ import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import handleAdminAction from "@/utils/handleAdminAction";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import useTheme from "@/hooks/useTheme";
 import makeUrlsClickable from "@/utils/makeUrlsClickable";
@@ -101,15 +101,13 @@ const ModalUser = () => {
                                 <p className="text-xs"><span>{user?.isAdmin ? "Admin" : "Member"} since</span> {formatDateForUserJoined(new Date(user?.joined || new Date()))}</p>
                                 <p className="text-xs">Gender: {user?.gender}</p>
                             </div>
-                            {fetchedUser?.isAdmin && <div className="flex gap-2 items-center justify-center mt-2">
+                            {fetchedUser?.isAdmin && <p className="text-center">
                                 {
-                                    user?.blocked ? <span className="forum-btn-sm greenbg cursor-pointer tex-white" onClick={() => handleAdminAction(user?.username, "unblock", fetchedUser?.username)}>Unblock</span> : <span className="forum-btn-sm bg-red-500 lg:hover:bg-red-600 cursor-pointer text-white" onClick={() => handleAdminAction(user?.username, "block", fetchedUser?.username)}>Block</span>
+                                    user?.blocked ? <button className="btn-green btn-green-active" onClick={() => handleAdminAction(user?.username, "unblock", fetchedUser?.username)}>Unblock</button> : <button className="btn-red" onClick={() => handleAdminAction(user?.username, "block", fetchedUser?.username)}>Block</button>
                                 }
-                                {/* <span className="forum-btn-sm bg-red-700 cursor-pointer" onClick={() => handleAdminAction(user?.username, "make-admin")}>Make Admin</span> */}
-                                {/* <span className="forum-btn-sm bg-red-700 cursor-pointer" onClick={() => handleAdminAction(user?.username, "delete")}>Delete User</span> */}
-                            </div>}
+                            </p>}
                             <div>
-                                <p className="text-sm text-center">Posts By {user?.name}</p>
+                                <p className="text-sm">Posts By {user?.name}</p>
                                 <p className="text-xs">Total: {user?.postCounts?.total || 0}</p>
                                 {!user?.isAdmin && user?.postCounts?.total > 0 && <div className="text-xs">
                                     <p>Pending: {user?.postCounts?.pending || 0}</p>
@@ -118,10 +116,10 @@ const ModalUser = () => {
                                 </div>}
                             </div>
                             {
-                                user?.postCounts?.total > 0 && !seeAllPostsClicked && <div className="my-2">
-                                    {fetchedUser?.isAdmin ? <span onClick={handleSeeAllPost} className="forum-btn-sm greenbg cursor-pointer text-white">See all post</span>
-                                        : user?.postCounts?.approved > 0 && <span onClick={handleSeeAllPost} className="forum-btn-sm greenbg cursor-pointer text-white">See all post</span>}
-                                </div>
+                                user?.postCounts?.total > 0 && !seeAllPostsClicked && <>
+                                    {fetchedUser?.isAdmin ? <button onClick={handleSeeAllPost} className="btn-green btn-green-active">See all post</button>
+                                        : (user?.postCounts?.approved > 0 && <button onClick={handleSeeAllPost} className="btn-green-active">See all post</button>)}
+                                </>
                             }
                             {
                                 loadingPostData && <LoadingModalUser />
@@ -188,7 +186,7 @@ const ModalUser = () => {
                                             {
                                                 fetchedUser?.isAdmin && <div className="text-xs my-2">
                                                     {
-                                                        post?.status === "pending" && <div> <span onClick={() => handleApprovePost({ actionBy: fetchedUser?.username, postAuthorUsername: selectedUsernameToShowDetails, postID: post?._id, action: "approve" }, setPostsByUser)} className="greenbg rounded-md mr-4 px-[4px] py-[2px] text-white cursor-pointer">Approve</span>  <span onClick={() => handleDeclinePost({ actionBy: fetchedUser.username, postAuthorUsername: selectedUsernameToShowDetails, postID: post?._id, action: "decline" }, setPostsByUser)} className="bg-red-700 rounded-md px-[4px] py-[2px] text-white cursor-pointer">Decline</span> </div>
+                                                        post?.status === "pending" && <div> <button onClick={() => handleApprovePost({ actionBy: fetchedUser?.username, postAuthorUsername: selectedUsernameToShowDetails, postID: post?._id, action: "approve" }, setPostsByUser)} className="btn-green-sm">Approve</button>  <button onClick={() => handleDeclinePost({ actionBy: fetchedUser.username, postAuthorUsername: selectedUsernameToShowDetails, postID: post?._id, action: "decline" }, setPostsByUser)} className="bg-red-700 rounded-md px-[4px] py-[2px] text-white cursor-pointer">Decline</button> </div>
                                                     }
                                                 </div>
                                             }

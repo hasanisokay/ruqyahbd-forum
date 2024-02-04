@@ -120,7 +120,7 @@ const DeclinedPosts = () => {
 
                 {
                     posts?.length > 0 && <div className='text-center my-2 ml-1 '>
-                        <button className='forum-btn1 bg-red-600' onClick={() => document.getElementById('my_modal_2').showModal()}>Delete All Permanently</button>
+                        <button className='btn-red' onClick={() => document.getElementById('my_modal_2').showModal()}>Delete All Permanently</button>
                     </div>
                 }
                 <dialog id="my_modal_2" className="modal">
@@ -178,10 +178,10 @@ const DeclinedPosts = () => {
                         }
                         <div className='flex items-center gap-6 mt-2'>
                             <div className='flex items-center flex-col cursor-pointer' >
-                                <span onClick={() => handleApprovePost({actionBy: fetchedUser?.name, postAuthorUsername: post?.authorInfo?.username, postID: post?._id, action: "approve", updateActivityLogID: true }, null)} className='forum-btn1 greenbg lg:hover:bg-[#45a167]'> Approve</span>
+                                <button onClick={() => handleApprovePost({actionBy: fetchedUser?.name, postAuthorUsername: post?.authorInfo?.username, postID: post?._id, action: "approve", updateActivityLogID: true }, null)} className='btn-green-sm'> Approve</button>
                             </div>
                             <div className='flex flex-col items-center'>
-                                <span onClick={() => handleDeletePermanently(post?._id, post?.authorInof?.username)} className='forum-btn1 bg-red-500 lg:hover:bg-red-600'> Delete Permanently</span>
+                                <button onClick={() => handleDeletePermanently(post?._id, post?.authorInof?.username)} className='btn-red'> Delete Permanently</button>
                             </div>
                         </div>
                     </div>

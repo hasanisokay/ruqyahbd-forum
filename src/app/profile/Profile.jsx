@@ -81,8 +81,8 @@ const Profile = () => {
                 </div>
             {
                 <div className="w-full py-4 text-center">
-                    <label className="cursor-pointer greenbg lg:hover:bg-[#0f2216] text-white py-2 px-4 rounded-lg text-center">
-                        Set Profile Photo
+                    <label className="btn-blue">
+                        {photoFileName ?"Choose another file" : "Set Profile Photo"}
                         <input
                             type="file"
                             accept="image/*"
@@ -95,7 +95,7 @@ const Profile = () => {
                         <p className="mt-2 text-gray-500">Selected File: {photoFileName}</p>
                     )}
                     {
-                        photoFileName && <button className="forum-btn1 greenbg lg:hover:bg-[#0f2216]" onClick={handleSetProfilePicture}>Start Upload</button>
+                        photoFileName && <button className="btn-green btn-green-active" onClick={handleSetProfilePicture}>Start Upload</button>
                     }
                 </div>
             }

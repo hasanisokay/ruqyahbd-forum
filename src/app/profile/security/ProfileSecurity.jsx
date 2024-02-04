@@ -130,9 +130,9 @@ const ProfileSecurity = () => {
 
                 <button
                     type="submit"
-                    className="forum-btn1 greenbg text-white"
+                    className="btn-green btn-green-active"
                 >
-                    Change Password
+                    Submit
                 </button>
             </form>
 
