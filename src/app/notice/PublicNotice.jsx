@@ -1,10 +1,10 @@
 "use client"
 import formatDateInAdmin from '@/utils/formatDateInAdmin';
 import { useContext, useEffect, useState } from 'react';
-import LoadingNoticePublic from './LoadingNoticePublic';
 import AuthContext from '@/contexts/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import LoadingSpinner from '@/components/LoadingSkeletons/LoadingSpinner';
 
 const PublicNotice = () => {
     const [data, setData] = useState(null);
@@ -39,7 +39,7 @@ const PublicNotice = () => {
         fetchData();
     }, []);
 
-    if (loadingNotice) return <LoadingNoticePublic />
+    if (loadingNotice) return <LoadingSpinner />
 
     return (
         <div className='cardinhome'>

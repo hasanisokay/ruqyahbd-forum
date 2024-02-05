@@ -119,7 +119,7 @@ const SignUpForm = () => {
         },
         body: JSON.stringify({ name, username, email, phone, password, gender, photoURL: "", joined: formatDate() }),
       });
-      const res = await signIn(username, password)
+      const res = await signIn(username, password, from)
       if (res.status === 404) {
         return toast.error(res.message)
       }

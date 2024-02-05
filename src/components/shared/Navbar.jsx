@@ -5,8 +5,8 @@ import { afterLoginNavData, beforeLoginNavData, commonNavData } from "@/data/nav
 import useTheme from "@/hooks/useTheme";
 import { useContext, useEffect, useRef, useState, useTransition } from "react";
 import AuthContext from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
-import logoForDarkMode from "@/../public/images/bd-support-1.png"
+import { useRouter} from "next/navigation";
+import logoSrc from "@/../public/images/bd-support-1.png"
 import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import formatRelativeDate from "@/utils/formatDate";
 import notificationMaker from "@/utils/notificationMaker";
@@ -15,8 +15,6 @@ import BellIcon from "../SVG/BellIcon";
 import UserIcon from "../SVG/UserIcon";
 import { LoadingNotifications } from "../LoadingSkeletons/Loaders";
 import logOut from "@/utils/logOut.mjs";
-
-
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
@@ -180,15 +178,12 @@ const Navbar = () => {
     setShowNotificationMenu(false);
     return router.push("/notifications");
   }
-
-  // const logoSrc = theme === "dark" ? logoForDarkMode : logoForDayMode;
-  const logoSrc = logoForDarkMode;
   return (
-    <div className="flex min-h-[50px] md:px-10 px-2 justify-between items-center font-semibold z-50 nav-bg" ref={navRef}>
+    <nav className="flex min-h-[50px] md:px-10 px-2 justify-between items-center font-semibold z-50 nav-bg" ref={navRef}>
       <Link href={"/"}>
         <Image
           placeholder="blur"
-          blurDataURL={`${process.env.NEXT_PUBLIC_BASEURL}/_next/image?${logoForDarkMode}?w=20&h=20`}
+          blurDataURL={`${process.env.NEXT_PUBLIC_BASEURL}/_next/image?${logoSrc}?w=20&h=20`}
           className={`dark:filter w-[150px] h-auto dark:brightness-0 dark:invert py-1 `}
           src={logoSrc}
           unoptimized
@@ -212,7 +207,7 @@ const Navbar = () => {
             fetchedUser && fetchedUser?.isAdmin && <li><NavLink activeClassName={"text-[#308853] text-semibold"} href={"/chat"}>Chat</NavLink></li>
           }
           {
-            fetchedUser && <li onClick={()=>logOut(setFetchedUser, setLoading, setLoggedOut)} className="cursor-pointer" title="Log out from your account">LogOut</li>
+            fetchedUser && <li onClick={() => logOut(setFetchedUser, setLoading, setLoggedOut)} className="cursor-pointer" title="Log out from your account">LogOut</li>
           }
           <li>
             <label htmlFor="darkModeToggle" className="swap swap-rotate lg:ml-2">
@@ -264,38 +259,38 @@ const Navbar = () => {
             : allNotifications.length > 0 ? <ul>
               {allNotifications && allNotifications.length > 0 && allNotifications?.map((n, index) => (
                 <li
-                key={index}
+                  key={index}
                   onClick={() => handleNotificationsClick(n?.postID, n?.read, n?.commentID, n?.replyID)}
                   title={`On ${formatDateInAdmin(new Date(n?.date))}`}
                   className={`p-2 font-normal  rounded-lg lg:hover:bg-slate-800 lg:hover:text-white cursor-pointer my-2 ${n.read === false ? "dark:text-white" : "text-gray-400 lg:hover:text-gray-400"
                     }`}
-                > 
-                    <div className="flex gap-[6px] items-center">
-                      {n?.author?.photoURL ?
-                        <Image src={n?.author?.photoURL} blurDataURL='' alt={`profile photo of ${n?.author?.name}`}
-                          width={30} height={0} priority={true}
-                          style={{
-                            width: "25px",
-                            height: "25px",
-                            borderRadius: '50%',
-                          }}
-                          className='border-gray-400 border-[1.5px]'
-                        />
-                        : <div className='flex items-center justify-center rounded-full border-gray-400 border-[1.5px] w-[25px] h-[25px] p-[4px]'>
-                          <UserIcon width={"25px"} height={"25px"} />
-                        </div>
-                      }
-                      <div className="flex flex-col">
-                        <p>
-                          {notificationMaker(n?.author?.name, n?.type, n?.commentAuthor && n?.commentAuthor[0]?.username, n?.postAuthor && n?.postAuthor[0]?.username, fetchedUser?.username, n?.content)}
-                        </p>
-                        <p className={`text-[10px] ${n.read === false ? "text-blue-600" : "text-gray-400"} `}>
-                          {formatRelativeDate(new Date(n.date)) + " ago"}
-                        </p>
+                >
+                  <div className="flex gap-[6px] items-center">
+                    {n?.author?.photoURL ?
+                      <Image src={n?.author?.photoURL} blurDataURL='' alt={`profile photo of ${n?.author?.name}`}
+                        width={30} height={0} priority={true}
+                        style={{
+                          width: "25px",
+                          height: "25px",
+                          borderRadius: '50%',
+                        }}
+                        className='border-gray-400 border-[1.5px]'
+                      />
+                      : <div className='flex items-center justify-center rounded-full border-gray-400 border-[1.5px] w-[25px] h-[25px] p-[4px]'>
+                        <UserIcon width={"25px"} height={"25px"} />
                       </div>
+                    }
+                    <div className="flex flex-col">
+                      <p>
+                        {notificationMaker(n?.author?.name, n?.type, n?.commentAuthor && n?.commentAuthor[0]?.username, n?.postAuthor && n?.postAuthor[0]?.username, fetchedUser?.username, n?.content)}
+                      </p>
+                      <p className={`text-[10px] ${n.read === false ? "text-blue-600" : "text-gray-400"} `}>
+                        {formatRelativeDate(new Date(n.date)) + " ago"}
+                      </p>
                     </div>
+                  </div>
                 </li>
-                
+
               ))}
               {
                 allNotifications?.length < 1 ? <li className="p-2 font-normal  rounded-lg lg:hover:bg-slate-500 lg:hover:text-white cursor-pointer my-1 text-center dark:bg-slate-950">No notification available</li> : <li onClick={clickSeeAll} className="p-2 font-normal  rounded-lg lg:hover:bg-slate-800 lg:hover:text-white cursor-pointer my-1 text-center dark:bg-slate-800 dark:lg:hover:bg-slate-700">See All</li>
@@ -348,7 +343,7 @@ const Navbar = () => {
         </label>
 
       </div>
-    </div>
+    </nav>
 
   );
 };

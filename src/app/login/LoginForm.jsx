@@ -17,6 +17,7 @@ const LoginForm = () => {
     const search = useSearchParams();
     const from = search.get("redirectUrl") || "/";
     const router = useRouter();
+    console.log(from);
     const { refresh, push } = router;
     const { theme } = useTheme();
     const [username, setUsername] = useState('');
@@ -55,7 +56,7 @@ const LoginForm = () => {
         const toastId = toast.loading("Loading...");
         try {
             setDisableForm(true)
-            const res = await signIn(username, password)
+            const res = await signIn(username, password, from)
             if (res.status === 404) {
                 return toast.error(res.message)
             }
@@ -79,7 +80,7 @@ const LoginForm = () => {
         }
     };
     if (!fetchedUser && loading) return <LoadingSpinner />
-    if (fetchedUser) return push("/")
+    if (fetchedUser) return push(from)
     if (!fetchedUser && !loading) return (
         // min-h-[calc(100dvh-58.2px]
         <div className='form-container'>

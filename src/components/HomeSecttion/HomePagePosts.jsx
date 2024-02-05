@@ -317,10 +317,10 @@ const HomePagePosts = ({ tenPostsArray }) => {
                 </div>
             }
             {/* Infinite scrolling trigger */}
-            <div ref={infiniteScrollRef} style={{ height: '10px' }} />
             {
                 showReportModal && <ReportModal postID={postIdToReport} key={postIdToReport} type={"post"} />
             }
+            <div ref={infiniteScrollRef} style={{ height: '10px' }} />
         </div>
     );
 };
