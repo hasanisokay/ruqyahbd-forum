@@ -42,11 +42,11 @@ const PublicNotice = () => {
     if (loadingNotice) return <LoadingSpinner />
 
     return (
-        <div className='cardinhome'>
+        <div className='cardinhome mt-4'>
             {
                 (!loadingNotice && data?.length === 0) ? <div className='py-6 text-center'>
                     No notice
-                </div> : (!loadingNotice && <h3 className='text-center text-lg font-semibold'>Welcome to Notice Section</h3>)
+                </div> : (!loadingNotice && <h3 className='text-center text-2xl font-semibold'>Welcome to Notice Section</h3>)
             }            {
                 data?.map((notice, index) => <div key={notice._id}>
                     <div className="collapse collapse-arrow border-2 shadow-md my-1">

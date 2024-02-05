@@ -23,9 +23,9 @@ export const metadata = {
 };
 const ProfilePage = () => {
   return (
-    <div>
+    <>
       <Profile />
-    </div>
+    </>
   );
 };
 

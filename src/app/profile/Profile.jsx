@@ -1,5 +1,5 @@
 'use client'
-import { LoadingProfile } from "@/components/LoadingSkeletons/Loaders";
+import LoadingSpinner from "@/components/LoadingSkeletons/LoadingSpinner";
 import UserIcon from "@/components/SVG/UserIcon";
 import AuthContext from "@/contexts/AuthContext";
 import resizeImage from "@/utils/resizeImage";
@@ -69,7 +69,7 @@ const Profile = () => {
         }
     }, [loading, fetchedUser, from, replace])
     if (!showProfile) {
-        return <LoadingProfile />
+        return <LoadingSpinner />
     }
 
     const { username, email, name, gender, phone, joined, isAdmin, photoURL } = fetchedUser || {};

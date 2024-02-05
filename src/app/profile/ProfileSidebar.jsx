@@ -16,15 +16,13 @@ const navLinks = [
 ]
 const ProfileSidebar = () => {
     return (
-        <div>
-        <ul className="font-semibold flex lg:flex-row flex-col items-center justify-center gap-4">
+        <ul className="font-semibold flex lg:flex-row flex-col items-center justify-center gap-4 mt-4">
             {
                 navLinks.map(({ path, title }) => <li key={path}>
                     <NavLink exact activeClassName={"text-[#308853]"} href={path}>{title}</NavLink>
                 </li>)
             }
         </ul>
-    </div>
     );
 };
 

@@ -11,7 +11,7 @@ import signIn from '@/utils/signIn.mjs';
 import isValidEmail from '@/utils/isValidEmail.mjs';
 const SignUpForm = () => {
 
-  const { fetchedUser, setFetchedUser} = useContext(AuthContext)
+  const { fetchedUser, setFetchedUser } = useContext(AuthContext)
   const search = useSearchParams();
   const from = search.get("redirectUrl") || "/";
 
@@ -133,7 +133,7 @@ const SignUpForm = () => {
       console.error('Error while sign up: ', error.message);
       return false;
     }
-    finally{
+    finally {
       toast.dismiss(toastId)
     }
   };
@@ -201,7 +201,7 @@ const SignUpForm = () => {
   if (!fetchedUser && !isPending) {
     return (
       <div className='form-container'>
-        <div className={`form-div form-div-signup ${(username !== "" || password !== "" || name !=="" || email !=="" || password !=="" || retypePassword !=="" || gender !=="" || phone !=="") && "login-animation"}`}>
+        <div className={`form-div form-div-signup ${(username !== "" || password !== "" || name !== "" || email !== "" || password !== "" || retypePassword !== "" || gender !== "" || phone !== "") && "login-animation"}`}>
           <form
             onSubmit={handleSubmit}
             className={`gradient-bg  z-20 ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'}`}
@@ -312,9 +312,7 @@ const SignUpForm = () => {
             >
               Sign Up
             </button>
-            <div className='my-2'>
-              <p className='text-sm'>Already have an account? Please <button onClick={() => push("/login")} title='goto login' className='text-blue-800 font-semibold dark:text-blue-500'>login</button>.</p>
-            </div>
+            <p className='text-sm'>Already have an account? Please <button onClick={() => push("/login")} title='goto login' className='text-blue-800 font-semibold dark:text-blue-500'>login</button>.</p>
           </form>
         </div>
       </div>

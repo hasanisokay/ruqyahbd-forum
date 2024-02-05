@@ -111,16 +111,3 @@ export const LoadingNotifications = () => {
         </SkeletonTheme>
     );
 };
-
-export const LoadingProfile = () => {
-    const { theme } = useTheme();
-    const { baseColor, highlightColor } = getSkeletonThemeColors(theme);
-    return (
-        <div className="flex flex-col items-center justify-center p-2 m-2">
-            <SkeletonTheme baseColor={baseColor} highlightColor={highlightColor}>
-                <Skeleton count={1} width={300} height={250} />
-                <Skeleton count={6} width={290} height={8} />
-            </SkeletonTheme>
-        </div>
-    );
-};

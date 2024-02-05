@@ -201,7 +201,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
         setShowDeleteModal(true)
     }
     return (
-        <div>
+        <>
             {posts?.map((post) => (
                 <div key={post._id} className='cursor-default bg-[#fffef9] shadow-xl dark:bg-[#242526] mx-2 mb-4 rounded-lg cardinhome min-h-[10vh]'>
                     <div className='p-2'>
@@ -254,7 +254,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                 }
                             </div>
                         </div>
-                        <div >{expandedPosts?.includes(post?._id) ? <p className='scroll-reveal' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(post?.post, theme) }}></p> : <p className='scroll-reveal' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(truncateText(post?.post), theme) }}></p>}
+                        <div>{expandedPosts?.includes(post?._id) ? <p className='scroll-reveal' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(post?.post, theme) }}></p> : <p className='scroll-reveal' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(truncateText(post?.post), theme) }}></p>}
                             {!expandedPosts?.includes(post?._id) && post?.post?.length > 200 && (
                                 <button onClick={() => handleToggleExpand(setExpandedPosts , post?._id)} className='text-[10px] font-semibold'>... Show More</button>
                             )}
@@ -270,9 +270,9 @@ const HomePagePosts = ({ tenPostsArray }) => {
                     }
                     <div>
                         {
-                            post?.videos && post?.videos?.length > 0 && <div>
+                            post?.videos && post?.videos?.length > 0 && <>
                                 <VideosInPost videosArray={post?.videos} />
-                            </div>
+                            </>
                         }
                         {post?.photos && post?.photos?.length > 0 && <div className={`${post?.videos?.length > 0 && ""}`}>
                             <PhotosInPost
@@ -282,12 +282,12 @@ const HomePagePosts = ({ tenPostsArray }) => {
                         </div>}
                     </div>
                     <div className='flex items-center p-2 gap-6 mt-2'>
-                        <div>
+                        <>
                             <Link href={`/${post?._id}`} className='flex items-center flex-col'>
                             <CommentIcon fill={post?.comment > 0 ? "#7637e7" : theme==="dark"?"#ffffff":"#000000"} />
                                 <span className='text-xs'>{post?.comment || 0} Comments</span>
                             </Link>
-                        </div>
+                        </>
                         <div className='flex flex-col items-center'>
                             {post?.likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
                                 <HeartIcon classes={"stroke-2 stroke-red-600 fill-red-600"} title={'You Liked this. Click to dislike'} handleOnclick={() => handleDislike(post?._id)} />
@@ -305,23 +305,19 @@ const HomePagePosts = ({ tenPostsArray }) => {
                 </div>
             ))}
 
-            {loadingPosts && <div>
-                <LoadingCards />
-            </div>}
-            {size > 0 && !error && !loadingPosts && noMorePosts && <div className='py-1 text-center'>
+            {loadingPosts && <LoadingCards />}
+            {size > 0 && !error && !loadingPosts && noMorePosts && <p className='py-1 text-center'>
                 No more posts
-            </div>}
+            </p>}
             {
-                error && error?.length > 0 && <div className='text-center'>
-                     <p>{error} Please reload the page.</p>
-                </div>
+                error && error?.length > 0 && <p className='text-center'>{error} Please reload the page.</p>
             }
             {/* Infinite scrolling trigger */}
             {
                 showReportModal && <ReportModal postID={postIdToReport} key={postIdToReport} type={"post"} />
             }
             <div ref={infiniteScrollRef} style={{ height: '10px' }} />
-        </div>
+        </>
     );
 };
 
