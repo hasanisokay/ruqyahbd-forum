@@ -18,11 +18,11 @@ const nextConfig = {
     async headers() {
       return [
         {
-          source: "/api/:path*",
+          source: "/",
           headers: [
             {
               key: "Access-Control-Allow-Origin",
-              value: "http://localhost:3001 http://localhost:3002",
+              value: "https://forumsocket.ruqyahbd.org",
             },
           ],
         },
