@@ -22,7 +22,7 @@ const nextConfig = {
           headers: [
             {
               key: "Access-Control-Allow-Origin",
-              value: "https://forumsocket.ruqyahbd.org",
+              value: "http://localhost:3001 https://forumsocket.ruqyahbd.org",
             },
           ],
         },
