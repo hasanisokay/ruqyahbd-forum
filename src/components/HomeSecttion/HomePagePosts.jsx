@@ -202,7 +202,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
     return (
         <>
             {posts?.map((post) => (
-                <div key={post._id} className='cursor-default bg-[#fffef9] shadow-xl dark:bg-[#242526] mx-2 mb-4 rounded-lg cardinhome min-h-[10vh]'>
+                <div key={post._id} className='cursor-default bg-[#fffef9] shadow-xl dark:bg-[#242526] mx-2 mt-4 mb-4 rounded-lg cardinhome min-h-[10vh]'>
                     <div className='p-2'>
                         <div className='relative'>
                             <ThreeDotsIcon
