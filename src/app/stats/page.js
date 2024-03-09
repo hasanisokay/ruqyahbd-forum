@@ -13,12 +13,12 @@ export const metadata = {
     "values",
   ],
   other: {
-    "twitter:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+    "twitter:image": "https://i.ibb.co/9qLHRY0/stats.jpg",
     "twitter:card": "summary_large_image",
     "og-url":  `${process.env.NEXT_PUBLIC_BASEURL}/stats`,
-    "og:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+    "og:image": "https://i.ibb.co/9qLHRY0/stats.jpg",
   },
-  image: process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+  image: "https://i.ibb.co/9qLHRY0/stats.jpg",
   url: `${process.env.NEXT_PUBLIC_BASEURL}/stats`,
 };
 

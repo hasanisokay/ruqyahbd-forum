@@ -23,14 +23,14 @@ export const metadata = {
   ],
   other: {
     "color-scheme": ["dark", "light"],
-    "twitter:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+    "twitter:image": "https://i.ibb.co/89yqcW8/home-page.jpg",
     "twitter:card": "summary_large_image",
     "og-url": process.env.NEXT_PUBLIC_BASEURL,
-    "og:image": process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+    "og:image": "https://i.ibb.co/89yqcW8/home-page.jpg",
     "og:type": "website",
     locale: "en_US",
   },
-  image: process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+  image: "https://i.ibb.co/89yqcW8/home-page.jpg",
   url: process.env.NEXT_PUBLIC_BASEURL,
 };
 

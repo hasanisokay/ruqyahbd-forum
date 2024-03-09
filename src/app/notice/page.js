@@ -8,12 +8,12 @@ export async function generateMetadata() {
       "Stay informed with the latest public notices from Ruqyah Forum. Find important updates, announcements, and community news to enhance your participation in the forum.",
     keywords: ["notice", "Ruqyah Forum", "community", "spiritual well-being"],
     other: {
-      "twitter:image": "https://i.ibb.co/TKJFzG3/join-page.jpg",
+      "twitter:image": "https://i.ibb.co/7Rq52vz/notice.jpg",
       "twitter:card": "summary_large_image",
       "og-url": `${process.env.NEXT_PUBLIC_BASEURL}/login`,
-      "og:image": "https://i.ibb.co/TKJFzG3/join-page.jpg",
+      "og:image": "https://i.ibb.co/7Rq52vz/notice.jpg",
     },
-    image: "https://i.ibb.co/TKJFzG3/join-page.jpg",
+    image: "https://i.ibb.co/7Rq52vz/notice.jpg",
     url: `${process.env.NEXT_PUBLIC_BASEURL}/login`,
   };
 }
