@@ -1,4 +1,3 @@
-'use server'
 import jwt from 'jsonwebtoken';
 
 const generateToken = async (payload) => {
