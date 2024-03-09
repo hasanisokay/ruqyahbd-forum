@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
                 else {
                     token = await generateToken({ ip: userIp })
                 }
-                const socketUrl = `${process.env.NEXT_PUBLIC_server}/?token=${token}`
+                const socketUrl = `${process.env.NEXT_PUBLIC_server}?token=${token}`
                 const socket = await io(socketUrl);
                 setSocket(socket);
             } catch (error) {
