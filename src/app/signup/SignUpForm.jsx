@@ -4,11 +4,11 @@ import useTheme from '@/hooks/useTheme';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useContext, useEffect, useState, useTransition } from 'react';
 import toast from 'react-hot-toast';
-import LoadingSignUpPage from './LoadingSignUpPage';
 import createJWT from '@/utils/createJWT';
 import "@/../css/formstyles.css"
 import signIn from '@/utils/signIn.mjs';
 import isValidEmail from '@/utils/isValidEmail.mjs';
+import LoadingSpinner from '@/components/LoadingSkeletons/LoadingSpinner';
 const SignUpForm = () => {
 
   const { fetchedUser, setFetchedUser } = useContext(AuthContext)
@@ -196,7 +196,7 @@ const SignUpForm = () => {
   }, [username]);
 
   if (isPending) {
-    return <LoadingSignUpPage />
+    return <LoadingSpinner />
   }
   if (!fetchedUser && !isPending) {
     return (

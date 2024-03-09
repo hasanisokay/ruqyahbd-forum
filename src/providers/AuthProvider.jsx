@@ -2,8 +2,9 @@
 import AuthContext from "@/contexts/AuthContext";
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import getUser from "@/utils/getUser";
+import getUserIp from "@/utils/getUserIp.mjs";
+import generateToken from "@/utils/generateToken.mjs";
 
 
 const AuthProvider = ({ children }) => {
@@ -21,16 +22,35 @@ const AuthProvider = ({ children }) => {
     const [selectedUsernameToShowDetails, setSelectedUsernameToShowDetails] = useState(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [anonymousUsers, setAnonymousUsers] = useState(0);
+    
     useEffect(() => {
+        // const handleSocketConnection = async () => {
+        //     try {
+        //         if (fetchedUser && !loading) {
+        //             const userSocket = await io(`${process.env.NEXT_PUBLIC_server}/?userId=${fetchedUser?.username}`);
+        //             setSocket(userSocket);
+        //         } else {
+        //             const anonymousSocket = await io(process.env.NEXT_PUBLIC_server);
+        //             setSocket(anonymousSocket);
+        //         }
+        //     } catch (error) {
+        //         console.error('Socket connection error:', error);
+        //     }
+        // };
         const handleSocketConnection = async () => {
+
             try {
+                let token;
+                const userIp = await getUserIp();
                 if (fetchedUser && !loading) {
-                    const userSocket = await io(`${process.env.NEXT_PUBLIC_server}/?userId=${fetchedUser?.username}`);
-                    setSocket(userSocket);
-                } else {
-                    const anonymousSocket = await io(process.env.NEXT_PUBLIC_server);
-                    setSocket(anonymousSocket);
+                    token = await generateToken({ userId: fetchedUser.username, ip: userIp })
                 }
+                else {
+                    token = await generateToken({ ip: userIp })
+                }
+                const socketUrl = `${process.env.NEXT_PUBLIC_server}/?token=${token}`
+                const socket = await io(socketUrl);
+                setSocket(socket);
             } catch (error) {
                 console.error('Socket connection error:', error);
             }
@@ -105,33 +125,19 @@ const AuthProvider = ({ children }) => {
                 setAnonymousUsers(anonymousUsersCount);
             });
 
-            socket.on('anonymousUserConnected', async ({ anonymousUsersCount, loggedUsers }) => {
-                setOnlineUsers(loggedUsers);
-                setAnonymousUsers(anonymousUsersCount);
-            });
-
-            socket.on('anonymousUserDisconnected', async ({ anonymousUsersCount, loggedUsers }) => {
-                setOnlineUsers(loggedUsers);
-                setAnonymousUsers(anonymousUsersCount);
-            });
         }
         return () => {
             socket?.off("userConnected")
             socket?.off("userDisconnected")
-            socket?.off("anonymousUserConnected")
-            socket?.off("anonymousUserDisconnected")
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetchedUser])
-
-
+    }, [fetchedUser, socket])
 
     const value = {
         fetchedUser,
         setFetchedUser,
         loading,
         setLoading,
-        setFetchedUser, 
+        setFetchedUser,
         setLoggedOut,
         loggedOut,
         notificationsCount,
@@ -151,7 +157,7 @@ const AuthProvider = ({ children }) => {
         socket,
         onlineUsers,
         anonymousUsers,
-        selectedUsernameToShowDetails, 
+        selectedUsernameToShowDetails,
         setSelectedUsernameToShowDetails
     };
 

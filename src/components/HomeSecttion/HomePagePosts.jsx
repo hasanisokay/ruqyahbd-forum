@@ -73,7 +73,6 @@ const HomePagePosts = ({ tenPostsArray }) => {
         const fetchPosts = async () => {
             setLoadingPosts(true);
             const data = await getPosts(size);
-            console.log({ data });
             setLoadingPosts(false)
             if (data?.message) {
                 return setError(data?.message);

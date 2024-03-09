@@ -5,7 +5,7 @@ import { afterLoginNavData, beforeLoginNavData, commonNavData } from "@/data/nav
 import useTheme from "@/hooks/useTheme";
 import { useContext, useEffect, useRef, useState, useTransition } from "react";
 import AuthContext from "@/contexts/AuthContext";
-import { useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import logoSrc from "@/../public/images/bd-support-1.png"
 import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import formatRelativeDate from "@/utils/formatDate";
@@ -115,10 +115,10 @@ const Navbar = () => {
       const url = `/api/lasttennotification?username=${fetchedUser?.username}`
       const response = await fetch(url);
       const data = await response.json();
-
       setAllNotifications(data)
       setLoadingNotifications(false);
-      const unreadCount = data?.filter((n) => n?.read === false)?.length || 0
+      if (data?.status === 401) return;
+      const unreadCount = data && data?.filter((n) => n?.read === false)?.length || 0
       if (unreadCount > 0) {
         setNotificationsCount(unreadCount)
       }

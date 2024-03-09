@@ -141,7 +141,6 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
     };
     try {
       setLoadingNewComment(true);
-
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -151,8 +150,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       };
 
       const response = await fetch('/api/posts/comment', requestOptions);
-      const { data } = await response.json();
-
+      const data = await response.json();
       if (data?.status === 200) {
         // send comment with socket
         const dataToSendInSocket = {
@@ -189,6 +187,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
           type: "comment",
           read: false
         }
+
         if (socket) {
           socket.emit('newComment', dataToSendInSocket);
           socket.emit("newCommentNotification", { newCommentNotification });

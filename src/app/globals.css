@@ -174,7 +174,7 @@ box-shadow: inset 0 -5px 20px -15px currentColor;
   display: inline;
 }
 .stats-card {
-  @apply bg-[#fffef9] shadow-xl dark:bg-[#242526] cardinhome py-4 min-h-[300px];
+  @apply bg-[#fffef9] shadow-xl dark:bg-[#242526] cardinhome py-4 min-h-[200px];
 }
 
 /* green btn */

@@ -17,7 +17,6 @@ const LoginForm = () => {
     const search = useSearchParams();
     const from = search.get("redirectUrl") || "/";
     const router = useRouter();
-    console.log(from);
     const { refresh, push } = router;
     const { theme } = useTheme();
     const [username, setUsername] = useState('');

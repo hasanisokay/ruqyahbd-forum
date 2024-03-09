@@ -27,7 +27,6 @@ const dbConnect = async () => {
     db = client.db(`ruqyahbd-forum`);
 
     await client.db("admin").command({ ping: 1 });
-    // console.log(db);
     return db;
   } catch (error) {
     console.log(error.message);

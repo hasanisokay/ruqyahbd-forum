@@ -1,6 +1,6 @@
 'use client'
 
-import { LoadingProfile } from "@/components/LoadingSkeletons/Loaders";
+import LoadingSpinner from "@/components/LoadingSkeletons/LoadingSpinner";
 import AuthContext from "@/contexts/AuthContext";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -72,7 +72,7 @@ const ProfileSecurity = () => {
             setErrors(newErrors);
         }
     };
-    if(!showProfileSecurity)return <LoadingProfile/>
+    if(!showProfileSecurity)return <LoadingSpinner/>
     if(fetchedUser) return (
         <div className="cardinhome">
             <h2 className="text-xl font-semibold mb-4 text-center">Change Password</h2>

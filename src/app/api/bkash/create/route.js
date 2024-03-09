@@ -5,7 +5,7 @@ export const POST = async (request) => {
   const body = await request.json();
   const paymentReference = body.donationScheme;
   const paymentAmount = body.amount;
-  console.log(body);
+
   try {
     const responseFromGrantToken = await fetch(process.env.GrantTokenAPI, {
       method: "POST",
@@ -27,7 +27,7 @@ export const POST = async (request) => {
         message: "Token generate failed.",
       });
     }
-console.log(responseDataFromGrantToken);
+
     //    got the id_token. now time to create payment.
 
     const responseFromCreatePayment = await fetch(
@@ -54,7 +54,6 @@ console.log(responseDataFromGrantToken);
     const responseDataFromCreatePayment =
       await responseFromCreatePayment.json();
     const bkashURL = responseDataFromCreatePayment.bkashURL;
-    console.log(bkashURL);
     return NextResponse.json({ bkashURL });
   } catch {
     return NextResponse.json({

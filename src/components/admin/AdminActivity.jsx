@@ -95,7 +95,6 @@ const AdminActivity = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log(posts);
     return (
         <div>
             <div className="my-4 flex items-center justify-center">

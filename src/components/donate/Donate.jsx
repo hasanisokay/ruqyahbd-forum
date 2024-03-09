@@ -9,7 +9,6 @@ const Donate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-console.log(e);
     // Make API request to process the form data
     try {
       const response = await fetch("/api/bkash/create", {
@@ -22,7 +21,6 @@ console.log(e);
           amount: parseFloat(amount),
         }),
       });
-console.log(response);
       if (response.ok) {
         // Handle successful response, e.g., show a success message
         console.log("Donation successful!");

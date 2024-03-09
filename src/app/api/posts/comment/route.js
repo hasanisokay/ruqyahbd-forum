@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
   const body = await request.json();
   const { comment, author, date, postID } = body;
-
   try {
     const db = await dbConnect();
     const postCollection = db?.collection("posts");
@@ -55,7 +54,6 @@ export const POST = async (request) => {
     const followersToGetNotification = followers?.filter(
       (user) => user !== author.username
     );
-
     // checking if only post author commented before or there was no other comment before.
     if (followersToGetNotification?.length < 1) {
       return NextResponse.json({
