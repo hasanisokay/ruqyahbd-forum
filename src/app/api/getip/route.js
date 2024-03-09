@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 export const GET = async (request) => {
 try{
-  const ipAddres = request.headers.get('x-forwarded-for') 
-  return NextResponse.json({ip:ipAddres})
+  const ipAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+  return NextResponse.json({ip: ipAddress})
 
 }
 catch{
