@@ -10,7 +10,7 @@ import signIn from '@/utils/signIn.mjs';
 import isValidEmail from '@/utils/isValidEmail.mjs';
 import LoadingSpinner from '@/components/LoadingSkeletons/LoadingSpinner';
 const SignUpForm = () => {
-
+  const [loadingForm, setLoadingForm] = useState(false);
   const { fetchedUser, setFetchedUser } = useContext(AuthContext)
   const search = useSearchParams();
   const from = search.get("redirectUrl") || "/";
@@ -109,9 +109,9 @@ const SignUpForm = () => {
     if (password !== retypePassword) {
       return setErrors((prevErrors) => ({ ...prevErrors, retypePassword: 'Passwords do not match' }));
     }
-
     const toastId = toast.loading("Loading...");
     try {
+      setLoadingForm(true)
       await fetch(`/api/auth/signup`, {
         method: "POST",
         headers: {
@@ -134,7 +134,8 @@ const SignUpForm = () => {
       return false;
     }
     finally {
-      toast.dismiss(toastId)
+      toast.dismiss(toastId);
+      setLoadingForm(false);
     }
   };
   const handleUsernameOnchange = (e) => {
@@ -204,7 +205,7 @@ const SignUpForm = () => {
         <div className={`form-div form-div-signup ${(username !== "" || password !== "" || name !== "" || email !== "" || password !== "" || retypePassword !== "" || gender !== "" || phone !== "") && "login-animation"}`}>
           <form
             onSubmit={handleSubmit}
-            className={`gradient-bg  z-20 ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'}`}
+            className={`gradient-bg ${loadingForm ? "opacity-50" : "opacity-100"}  z-20 ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'}`}
           >
             <h1 className='text-xl text-center font-semibold'>Create New Account</h1>
             <p className='text-center text-xs mt-2'>Begin Your Sign-Up Process</p>
