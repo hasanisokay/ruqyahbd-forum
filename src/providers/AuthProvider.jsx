@@ -41,7 +41,7 @@ const AuthProvider = ({ children }) => {
 
             try {
                 let token;
-                const userIp = getUserIp();
+                const userIp = await getUserIp();
                 console.log({userIp});
                 if (fetchedUser && !loading) {
                     token = await generateToken({ userId: fetchedUser.username, ip: userIp })
