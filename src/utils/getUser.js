@@ -1,4 +1,3 @@
-
 const getUser = async () => {
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/api/auth/me`, { next: { revalidate: 60 } })
