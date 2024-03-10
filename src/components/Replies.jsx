@@ -59,7 +59,7 @@ const Replies = ({ postID, commentID, setReplyCount, replyCount}) => {
         try {
             setLoading(true);
             const url = `/api/getreplies?commentID=${commentID}&postID=${postID}&page=${pageRef.current}`;
-            const response = await fetch(url);
+            const response = await fetch(url, {cache: 'no-store'});
             const data = await response.json();
             const newReplies = data?.replies || [];
             if (newReplies?.length === 0) {

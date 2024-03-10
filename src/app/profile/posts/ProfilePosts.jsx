@@ -21,7 +21,7 @@ const ProfilePosts = () => {
         if (fetchedUser) {
             const getData = async () => {
                 setLoadingProfilePosts(true);
-                const res = await fetch(`/api/userdetails?allpostby=${fetchedUser?.username}`);
+                const res = await fetch(`/api/userdetails?allpostby=${fetchedUser?.username}`, {cache: 'no-store'});
                 const data = await res?.json();
                 setPostsByUser(data?.posts);
                 setLoadingProfilePosts(false);

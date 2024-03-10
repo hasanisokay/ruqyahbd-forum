@@ -38,7 +38,7 @@ const DeclinedPosts = () => {
             params.append('page', size + 1);
             params.append('sortOrder', sortOrder);
             params.append('searchTerm', searchTerm);
-            const response = await fetch(`/api/admin/declinedposts?${params.toString()}`);
+            const response = await fetch(`/api/admin/declinedposts?${params.toString()}`, {cache: 'no-store'});
             const newData = await response.json();
             if (!newData) {
                 return setError(true)

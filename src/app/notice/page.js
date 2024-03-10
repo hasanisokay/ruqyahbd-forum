@@ -1,4 +1,3 @@
-'use server'
 import PublicNotice from "@/components/PublicNotice";
 
 export async function generateMetadata() {

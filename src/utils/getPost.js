@@ -1,3 +1,4 @@
+'use server'
 const getPost = async (id) => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/api/posts/${id}`, {cache:'no-store'});

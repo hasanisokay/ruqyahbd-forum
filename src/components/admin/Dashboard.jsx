@@ -18,7 +18,7 @@ const Dashboard = () => {
     const handleSearch = async (username) => {
         try {
             const toastID = toast.loading("Getting user information")
-            const response = await fetch(`/api/admin/searchUser?username=${username}`);
+            const response = await fetch(`/api/admin/searchUser?username=${username}`, {cache: 'no-store'});
             const userData = await response?.json();
             toast.dismiss(toastID)
             if (userData.status === 404 || userData.status === 500 || !userData) {

@@ -36,7 +36,7 @@ const ModalUser = () => {
     const router = useRouter();
     const handleSeeAllPost = async () => {
         setLoadingPostData(true);
-        const res = await fetch(`/api/userdetails?allpostby=${selectedUsernameToShowDetails}`)
+        const res = await fetch(`/api/userdetails?allpostby=${selectedUsernameToShowDetails}`,{cache: 'no-store'})
         const data = await res.json();
         setLoadingPostData(false);
         if (fetchedUser?.isAdmin) {
@@ -53,7 +53,7 @@ const ModalUser = () => {
         if (selectedUsernameToShowDetails) {
             (async () => {
                 setLoadingUser(true);
-                const res = await fetch(`/api/userdetails?username=${selectedUsernameToShowDetails}`)
+                const res = await fetch(`/api/userdetails?username=${selectedUsernameToShowDetails}`,{cache: 'no-store'})
                 const data = await res?.json();
                 if (data?.status === 200) {
                     setUser(data?.user)

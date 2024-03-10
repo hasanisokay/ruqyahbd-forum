@@ -25,7 +25,7 @@ const PublicNotice = () => {
         const fetchData = async () => {
             try {
                 setLoadingNotice(true);
-                const response = await fetch("/api/getnotice");
+                const response = await fetch("/api/getnotice", {cache: 'no-store'});
                 const jsonData = await response.json();
                if(jsonData?.length > 0){
                 setData(jsonData);

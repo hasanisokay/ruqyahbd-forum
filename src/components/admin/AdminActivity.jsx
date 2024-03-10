@@ -50,7 +50,7 @@ const AdminActivity = () => {
             params.append('sortOrder', sortOrder);
             params.append('searchTerm', searchTerm);
             params.append('actionFilter', actionFilter);
-            const response = await fetch(`/api/admin/adminactivity?${params.toString()}`);
+            const response = await fetch(`/api/admin/adminactivity?${params.toString()}`, {cache: 'no-store'});
             const newData = await response.json();
             if (!newData) {
                 return setError(true)

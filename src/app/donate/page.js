@@ -27,7 +27,8 @@ export async function generateMetadata() {
 const donatePage = () => {
   return (
     <>
-      <Donate />
+      {/* <Donate /> */}
+    <p className="text-xl text-center">Coming soon...</p>
     </>
   );
 };
