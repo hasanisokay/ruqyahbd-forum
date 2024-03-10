@@ -1,16 +1,13 @@
 import { NextResponse } from "next/server";
 import { COOKIE_NAME } from "@/constants";
+import { cookies } from "next/headers";
 export const GET = async (request) => {
   const res = new NextResponse(
     JSON.stringify({
       message: "successfully logged out",
     })
   );
-
-  res.cookies.set(COOKIE_NAME, "", {
-    expires: new Date(0),
-    httpOnly: true,
-    secure: true,
-  });
+  cookies().delete(COOKIE_NAME);
+  // res.cookies.delete(COOKIE_NAME);
   return res;
 };
