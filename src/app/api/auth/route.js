@@ -18,7 +18,7 @@ export const POST = async (request) => {
     name: COOKIE_NAME,
     value: `Bearer${jwt}`,
     secure: true,
-    // httpOnly: true,
+    httpOnly: true,
     maxAge: 30 * 24 * 60 * 60, 
     domain: ".ruqyahbd.org"
   });
