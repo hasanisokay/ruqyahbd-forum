@@ -206,8 +206,8 @@ const HomePagePosts = ({ tenPostsArray }) => {
                     <div className='p-2'>
                         <div className='relative'>
                             <ThreeDotsIcon
-                                height={"20px"}
-                                width={"20px"}
+                                height={"20"}
+                                width={"20"}
                                 handleOnclick={() => setSelectedPostIdForOptions(post?._id)}
                                 classes={"absolute right-0 cursor-pointer"}
                             />
@@ -236,7 +236,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                             sizes="(max-width: 768px) 100vw, 33vw"
                                         />
                                         : <div className={`flex items-center justify-center rounded-full ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color":"offline-border-color" } w-[45px] h-[45px]`}>
-                                            <UserIcon height={"35px"} width={"35px"} />
+                                            <UserIcon height={"35"} width={"35"} />
                                         </div>
                                 }
                             </div>
