@@ -1,3 +1,4 @@
+'use server'
 const logOut = async (setFetchedUser, setLoading, setLoggedOut) => {
     setLoading(true);
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/api/auth/logout`);
