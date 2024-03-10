@@ -1,7 +1,9 @@
 import dbConnect from "@/services/DbConnect";
+import { unstable_noStore } from "next/cache";
 import { NextResponse } from "next/server";
 
 export const GET = async () => {
+  unstable_noStore()
   try {
     const db = await dbConnect();
     const noticeCollection = db?.collection("notice");

@@ -5,8 +5,10 @@ import AuthContext from '@/contexts/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '@/components/LoadingSkeletons/LoadingSpinner';
+import useTheme from '@/hooks/useTheme';
 
 const PublicNotice = () => {
+    const { theme } = useTheme();
     const [data, setData] = useState(null);
     const { fetchedUser } = useContext(AuthContext);
     const [loadingNotice, setLoadingNotice] = useState(true);
@@ -54,8 +56,9 @@ const PublicNotice = () => {
                         <div className="collapse-title">
                             {notice?.title}
                         </div>
-                        <div className="collapse-content font-semibold whitespace-pre-wrap">
-                            <p>{notice?.notice}</p>
+                        <div className="collapse-content break-words whitespace-pre-wrap ">
+                            {/* <p>{notice?.notice}</p> */}
+                            <p dangerouslySetInnerHTML={{ __html: makeUrlsClickable(notice?.notice, theme) }}></p>
                             <p className='text-xs'>
                             Notice Date: {formatDateInAdmin(new Date(notice?.date))}
                             </p>
