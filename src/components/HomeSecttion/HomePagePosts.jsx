@@ -175,7 +175,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
             };
 
             const response = await fetch('/api/posts/reaction', requestOptions);
-            const { data } = await response.json();
+            const data = await response.json();
 
             if (data.status === 200) {
                 const updatedPosts = posts.map((post) => {

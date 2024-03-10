@@ -225,7 +225,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       };
 
       const response = await fetch('/api/posts/reaction', requestOptions);
-      const { data } = await response.json();
+      const data = await response.json();
       if (data?.status === 200 && commentID) {
         setPost((prevPost) => ({
           ...prevPost,
@@ -268,7 +268,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       };
 
       const response = await fetch('/api/posts/reaction', requestOptions);
-      const { data } = await response.json();
+      const data = await response.json();
 
       if (data?.status === 200 && commentID) {
         setPost((prevPost) => ({
