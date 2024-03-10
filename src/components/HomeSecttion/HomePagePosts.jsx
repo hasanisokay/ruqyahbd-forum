@@ -206,8 +206,8 @@ const HomePagePosts = ({ tenPostsArray }) => {
                     <div className='p-2'>
                         <div className='relative'>
                             <ThreeDotsIcon
-                                height={"20"}
-                                width={"20"}
+                           height={"20px"}
+                           width={"20px"}
                                 handleOnclick={() => setSelectedPostIdForOptions(post?._id)}
                                 classes={"absolute right-0 cursor-pointer"}
                             />
