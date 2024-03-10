@@ -1,6 +1,6 @@
 const CommentIcon = ({fill}) => {
     return <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-    width={'24'} height={'24'} viewBox="0 0 512.000000 512.000000"
+    width={'24px'} height={'24px'} viewBox="0 0 512.000000 512.000000"
     preserveAspectRatio="xMidYMid meet">
    
    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"

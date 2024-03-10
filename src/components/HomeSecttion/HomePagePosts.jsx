@@ -236,7 +236,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                             sizes="(max-width: 768px) 100vw, 33vw"
                                         />
                                         : <div className={`flex items-center justify-center rounded-full ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color":"offline-border-color" } w-[45px] h-[45px]`}>
-                                            <UserIcon height={"35"} width={"35"} />
+                                            <UserIcon height={"35px"} width={"35px"} />
                                         </div>
                                 }
                             </div>
