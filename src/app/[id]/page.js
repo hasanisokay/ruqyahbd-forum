@@ -55,13 +55,13 @@ export async function generateMetadata({ params }) {
       "twitter:image":
         post?.photos?.length > 0
           ? post?.photos[0]
-          : process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+          : "https://i.ibb.co/YDMvcNN/Untitled-1-Copy.jpg",
       "twitter:card": "summary_large_image",
       "og-url": `${process.env.NEXT_PUBLIC_BASEURL}/${id}`,
       "og:image":
         post?.photos?.length > 0
           ? post?.photos[0]
-          : process.env.NEXT_PUBLIC_META_IMAGE_MAIN,
+          : "https://i.ibb.co/YDMvcNN/Untitled-1-Copy.jpg",
     },
     url: `${process.env.NEXT_PUBLIC_BASEURL}/${id}`,
   };
