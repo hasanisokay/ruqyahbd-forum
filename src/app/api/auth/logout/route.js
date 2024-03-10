@@ -8,7 +8,7 @@ export const GET = async (request) => {
   );
 
   res.cookies.set(COOKIE_NAME, "", {
-    expires: new Date(0),
+    expires: new Date(),
     httpOnly: true,
     secure: true,
   });
