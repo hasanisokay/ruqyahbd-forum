@@ -20,6 +20,7 @@ export const POST = async (request) => {
     secure: true,
     httpOnly: true,
     maxAge: 30 * 24 * 60 * 60, 
+    domain: ".ruqyahbd.org"
   });
   return NextResponse.json({ message: "Token created" });
 };
