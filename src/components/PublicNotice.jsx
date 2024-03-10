@@ -6,6 +6,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '@/components/LoadingSkeletons/LoadingSpinner';
 import useTheme from '@/hooks/useTheme';
+import makeUrlsClickable from '@/utils/makeUrlsClickable';
 
 const PublicNotice = () => {
     const { theme } = useTheme();
