@@ -97,7 +97,7 @@ const AdminActivity = () => {
 
     return (
         <div>
-            <div className="my-4 flex items-center justify-center">
+            <div className="my-4 flex md:flex-row flex-col items-center justify-center">
                 <label htmlFor="sortOrder" className="mr-2">
                     Sort By:
                 </label>

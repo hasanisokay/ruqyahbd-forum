@@ -237,7 +237,7 @@ const SignUpForm = () => {
                 !isUsernameAvailable && username.length > 3 && (
                   <p className="errors">{username} is not available. Try another.</p>
                 ) || isUsernameAvailable && username?.length > 2 && (
-                  <p className="text-green-500 text-sm">{username} is available.</p>
+                  <p className="dark:text-green-500 text-[#308853] text-sm">{username} is available.</p>
                 ))
             }
             {errors.username && <p className="errors">{errors.username}</p>}
