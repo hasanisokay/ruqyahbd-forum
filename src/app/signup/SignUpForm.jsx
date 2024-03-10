@@ -202,7 +202,7 @@ const SignUpForm = () => {
   if (!fetchedUser && !isPending) {
     return (
       <div className='form-container'>
-        <div className={`form-div form-div-signup ${(username !== "" || password !== "" || name !== "" || email !== "" || password !== "" || retypePassword !== "" || gender !== "" || phone !== "") && "login-animation"}`}>
+        <div className={`form-div form-div-signup ${(username !== "" || password !== "" || name !== "" || email !== "" || password !== "" || retypePassword !== "" || gender !== "" || phone !== "") && !loadingForm && "login-animation"}`}>
           <form
             onSubmit={handleSubmit}
             className={`gradient-bg ${loadingForm ? "opacity-50" : "opacity-100"}  z-20 ${theme === 'dark' ? 'bg-[#282a37]' : 'bg-[#f0f1f3]'}`}
