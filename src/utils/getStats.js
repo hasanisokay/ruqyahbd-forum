@@ -1,9 +1,10 @@
 'use server'
 const getStats = async () => {
   try {
+    const timestamp = new Date().getTime();
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASEURL}/api/getstat`,
-      { cache: 'no-cache'}
+      `${process.env.NEXT_PUBLIC_BASEURL}/api/getstat?${timestamp}`,
+      {cache:'no-cache', next:{ revalidate: 0 }}
     );
     const jsonData = await response.json();
     return jsonData;

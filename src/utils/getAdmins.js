@@ -1,9 +1,10 @@
 'use server'
 const getAdmins = async () => {
   try {
+    const timestamp = new Date().getTime();
     const admin = await fetch(
-      `${process.env.NEXT_PUBLIC_BASEURL}/api/admin/chatdata`,
-      { cache: 'no-cache' }
+      `${process.env.NEXT_PUBLIC_BASEURL}/api/admin/chatdata?${timestamp}`,
+      {cache:'no-cache', next:{ revalidate: 300 }}
     );
     const data = await admin.json();
     return data;
