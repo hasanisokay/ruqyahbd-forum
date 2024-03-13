@@ -158,6 +158,7 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
           date: dataToSend.date,
           _id: data?._id,
           likes: [],
+          dislikes: [],
           replies: 0,
           author: {
             username: fetchedUser.username,

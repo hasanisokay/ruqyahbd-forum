@@ -47,6 +47,7 @@ export const GET = async (request) => {
             photos: 1,
             videos: 1,
             likes: 1,
+            dislikes:1,
             "authorInfo.name": 1,
             "authorInfo.photoURL": 1,
             "authorInfo.isAdmin": 1,

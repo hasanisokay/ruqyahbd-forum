@@ -67,6 +67,7 @@ const Comments = ({ c, postAuthor, likes, commentId: commentID, replies, setLike
           date: dataToSend.date,
           _id: data?._id,
           likes: [],
+          dislikes: [],
           authorInfo: {
             username: fetchedUser?.username,
             photoURL: fetchedUser?.photoURL,

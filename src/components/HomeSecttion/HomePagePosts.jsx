@@ -26,8 +26,7 @@ import CommentIcon from '../SVG/CommentIcon';
 import handleShowLess from '@/utils/handleShowLess';
 import handleToggleExpand from '@/utils/handleToggleExpand';
 import { LoadingCards } from '../LoadingSkeletons/Loaders';
-// dynamic imports
-// const LoadingCards = dynamic(() => import('../LoadingSkeletons/LoadingCards'));
+import DislikeIcon from '../SVG/DislikeIcon';
 const PhotosInPost = dynamic(() => import('../PhotosInPost'));
 const VideosInPost = dynamic(() => import('../video-components/VideosInPost'));
 const LinkPreview = dynamic(() => import('../LinkPreview'));
@@ -154,11 +153,86 @@ const HomePagePosts = ({ tenPostsArray }) => {
             console.error("Error disliking post:", error);
         }
     }
+    const handleUnHate = async (id) => {
+        return toast.error("Disliking coming soon...")
+        if (!fetchedUser) {
+            return toast.error("Log in to react")
+        }
+        const dataToSend = {
+            postID: id, action: "dislike", actionByUsername: fetchedUser?.username
+        }
+        try {
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend),
+            };
+
+            const response = await fetch('/api/posts/reaction', requestOptions);
+            const data = await response.json();
+
+            if (data.status === 200) {
+                // Update the likes array in the posts
+                const updatedPosts = posts.map((post) => {
+                    if (post._id === id) {
+                        // Remove fetchedUser.username from the likes array
+                        post.likes = post.likes.filter((person) => person !== fetchedUser?.username);
+                    }
+                    return post;
+                });
+
+                // Update the state to trigger a re-render
+                setPosts(updatedPosts);
+            }
+        } catch (error) {
+            console.error("Error disliking post:", error);
+        }
+    }
     const handleReport = (id) => {
         setPostIdToReport(id);
         setShowReportModal(true)
     }
     const handleLike = async (id, postAuthor) => {
+        if (!fetchedUser) {
+            return toast.error("Log in to react")
+        }
+        const dataToSend = {
+            postID: id, action: "like", actionByUsername: fetchedUser?.username, postAuthor
+        }
+        try {
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend),
+            };
+
+            const response = await fetch('/api/posts/reaction', requestOptions);
+            const data = await response.json();
+
+            if (data.status === 200) {
+                const updatedPosts = posts.map((post) => {
+                    if (post._id === id) {
+                        if (post?.likes?.length > 0) {
+                            post.likes = [...post.likes, fetchedUser?.username]
+                        }
+                        else {
+                            post.likes = [fetchedUser?.username]
+                        }
+                    }
+                    return post;
+                });
+                setPosts(updatedPosts)
+            }
+        } catch (error) {
+            console.error("Error disliking post:", error);
+        }
+    }
+    const handleHate = async (id, postAuthor) => {
+        return toast.error("Disliking coming soon...")
         if (!fetchedUser) {
             return toast.error("Log in to react")
         }
@@ -244,7 +318,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                 <p onClick={() => handleShowUser(post?.authorInfo?.username)} className='cursor-pointer font-semibold'>{post?.authorInfo?.name}</p>
                                 <div className='text-xs flex gap-2 items-center'>
                                     <p>@{post?.authorInfo?.username}</p>
-                                    <p title={formatDateInAdmin(new Date(post?.date))}> <Link className='hover:underline min-w-[48px] min-h-[48px]' href={`/${post?._id}`}>{formatRelativeDate(new Date(post?.date))}</Link></p>
+                                    <div title={formatDateInAdmin(new Date(post?.date))}> <Link className='hover:underline min-w-[48px] min-h-[48px]' href={`/${post?._id}`}>{formatRelativeDate(new Date(post?.date))}</Link></div>
                                 </div>
                                 {
                                     fetchedUser?.isAdmin && <div>
@@ -280,7 +354,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                             />
                         </div>}
                     </div>
-                    <div className='flex items-center p-2 gap-6 mt-2'>
+                    <div className='flex items-center  p-2 md:gap-8 lg:gap-12 gap-6 mt-2'>
                         <>
                             <Link href={`/${post?._id}`} className='flex items-center flex-col'>
                                 <CommentIcon fill={post?.comment > 0 ? "#7637e7" : theme === "dark" ? "#ffffff" : "#000000"} />
@@ -295,6 +369,15 @@ const HomePagePosts = ({ tenPostsArray }) => {
                             }
                             <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.likes)}>{post?.likes?.length || 0} Likes</span>
                         </div>
+                        {/* <div className='flex flex-col items-center'>
+                            {post?.likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
+                                <DislikeIcon classes={"stroke-2 stroke-red-600 fill-red-600"} title={'You Disliked this. Click to remove'} handleOnclick={() => handleHate(post?._id)} />
+                                :
+                                <DislikeIcon handleOnclick={() => handleUnHate(post._id, post?.authorInfo?.username)} title={'Click to dislike'} classes={"stroke-2 stroke-black dark:stroke-white fill-transparent"} />
+                            }
+                            <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.likes)}>{post?.likes?.length || 0} Dislikes</span>
+                        </div> */}
+                     
                     </div>
                     {
                         showDeleteModal && <DeleteConfirmationModal id={postIdToDelete} isAuthorized={fetchedUser?.isAdmin || fetchedUser?.username === post?.authorInfo?.username} setterFunction={setShowDeleteModal} />

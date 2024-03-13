@@ -57,6 +57,7 @@ const NewPost = () => {
             author: { username: fetchedUser?.username },
             comment: [],
             likes: [],
+            dislikes:[],
             followers: [fetchedUser?.username],
             photos: [],
             videos: []
