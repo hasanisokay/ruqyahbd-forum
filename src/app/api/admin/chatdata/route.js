@@ -1,7 +1,9 @@
 import dbConnect from "@/services/DbConnect";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export const GET = async () => {
+  cookies();
   try {
     const db = await dbConnect();
     const usersCollection = db.collection("users");

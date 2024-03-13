@@ -206,8 +206,8 @@ const HomePagePosts = ({ tenPostsArray }) => {
                     <div className='p-2'>
                         <div className='relative'>
                             <ThreeDotsIcon
-                           height={"20px"}
-                           width={"20px"}
+                                height={"20px"}
+                                width={"20px"}
                                 handleOnclick={() => setSelectedPostIdForOptions(post?._id)}
                                 classes={"absolute right-0 cursor-pointer"}
                             />
@@ -232,10 +232,10 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                             height={41}
                                             priority={true}
                                             quality={100}
-                                            className={`w-[45px] h-[45px] rounded-full ${ onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color":"offline-border-color" }`}
+                                            className={`w-[45px] h-[45px] rounded-full ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color" : "offline-border-color"}`}
                                             sizes="(max-width: 768px) 100vw, 33vw"
                                         />
-                                        : <div className={`flex items-center justify-center rounded-full ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color":"offline-border-color" } w-[45px] h-[45px]`}>
+                                        : <div className={`flex items-center justify-center rounded-full ${onlineUsers?.includes(post?.authorInfo?.username) ? "online-border-color" : "offline-border-color"} w-[45px] h-[45px]`}>
                                             <UserIcon height={"35px"} width={"35px"} />
                                         </div>
                                 }
@@ -244,7 +244,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                 <p onClick={() => handleShowUser(post?.authorInfo?.username)} className='cursor-pointer font-semibold'>{post?.authorInfo?.name}</p>
                                 <div className='text-xs flex gap-2 items-center'>
                                     <p>@{post?.authorInfo?.username}</p>
-                                    <p title={formatDateInAdmin(new Date(post?.date))}> <Link className='hover:underline min-w-[48px] min-h-[48px]' href={`/${post?._id}`}>{formatRelativeDate(new Date(post?.date))}</Link></p>                                
+                                    <p title={formatDateInAdmin(new Date(post?.date))}> <Link className='hover:underline min-w-[48px] min-h-[48px]' href={`/${post?._id}`}>{formatRelativeDate(new Date(post?.date))}</Link></p>
                                 </div>
                                 {
                                     fetchedUser?.isAdmin && <div>
@@ -255,10 +255,10 @@ const HomePagePosts = ({ tenPostsArray }) => {
                         </div>
                         <div>{expandedPosts?.includes(post?._id) ? <p className='scroll-reveal' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(post?.post, theme) }}></p> : <p className='scroll-reveal' dangerouslySetInnerHTML={{ __html: makeUrlsClickable(truncateText(post?.post), theme) }}></p>}
                             {!expandedPosts?.includes(post?._id) && post?.post?.length > 200 && (
-                                <button onClick={() => handleToggleExpand(setExpandedPosts , post?._id)} className='text-[10px] font-semibold'>... Show More</button>
+                                <button onClick={() => handleToggleExpand(setExpandedPosts, post?._id)} className='text-[10px] font-semibold'>... Show More</button>
                             )}
                             {expandedPosts?.includes(post?._id) && (
-                                <button onClick={() => handleShowLess(setExpandedPosts , post?._id)} className='text-[10px] font-semibold pl-1'>Show Less </button>
+                                <button onClick={() => handleShowLess(setExpandedPosts, post?._id)} className='text-[10px] font-semibold pl-1'>Show Less </button>
                             )}
                         </div>
                     </div>
@@ -283,7 +283,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                     <div className='flex items-center p-2 gap-6 mt-2'>
                         <>
                             <Link href={`/${post?._id}`} className='flex items-center flex-col'>
-                            <CommentIcon fill={post?.comment > 0 ? "#7637e7" : theme==="dark"?"#ffffff":"#000000"} />
+                                <CommentIcon fill={post?.comment > 0 ? "#7637e7" : theme === "dark" ? "#ffffff" : "#000000"} />
                                 <span className='text-xs'>{post?.comment || 0} Comments</span>
                             </Link>
                         </>
