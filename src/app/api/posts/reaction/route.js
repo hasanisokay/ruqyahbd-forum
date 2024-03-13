@@ -4,12 +4,12 @@ import { NextResponse } from "next/server";
 
 export const POST = async (request) => {
   const body = await request.json();
-  const { postID, action, actionByUsername, commentID} = body;
-  
+  const { postID, action, actionByUsername, commentID } = body;
+
   try {
     const db = await dbConnect();
     const postCollection = db?.collection("posts");
-    
+
     if (action === "like") {
       if (commentID) {
         const result = await postCollection.updateOne(
@@ -17,7 +17,7 @@ export const POST = async (request) => {
             _id: new ObjectId(postID),
             "comment._id": new ObjectId(commentID),
           },
-          { $push: { "comment.$.likes": actionByUsername } }
+          { $addToSet: { "comment.$.likes": actionByUsername } }
         );
         if (result.modifiedCount === 1) {
           return NextResponse.json({
