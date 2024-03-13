@@ -142,7 +142,7 @@ const SignUpForm = () => {
     if (errors.username.length > 0) {
       setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
     }
-    setUsername(e.target.value.toLowerCase());
+    setUsername(e.target.value.toLowerCase().replace(/\s/g, ''));
   }
   const handleNameOnchange = (e) => {
     if (errors.name.length > 0) {
