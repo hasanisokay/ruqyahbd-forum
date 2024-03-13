@@ -33,7 +33,7 @@ export const POST = async (request) => {
       }
       const result = await postCollection.updateOne(
         { _id: new ObjectId(postID) },
-        { $push: { likes: actionByUsername } }
+        { $addToSet: { likes: actionByUsername } }
       );
 
       if (result.modifiedCount === 1) {
