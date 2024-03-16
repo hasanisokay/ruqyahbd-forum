@@ -147,10 +147,12 @@ const SignUpForm = () => {
     }
 
     const input = e.target.value.toLowerCase().replace(/\s/g, '');
-
+    if (e.target.value === "") {
+      return setUsername("")
+    }
     if (!nonEnglishRegex.test(input)) {
-
-      toast.error("Only English ")
+      toast.error("Character is not acceptable.")
+      // setErrors((prevErrors) => ({ ...prevErrors, username: 'English letters ' }));
     } else {
       setUsername(input);
     }
