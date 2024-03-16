@@ -139,10 +139,22 @@ const SignUpForm = () => {
     }
   };
   const handleUsernameOnchange = (e) => {
-    if (errors.username.length > 0) {
+    // const nonEnglishRegex = /[^A-Za-z\s]/; // Regex to match non-English characters
+    const nonEnglishRegex = /^[~`!@#$%^&*()_+=[\]\\{}|;':",.\/<>?a-zA-Z0-9-]+$/; // Regex to match non-English characters
+
+    if (errors?.username?.length > 0) {
       setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
     }
-    setUsername(e.target.value.toLowerCase().replace(/\s/g, ''));
+
+    const input = e.target.value.toLowerCase().replace(/\s/g, '');
+
+    if (!nonEnglishRegex.test(input)) {
+
+      toast.error("Only English ")
+    } else {
+      setUsername(input);
+    }
+
   }
   const handleNameOnchange = (e) => {
     if (errors.name.length > 0) {
