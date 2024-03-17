@@ -144,11 +144,11 @@ const Navbar = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id, username: fetchedUser.username }),
+        body: JSON.stringify({ id, username: fetchedUser?.username }),
       };
       const response = await fetch('/api/readnotification', requestOptions);
       const data = await response.json();
-      if (data.status === 200) {
+      if (data?.status === 200) {
         const totalNotificationFromPostID = allNotifications?.filter((n) => n?.postID === id && n?.read === false)?.length || 1;
 
         setAllNotifications(
@@ -164,10 +164,10 @@ const Navbar = () => {
     }
     setShowNotificationMenu(false)
     if (replyID) {
-      return router.push(`/${id}?commentID=${commentID}&replyID=${replyID}`, { scroll: false })
+      router.push(`/${id}?commentID=${commentID}&replyID=${replyID}`, { scroll: false })
     }
     else if (commentID) {
-      return router.push(`/${id}?commentID=${commentID}`, { scroll: false })
+      router.push(`/${id}?commentID=${commentID}`, { scroll: false })
     }
     else {
       router.push(`/${id}`,)

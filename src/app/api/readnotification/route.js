@@ -25,18 +25,18 @@ export const POST = async (request) => {
     );
 
     if (result.matchedCount > 0) {
-      return new NextResponse({
+      return new NextResponse.json({
         status: 200,
         message: "Notifications updated successfully",
       });
     } else {
-      return new NextResponse({
+      return new NextResponse.json({
         status: 404,
         message: "Not Found",
       });
     }
   } catch (error) {
-    return new NextResponse({
+    return new NextResponse.json({
       status: 500,
       message: "Internal Server Error",
     });
