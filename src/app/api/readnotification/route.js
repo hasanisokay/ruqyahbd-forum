@@ -1,5 +1,4 @@
 import dbConnect from "@/services/DbConnect";
-import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
 export const POST = async (request) => {
@@ -8,7 +7,7 @@ export const POST = async (request) => {
 
   try {
     const db = await dbConnect();
-    const userCollection = db?.collection("users");
+    const userCollection = db.collection("users");
     const result = await userCollection.updateOne(
       {
         username: username,
@@ -25,18 +24,18 @@ export const POST = async (request) => {
     );
 
     if (result.matchedCount > 0) {
-      return new NextResponse.json({
+      return NextResponse.json({
         status: 200,
         message: "Notifications updated successfully",
       });
     } else {
-      return new NextResponse.json({
+      return NextResponse.json({
         status: 404,
         message: "Not Found",
       });
     }
   } catch (error) {
-    return new NextResponse.json({
+    return NextResponse.json({
       status: 500,
       message: "Internal Server Error",
     });

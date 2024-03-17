@@ -4,7 +4,7 @@ const getStats = async () => {
     const timestamp = new Date().getTime();
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASEURL}/api/getstat?${timestamp}`,
-      {cache:'no-cache', next:{ revalidate: 0 }}
+      {cache:'no-cache'}
     );
     const jsonData = await response.json();
     return jsonData;
