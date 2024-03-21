@@ -31,7 +31,7 @@ const LikersModal = ({ usernames, setterFunction }) => {
             <div className="modal modal-middle" role="dialog">
                 <div className="modal-box scrollforchat">
                     {!loadingUser &&  likers?.length > 0 && <div>
-                        <h1 className="text-center font-semibold">People who liked this</h1>
+                        <h1 className="text-center font-semibold">People who reacted</h1>
                         {
 
                             likers?.map((user, index) => <div key={index} className="flex justify-start items-center gap-2 mb-2">
@@ -53,7 +53,7 @@ const LikersModal = ({ usernames, setterFunction }) => {
                         }
                     </div>}
                     {
-                        !loadingUser && likers?.length === 0 && <p className="text-center font-semibold">Oho! No one liked this.</p>
+                        !loadingUser && likers?.length === 0 && <p className="text-center font-semibold">Oho! No one reacted.</p>
                     }
                     {
                         loadingUser && <LoadingLikers />

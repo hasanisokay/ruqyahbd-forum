@@ -20,6 +20,9 @@ import HeartIcon from '@/components/SVG/HeartIcon';
 import CommentIcon from '@/components/SVG/CommentIcon';
 import ThreeDotsIcon from '@/components/SVG/ThreeDotsIcon';
 import SendMessageIcon from '@/components/SVG/SendMessageIcon';
+import DislikeIcon from './SVG/DislikeIcon';
+import handleUnHate from '@/utils/handleUnHate';
+import handleHate from '@/utils/handleHate';
 
 // dynamic imports
 const TextareaAutosize = dynamic(() => import('react-textarea-autosize'), { ssr: false });
@@ -32,7 +35,7 @@ const LinkPreview = dynamic(() => import('@/components/LinkPreview'), { ssr: fal
 const SinglePostInHomePage = ({ fetchedPost }) => {
   const id = fetchedPost?._id;
   const [likersArray, setLikersArray] = useState(null);
-  const {socket, fetchedUser, onlineUsers, showDeleteModal, setShowDeleteModal, showReportModal, selectedUsernameToShowDetails, setSelectedUsernameToShowDetails, setShowReportModal, isReportingPost, setIsReportingPost } = useContext(AuthContext);
+  const { socket, fetchedUser, onlineUsers, showDeleteModal, setShowDeleteModal, showReportModal, selectedUsernameToShowDetails, setSelectedUsernameToShowDetails, setShowReportModal, isReportingPost, setIsReportingPost } = useContext(AuthContext);
   const [newCommentData, setNewCommentData] = useState("");
   const [loadingNewComment, setLoadingNewComment] = useState(false);
   const [post, setPost] = useState(fetchedPost);
@@ -398,18 +401,25 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
         }
       </div>
       {/*like section */}
-      <div className='flex items-center gap-6 mt-2'>
-        <div className='flex items-center flex-col'>
+      <div className='reaction-box mt-2'>
+        <div className='reaction-item'>
           <CommentIcon fill={(post?.comment?.length > 0 && post?.comment[0].author?.authorInfo?.name) ? "#7637e7" : theme === "dark" ? "#ffffff" : "#000000"} />
-          <span className='text-xs'>{(post?.comment && post?.comment[0]?.author?.authorInfo?.name && post?.comment?.length) || 0} Comments</span>
+          <span className='text-xs'>{(post?.comment && post?.comment[0]?.author?.authorInfo?.name && post?.comment?.length) || 0} {post?.comment?.length > 1 ? "Comments" : "Comment" }</span>
         </div>
-        <div className='flex flex-col items-center'>
+        <div className='reaction-item'>
           {post?.likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
             <HeartIcon title={"You Liked this. Click to dislike"} handleOnclick={() => handleDislike()} classes={'stroke-2 stroke-red-600 fill-red-600'} /> :
             <HeartIcon title={"Click to Like"} handleOnclick={() => hanldleLike()} classes={"stroke-2 stroke-black dark:stroke-white fill-transparent"} />}
-          <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.likes)}>{post?.likes?.length || 0} Likes</span>
+          <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.likes)}>{post?.likes?.length || 0} {post?.likes?.length > 1 ? "Likes" : "Like" }</span>
         </div>
-
+        <div className=' reaction-item'>
+          {post?.dislikes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
+            <DislikeIcon classes={"stroke-2 stroke-blue-600 fill-blue-600"} title={'You Disliked this. Click to remove'} handleOnclick={() => handleHate(post?._id)} />
+            :
+            <DislikeIcon handleOnclick={() => handleUnHate(post._id, post?.authorInfo?.username)} title={'Click to dislike'} classes={"stroke-2 stroke-black dark:stroke-white dark:fill-white fill-black"} />
+          }
+          <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.dislikes)}>{post?.dislikes?.length || 0} {post?.dislikes?.length > 1 ? "Dislikes" : "Dislike"}</span>
+        </div>
       </div>
       {
         fetchedUser && !fetchedUser?.blocked && <div>

@@ -4,8 +4,7 @@ import formatDateForUserJoined from "@/utils/formatDateForUserJoined";
 import formatDateInAdmin from "@/utils/formatDateInAdmin";
 import handleAdminAction from "@/utils/handleAdminAction";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import useTheme from "@/hooks/useTheme";
 import makeUrlsClickable from "@/utils/makeUrlsClickable";
@@ -16,8 +15,8 @@ import dynamic from "next/dynamic";
 import handleApprovePost from "@/utils/handleApprovePost";
 import handleDeclinePost from "@/utils/handleDeclinePost";
 import { LoadingModalData, LoadingModalUser } from "./LoadingSkeletons/Loaders";
-
-
+import Link from "next/link";
+import DislikeIcon from "./SVG/DislikeIcon";
 
 // dynamic imports
 const PhotosInPost = dynamic(() => import('./PhotosInPost'));
@@ -33,10 +32,9 @@ const ModalUser = () => {
     const [loadingUser, setLoadingUser] = useState(true);
     const [seeAllPostsClicked, setSeeAllPostsClicked] = useState(false);
     const [loadingPostData, setLoadingPostData] = useState(false);
-    const router = useRouter();
     const handleSeeAllPost = async () => {
         setLoadingPostData(true);
-        const res = await fetch(`/api/userdetails?allpostby=${selectedUsernameToShowDetails}`,{cache: 'no-store'})
+        const res = await fetch(`/api/userdetails?allpostby=${selectedUsernameToShowDetails}`, { cache: 'no-store' })
         const data = await res.json();
         setLoadingPostData(false);
         if (fetchedUser?.isAdmin) {
@@ -53,7 +51,7 @@ const ModalUser = () => {
         if (selectedUsernameToShowDetails) {
             (async () => {
                 setLoadingUser(true);
-                const res = await fetch(`/api/userdetails?username=${selectedUsernameToShowDetails}`,{cache: 'no-store'})
+                const res = await fetch(`/api/userdetails?username=${selectedUsernameToShowDetails}`, { cache: 'no-store' })
                 const data = await res?.json();
                 if (data?.status === 200) {
                     setUser(data?.user)
@@ -159,7 +157,7 @@ const ModalUser = () => {
                                                         }
 
                                                         {
-                                                            post?.status === "approved" && <span onClick={() => router.push(`/${post._id}`)} className="text-[#22c55e] font-medium cursor-pointer">See post</span>
+                                                            post?.status === "approved" && <Link href={`/${post?._id}`} className="text-[#22c55e] font-medium cursor-pointer">See post</Link>
                                                         }
 
                                                     </div>
@@ -192,19 +190,28 @@ const ModalUser = () => {
                                             }
 
                                             {
-                                                post?.status === "approved" && <div className='flex items-center gap-6 mt-2'>
-                                                    <div className='flex items-center flex-col'>
+                                                post?.status === "approved" && <div className='reaction-box mt-2'>
+                                                    <Link href={`/${post?._id}`} className='reaction-item'>
                                                         <CommentIcon fill={post?.comment > 0 ? "#7637e7" : "#000000"} />
-                                                        <span className='text-xs'>{(post?.comment) || 0} Comments</span>
-                                                    </div>
-                                                    <div className='flex flex-col items-center'>
+                                                        <span className='text-xs'>{(post?.comment) || 0} {post?.comment > 1 ? "Comments" : "Comment" }</span>
+                                                    </Link>
+                                                    <div className='reaction-item'>
                                                         {post?.likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
                                                             <HeartIcon classes={"stroke-2 stroke-red-600 fill-red-600"} title={'You Liked this.'} />
                                                             :
                                                             <HeartIcon title={'You did not like this'} classes={"stroke-2 stroke-black dark:stroke-white fill-transparent"} />}
-                                                        <span className='text-xs'>{post?.likes?.length || 0} Likes</span>
+                                                        <span className='text-xs'>{post?.likes?.length || 0}  {post?.likes?.length > 1 ? "Likes" : "Like" }</span>
+                                                    </div>
+                                                    <div className='reaction-item'>
+                                                        {post?.dislikes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
+                                                            <DislikeIcon classes={"stroke-2 stroke-blue-600 fill-blue-600"} title={'You Disliked this. Click to remove'} />
+                                                            :
+                                                            <DislikeIcon title={'Click to dislike'} classes={"stroke-2 stroke-black dark:stroke-white dark:fill-white fill-black"} />
+                                                        }
+                                                        <span className='text-xs'>{post?.dislikes?.length || 0} {post?.dislikes?.length > 1 ? "Dislikes" : "Dislike"}</span>
                                                     </div>
                                                 </div>
+                                                
                                             }
                                         </div>)
                                     }
@@ -212,7 +219,6 @@ const ModalUser = () => {
                             }
                         </div>
                     }
-
                 </div>
                 <label className="modal-backdrop cursor-default" htmlFor="userModal"></label>
             </dialog>

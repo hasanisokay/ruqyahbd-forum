@@ -196,7 +196,15 @@ box-shadow: inset 0 -5px 20px -15px currentColor;
   background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
   cursor: pointer;
   border-radius: 8px;
+  text-align: center;
 }
+.reaction-item{
+  @apply lg:hover:dark:bg-[#4B4C4F] lg:hover:bg-slate-200 px-[10px] rounded-md md:min-w-[100px] gap-[14px] flex items-center justify-center
+}
+.reaction-box{
+  @apply flex items-center justify-around py-[2px] mx-auto w-[98%] border-t-[0.5px] border-b-[0.5px] border-black dark:border-gray-500 border-opacity-20
+}
+
 .btn-green-active {
   background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
   cursor: pointer;

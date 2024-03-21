@@ -35,6 +35,7 @@ export const POST = async (request) => {
             date,
             likes: [],
             replies: [],
+            dislikes: [],
           },
         },
         $addToSet: {

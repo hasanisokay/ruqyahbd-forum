@@ -76,12 +76,14 @@ export const GET = async (request) => {
                 },
                 comment: "$comment.comment",
                 likes: "$comment.likes",
+                dislikes: "$comment.dislikes",
                 date: "$comment.date",
                 _id: "$comment._id",
                 replies: { $size: { $ifNull: ["$comment.replies", []] } },
               },
             },
             likes: { $first: "$likes" },
+            dislikes: { $first: "$dislikes" },
             approveDate: { $first: "$approveDate" },
             authorInfo: {
               $first: {
@@ -103,6 +105,7 @@ export const GET = async (request) => {
             photos: 1,
             videos: 1,
             likes: 1,
+            dislikes:1,
             approveDate: 1,
             authorInfo: {
               name: 1,

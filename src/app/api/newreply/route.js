@@ -11,6 +11,7 @@ export const POST = async (request) => {
     reply,
     author,
     likes: [],
+    dislikes: [],
     date,
   };
 
