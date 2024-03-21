@@ -201,7 +201,6 @@ const HomePagePosts = ({ tenPostsArray }) => {
         setPostIdToDelete(id);
         setShowDeleteModal(true)
     }
-console.log(posts);
     return (
         <>
             {posts?.map((post) => (
