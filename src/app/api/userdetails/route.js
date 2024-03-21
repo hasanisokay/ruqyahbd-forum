@@ -81,6 +81,7 @@ export const GET = async (request) => {
             videos: 1,
             comment: { $size: "$comment" },
             likes: 1,
+            dislikes:1,
           },
         },
         {

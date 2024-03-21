@@ -17,9 +17,12 @@ import UserIcon from "./SVG/UserIcon";
 import ReplyIcon from "./SVG/ReplyIcon";
 import DotIcon from "./SVG/DotIcon";
 import dynamic from "next/dynamic";
+import DislikeIcon from "./SVG/DislikeIcon";
+import handleHate from "@/utils/handleHate";
+import handleUnHate from "@/utils/handleUnHate";
 
-const  Replies = dynamic(() => import('./Replies'));
-const Comments = ({ c, postAuthor, likes, commentId: commentID, replies, setLikersArray, handleDislike, hanldleLike, postID, setPost }) => {
+const Replies = dynamic(() => import('./Replies'));
+const Comments = ({ c, postAuthor, likes, dislikes, commentId: commentID, replies, setLikersArray, handleDislike, hanldleLike, postID, setPost, post }) => {
   const [replyText, setReplyText] = useState("");
   const [replyCount, setReplyCount] = useState(replies);
   const [showReplyInput, setShowReplyInput] = useState(null);
@@ -135,8 +138,6 @@ const Comments = ({ c, postAuthor, likes, commentId: commentID, replies, setLike
   }, [showCommentOptions, commentID]);
 
 
-
-
   const handleReport = (id) => {
     setReportingCommentId(id);
     setShowReportModal(true);
@@ -152,9 +153,9 @@ const Comments = ({ c, postAuthor, likes, commentId: commentID, replies, setLike
                   <Image src={c?.author?.authorInfo?.photoURL} blurDataURL='' alt='User Profile Photo'
                     width={35} height={35} loading="lazy" sizes="(max-width: 768px) 100vw, 33vw"
 
-                    className={`w-[35px] h-[35px] rounded-full ${onlineUsers?.includes(c?.author?.username) ? "online-border-color":"offline-border-color"}`}
+                    className={`w-[35px] h-[35px] rounded-full ${onlineUsers?.includes(c?.author?.username) ? "online-border-color" : "offline-border-color"}`}
                   />
-                  : <div className={`flex items-center justify-center rounded-full w-[35px] h-[35px] ${onlineUsers?.includes(c?.author?.username) ? "online-border-color":"offline-border-color"} `}>
+                  : <div className={`flex items-center justify-center rounded-full w-[35px] h-[35px] ${onlineUsers?.includes(c?.author?.username) ? "online-border-color" : "offline-border-color"} `}>
                     <UserIcon height={"25px"} width={"25px"} />
                   </div>
               }
@@ -186,26 +187,31 @@ const Comments = ({ c, postAuthor, likes, commentId: commentID, replies, setLike
               <div>
                 <LinkPreview text={c?.comment} />
               </div>
-
-            </div>
-          </div>
-
-          {/* comment reply and like section */}
-          <div className="flex items-center gap-6 pt-[1px] text-xs pb-1 pl-[43px] text-[14px]">
-            <div onClick={() => setShowReplyInput(!showReplyInput)} className='flex items-center cursor-pointer flex-col' >
-              <ReplyIcon fill={ replyCount > 0  ? "#7637e7" : (theme==="dark" ? "#ffffff":"#494a54")}/>
-              <span className='text-[10px]'>{replyCount || 0} Replies</span>
-            </div>
-            <div className='flex flex-col items-center'>
-              {likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
-                <HeartIcon width={"20px"} height={"20px"} classes={"stroke-2 stroke-red-600 fill-red-600"} title={'You Liked this. Click to dislike'} handleOnclick={() => handleDislike(c._id)} />
-                :
-                <HeartIcon width={"20px"} height={"20px"} handleOnclick={() => hanldleLike(c?._id)} title={'Click to Like'} classes={"stroke-2 stroke-black dark:stroke-white fill-transparent"} />}
-              <span className='text-[10px] cursor-pointer' onClick={() => setLikersArray(likes)}>{likes?.length || 0} Likes</span>
+              <div className="flex items-center justify-between mt-2 ">
+                <div onClick={() => setShowReplyInput(!showReplyInput)} className='reaction-item cursor-pointer' >
+                  <ReplyIcon fill={replyCount > 0 ? "#7637e7" : (theme === "dark" ? "#ffffff" : "#494a54")} />
+                  <span className='text-[10px]'>{replyCount || 0} Replies</span>
+                </div>
+                <div className='reaction-item'>
+                  {likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
+                    <HeartIcon width={"20px"} height={"20px"} classes={"stroke-2 stroke-red-600 fill-red-600"} title={'You Liked this. Click to dislike'} handleOnclick={() => handleDislike(c._id)} />
+                    :
+                    <HeartIcon width={"20px"} height={"20px"} handleOnclick={() => hanldleLike(c?._id)} title={'Click to Like'} classes={"stroke-2 stroke-black dark:stroke-white fill-transparent"} />}
+                  <span className='text-[10px] cursor-pointer' onClick={() => setLikersArray(likes)}>{likes?.length || 0} Likes</span>
+                </div>
+                <div className='reaction-item'>
+                  {dislikes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
+                    <DislikeIcon width={"20px"} height={"20px"} classes={"stroke-2 stroke-blue-600 fill-blue-600"} title={'You Disliked this. Click to remove'} handleOnclick={() => handleUnHate(postID, fetchedUser?.username, post, setPost, commentID)} />
+                    :
+                    <DislikeIcon width={"20px"} height={"20px"} handleOnclick={() => handleHate(postID, fetchedUser?.username, post, setPost, commentID)} title={'Click to dislike'} classes={"stroke-2 stroke-black dark:stroke-white dark:fill-white fill-black"} />
+                  }
+                  <span className='text-xs cursor-pointer' onClick={() => setLikersArray(dislikes)}>{dislikes?.length || 0} {dislikes?.length > 1 ? "Dislikes" : "Dislike"}</span>
+                </div>
+              </div>
             </div>
           </div>
           {/* show replies */}
-          <div className="pl-[43px]">
+          <div className="pl-[43px] mt-2">
             {
               showReplyInput && <Replies
                 postID={postID}

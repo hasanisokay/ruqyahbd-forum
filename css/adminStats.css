@@ -1,43 +1,44 @@
 .avatars {
-    --avatar-count: 10;
-    --avatar-size: 50px;
-    --column-size: calc(var(--avatar-size) / 2);
-    display: grid;
-    justify-content: center;
-    grid-template-columns: repeat(var(--avatar-count), var(--column-size));
-    transition: 500ms;
-    transition-delay: 500ms;
+  --avatar-count: 10;
+  --avatar-size: 50px;
+  --column-size: calc(var(--avatar-size) / 2);
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(var(--avatar-count), var(--column-size));
+  transition: 500ms;
+  transition-delay: 500ms;
   padding-block: 2rem;
-overflow-x: auto;
+  overflow-x: auto;
 }
-  
-  .avatars:hover, .avatars:focus-within {
-    --column-size: calc(var(--avatar-size) * 1.5);
-    transition-delay: 0ms;
-  }
-  
-  .singleavatar {
-    width: var(--avatar-size);
-    border-radius: 100vw;
-    object-fit: cover;
-    aspect-ratio: 1;
-    border: 2px solid white;
-    box-shadow: 0.25rem 0.25rem 0.5rem hsl(0 0% 0% / 0.2);
-    transition: scale 500ms;
-  }
-  .shadow-avatar{
-    box-shadow: 0.25rem 0.25rem 0.5rem hsl(0 0% 0% / 0.5);
-    border-radius: 100vw;
-  }
-  
-  .singleavatar:hover {
-    scale: 1.5;
-    z-index: 10;
-  }
 
-  @supports selector(:has(+ *)) {
-    .singleavatar:hover + .singleavatar,
-    .singleavatar:has(+ .singleavatar:hover) {
-      scale: 1.3;
-    }
+.avatars:hover,
+.avatars:focus-within {
+  --column-size: calc(var(--avatar-size) * 1.5);
+  transition-delay: 0ms;
+}
+
+.singleavatar {
+  width: var(--avatar-size);
+  border-radius: 100vw;
+  object-fit: cover;
+  aspect-ratio: 1;
+  border: 1.5px solid white;
+  box-shadow: 0.25rem 0.25rem 0.5rem hsl(0 0% 0% / 0.2);
+  transition: scale 500ms;
+}
+.shadow-avatar {
+  box-shadow: 0.25rem 0.25rem 0.5rem hsl(0 0% 0% / 0.5);
+  border-radius: 100vw;
+}
+
+.singleavatar:hover {
+  scale: 1.5;
+  z-index: 10;
+}
+
+@supports selector(:has(+ *)) {
+  .singleavatar:hover + .singleavatar,
+  .singleavatar:has(+ .singleavatar:hover) {
+    scale: 1.3;
   }
+}

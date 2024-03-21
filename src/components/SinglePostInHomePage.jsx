@@ -315,7 +315,6 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       handleNewCommentForm(e);
     }
   }
-
   return (
     <div className='p-2 cursor-default bg-[#fffef9] dark:bg-[#242526] m-2 rounded-lg dark:border-gray-400 cardinhome shadow-xl'>
       <div className='relative'>
@@ -404,19 +403,19 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
       <div className='reaction-box mt-2'>
         <div className='reaction-item'>
           <CommentIcon fill={(post?.comment?.length > 0 && post?.comment[0].author?.authorInfo?.name) ? "#7637e7" : theme === "dark" ? "#ffffff" : "#000000"} />
-          <span className='text-xs'>{(post?.comment && post?.comment[0]?.author?.authorInfo?.name && post?.comment?.length) || 0} {post?.comment?.length > 1 ? "Comments" : "Comment" }</span>
+          <span className='text-xs'>{(post?.comment && post?.comment[0]?.author?.authorInfo?.name && post?.comment?.length) || 0} {post?.comment?.length > 1 ? "Comments" : "Comment"}</span>
         </div>
         <div className='reaction-item'>
           {post?.likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
             <HeartIcon title={"You Liked this. Click to dislike"} handleOnclick={() => handleDislike()} classes={'stroke-2 stroke-red-600 fill-red-600'} /> :
             <HeartIcon title={"Click to Like"} handleOnclick={() => hanldleLike()} classes={"stroke-2 stroke-black dark:stroke-white fill-transparent"} />}
-          <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.likes)}>{post?.likes?.length || 0} {post?.likes?.length > 1 ? "Likes" : "Like" }</span>
+          <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.likes)}>{post?.likes?.length || 0} {post?.likes?.length > 1 ? "Likes" : "Like"}</span>
         </div>
-        <div className=' reaction-item'>
+        <div className='reaction-item'>
           {post?.dislikes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
-            <DislikeIcon classes={"stroke-2 stroke-blue-600 fill-blue-600"} title={'You Disliked this. Click to remove'} handleOnclick={() => handleHate(post?._id)} />
+            <DislikeIcon classes={"stroke-2 stroke-blue-600 fill-blue-600"} title={'You Disliked this. Click to remove'} handleOnclick={() => handleUnHate(post._id, fetchedUser?.username, post, setPost)} />
             :
-            <DislikeIcon handleOnclick={() => handleUnHate(post._id, post?.authorInfo?.username)} title={'Click to dislike'} classes={"stroke-2 stroke-black dark:stroke-white dark:fill-white fill-black"} />
+            <DislikeIcon handleOnclick={() => handleHate(post._id, fetchedUser?.username, post, setPost)} title={'Click to dislike'} classes={"stroke-2 stroke-black dark:stroke-white dark:fill-white fill-black"} />
           }
           <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.dislikes)}>{post?.dislikes?.length || 0} {post?.dislikes?.length > 1 ? "Dislikes" : "Dislike"}</span>
         </div>
@@ -460,12 +459,14 @@ const SinglePostInHomePage = ({ fetchedPost }) => {
             <Comments
               key={index}
               c={c}
+              post={post}
               setPost={setPost}
               socket={socket}
               postID={id}
               commentId={c?._id}
               replies={c?.replies}
               likes={c?.likes}
+              dislikes={c?.dislikes}
               postAuthor={post?.authorInfo?.username}
               setLikersArray={setLikersArray}
               handleDislike={handleDislike}

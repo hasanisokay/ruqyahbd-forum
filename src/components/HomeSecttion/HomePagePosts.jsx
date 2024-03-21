@@ -201,7 +201,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
         setPostIdToDelete(id);
         setShowDeleteModal(true)
     }
-
+console.log(posts);
     return (
         <>
             {posts?.map((post) => (
@@ -297,10 +297,10 @@ const HomePagePosts = ({ tenPostsArray }) => {
                             <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.likes)}>{post?.likes?.length || 0} {post?.likes?.length > 1 ? "Likes" : "Like" } </span>
                         </div>
                         <div className=' reaction-item'>
-                            { post?.dislikes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
-                                <DislikeIcon classes={"stroke-2 stroke-blue-600 fill-blue-600"} title={'You Disliked this. Click to remove'} handleOnclick={() => handleHate(post?._id)} />
+                            {post?.dislikes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
+                                <DislikeIcon classes={"stroke-2 stroke-blue-600 fill-blue-600"} title={'You Disliked this. Click to remove'} handleOnclick={() => handleUnHate(post._id, fetchedUser?.username, posts, setPosts)} />
                                 :
-                                <DislikeIcon handleOnclick={() => handleUnHate(post._id, post?.authorInfo?.username)} title={'Click to dislike'} classes={"stroke-2 stroke-black dark:stroke-white dark:fill-white fill-black"} />
+                                <DislikeIcon handleOnclick={() => handleHate(post._id, fetchedUser?.username, posts, setPosts)} title={'Click to dislike'} classes={"stroke-2 stroke-black dark:stroke-white dark:fill-white fill-black"} />
                             }
                             <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.dislikes)}>{post?.dislikes?.length || 0} {post?.dislikes?.length > 1 ? "Dislikes":"Dislike"}</span>
                         </div>

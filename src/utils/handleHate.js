@@ -1,41 +1,79 @@
 import toast from "react-hot-toast";
+const handleHate = async (
+  id,
+  actionByUsername,
+  posts,
+  setPosts,
+  commentID = undefined, 
+) => {
+  if (!actionByUsername) {
+    return toast.error("Log in to react");
+  }
+  const dataToSend = {
+    postID: id,
+    action: "hate",
+    actionByUsername,
+  };
+  if (commentID) {
+    dataToSend.commentID = commentID;
+  }
+  try {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataToSend),
+    };
 
-const handleHate = async (id, postAuthor) => {
-    return toast.success("Disliking coming soon...")
-    if (!fetchedUser) {
-        return toast.error("Log in to react")
-    }
-    const dataToSend = {
-        postID: id, action: "like", actionByUsername: fetchedUser?.username, postAuthor
-    }
-    try {
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dataToSend),
-        };
-
-        const response = await fetch('/api/posts/reaction', requestOptions);
-        const data = await response.json();
-
-        if (data.status === 200) {
-            const updatedPosts = posts.map((post) => {
-                if (post._id === id) {
-                    if (post?.likes?.length > 0) {
-                        post.likes = [...post.likes, fetchedUser?.username]
-                    }
-                    else {
-                        post.likes = [fetchedUser?.username]
-                    }
-                }
-                return post;
-            });
-            setPosts(updatedPosts)
+    const response = await fetch("/api/posts/reaction", requestOptions);
+    const data = await response.json();
+    if (data?.status === 200) {
+      let updatedPosts;
+      if (posts?.length > 1) {
+        updatedPosts = posts?.map((post) => {
+          if (post?._id === id) {
+            if (post?.dislikes?.length > 0) {
+              post.dislikes = [...post.dislikes, actionByUsername];
+            } else {
+              post.dislikes = [actionByUsername];
+            }
+          }
+          return post;
+        });
+        setPosts(updatedPosts);
+      } else {
+        if (data?.status === 200 && commentID) {
+          setPosts((prevPost) => ({
+            ...prevPost,
+            comment: prevPost.comment.map((c) =>
+              c?._id === commentID
+                ? {
+                    ...c,
+                    dislikes: [...c.dislikes, actionByUsername],
+                  }
+                : c
+            ),
+          }));
         }
-    } catch (error) {
-        console.error("Error disliking post:", error);
+        if (data?.status === 200 && !commentID) {
+            if (posts?.dislikes?.length > 0) {
+              setPosts((prevPost) => ({
+                ...prevPost,
+                dislikes: [...prevPost?.dislikes, actionByUsername],
+              }));
+            } else {
+              setPosts((prevPost) => ({
+                ...prevPost,
+                dislikes: [actionByUsername],
+              }));
+            }
+        }
+      }
+
     }
-}
+  } catch (error) {
+    console.error("Error disliking post:", error);
+  }
+};
 export default handleHate;

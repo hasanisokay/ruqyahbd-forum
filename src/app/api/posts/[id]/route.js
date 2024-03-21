@@ -83,7 +83,7 @@ export const GET = async (request) => {
               },
             },
             likes: { $first: "$likes" },
-            dislikes: { $first: "$dislikes" },
+            dislikes: { $first: "$dislikes"},
             approveDate: { $first: "$approveDate" },
             authorInfo: {
               $first: {
