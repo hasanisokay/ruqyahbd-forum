@@ -26,6 +26,13 @@ export const POST = async (request) => {
         });
         const htmlBody = `
         <html>
+        <head>
+        <style>
+          p {
+            margin-bottom: 10px;
+          }
+        </style>
+      </head>
           <body>
             <p style="font-size: 16px; color: #333;">Dear <span style="font-weight: 600;">${result?.name}</span>,</p>
             <p style="font-size: 14px; color: #666;">Your OTP for password reset is: <strong style="color: #333;">${otp}</strong>. It will expire within 10 minutes from now.</p>
@@ -34,7 +41,7 @@ export const POST = async (request) => {
           </body>
         </html>
       `;
-      
+
         const params = {
           Destination: {
             ToAddresses: [email],
