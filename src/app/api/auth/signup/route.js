@@ -1,6 +1,7 @@
 import dbConnect from "@/services/DbConnect";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import sendWelcomeEmail from "@/utils/sendWelcomeEmail.mjs";
 /**
  * @type {import("mongodb").Db}
  */
@@ -21,6 +22,7 @@ export const POST = async (request) => {
     body.notifications = [];
     await userCollection.insertOne(body);
     await usernameCollection.insertOne({ username });
+    await sendWelcomeEmail(body.email, body.username, body.name);
     return NextResponse.json({ status: 200, message: "User Created" });
   } catch {
     return NextResponse.json({ status: 404, message: "Something went wrong" });

@@ -1,7 +1,8 @@
 import dbConnect from "@/services/DbConnect";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+
 export const POST = async (request) => {
   const body = await request.json();
   const { username, email } = body;
@@ -16,29 +17,36 @@ export const POST = async (request) => {
     if (result?._id) {
       const otp = Math.floor(100000 + Math.random() * 900000);
       const sendOTPEmail = async (email, otp) => {
-        const transporter = nodemailer.createTransport({
-          service: process.env.EMAIL_SERVICE_NAME,
-          host: process.env.EMAIL_HOST,
-          port: process.env.EMAIL_SERVICE_HOST,
-          secure: true,
-          auth: {
-            user: process.env.EMAIL_ID,
-            pass: process.env.EMAIL_PASS,
+        const sesClient = new SESClient({
+          region: process.env.AWS_SES_REGION,
+          credentials: {
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
           },
         });
-        const mailOptions = {
-          from: process.env.EMAIL_ID,
-          to: email,
-          subject: "Password Reset OTP",
-          text: `Dear ${result?.name}, \n\nYour OTP for password reset is: ${otp}. It will expire within 10 minutes from now. \n\nTeam Ruqyahbd Forum `,
+        const params = {
+          Destination: {
+            ToAddresses: [email],
+          },
+          Message: {
+            Body: {
+              Text: {
+                Data: `Dear ${result?.name}, \n\nYour OTP for password reset is: ${otp}. It will expire within 10 minutes from now. \n\nTeam Ruqyahbd Forum `,
+              },
+            },
+            Subject: {
+              Data: "Password Reset OTP",
+            },
+          },
+          Source: process.env.PASSWORD_RECOVERY_EMAIL_ID,
         };
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.error("Error sending email:", error);
-          } else {
-            console.log("Email sent:", info?.accepted);
-          }
-        });
+
+        try {
+          await sesClient.send(new SendEmailCommand(params));
+          console.log("Email sent");
+        } catch (error) {
+          console.error("Error sending email:", error);
+        }
       };
       sendOTPEmail(email, otp);
 
