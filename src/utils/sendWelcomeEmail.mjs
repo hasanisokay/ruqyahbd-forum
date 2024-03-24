@@ -9,10 +9,21 @@ const sendWelcomeEmail = async (email, username, name) => {
       },
     });
     const htmlBody = `
-    <p style="font-size: 16px; color: #333;">Dear ${name},</p>
-    <p style="font-size: 14px; color: #666;">Welcome to Ruqyahbd Forum! We're excited to have you on board.</p>
-    <p style="font-size: 14px; color: #666;">Your username is: <strong>${username}</strong></p>
-    <p style="font-size: 14px; color: #666;">Thank you for joining us!</p>
+    <html>
+      <head>
+        <style>
+          p {
+            margin-bottom: 10px;
+          }
+        </style>
+      </head>
+      <body>
+        <p style="font-size: 16px; color: #333; font-weight: 800;">Dear ${name},</p>
+        <p style="font-size: 14px; color: #666;">Welcome to Ruqyahbd Forum! We're excited to have you on board.</p>
+        <p style="font-size: 14px; color: #666;">Your username is: <strong>${username}</strong></p>
+        <p style="font-size: 14px; color: #666;">Thank you for joining us!</p>
+      </body>
+    </html>
   `;
   
     const params = {

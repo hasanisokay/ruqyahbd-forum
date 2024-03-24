@@ -24,14 +24,25 @@ export const POST = async (request) => {
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
           },
         });
+        const htmlBody = `
+        <html>
+          <body>
+            <p style="font-size: 16px; color: #333;">Dear <span style="font-weight: 600;">${result?.name}</span>,</p>
+            <p style="font-size: 14px; color: #666;">Your OTP for password reset is: <strong style="color: #333;">${otp}</strong>. It will expire within 10 minutes from now.</p>
+            <p style="font-size: 14px; color: #666;">If you face any problem, please contact us at <a href="mailto:ruqyahbdforum@gmail.com">ruqyahbdforum@gmail.com</a>.</p>
+            <p style="font-size: 14px; color: #666;">Team Ruqyahbd Forum</p>
+          </body>
+        </html>
+      `;
+      
         const params = {
           Destination: {
             ToAddresses: [email],
           },
           Message: {
             Body: {
-              Text: {
-                Data: `Dear ${result?.name}, \n\nYour OTP for password reset is: ${otp}. It will expire within 10 minutes from now. \n\nTeam Ruqyahbd Forum `,
+              Html: {
+                Data: htmlBody,
               },
             },
             Subject: {
