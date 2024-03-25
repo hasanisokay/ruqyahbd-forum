@@ -23,7 +23,7 @@ import NewNotice from "@/components/admin/NewNotice";
 const noticePageForAdmin = () => {
     return (
         <>
-            <NewNotice/>
+          <NewNotice/>
         </>
     );
 };

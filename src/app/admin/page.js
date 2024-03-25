@@ -1,6 +1,5 @@
 'use server'
 import Dashboard from "@/components/admin/Dashboard";
-
 export async function generateMetadata() {
   return {
     title: "Admin - Ruqyah Forum",
@@ -22,7 +21,7 @@ export async function generateMetadata() {
 const page = () => {
   return (
     <>
-      <Dashboard />
+     <Dashboard />
     </>
   );
 };
