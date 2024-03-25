@@ -25,19 +25,30 @@ const LoginForm = () => {
         username: '',
         password: '',
     });
-    const handleUsernameOnchange =(e)=>{
+    const handleUsernameOnchange = (e) => {
         // e.preventDefault();
-        if(errors.username.length>0){
+        if (errors.username.length > 0) {
             setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
         }
         setUsername(e.target.value);
     }
-    const handelPasswordOnchange =(e)=>{
-        if(errors.password.length>0){
+    const handelPasswordOnchange = (e) => {
+        if (errors.password.length > 0) {
             setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
         }
         setPassword(e.target.value);
     }
+
+    useEffect(() => {
+        if (fetchedUser) {
+            startTransition(() => {
+                refresh()
+                push(from);
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetchedUser])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors({
@@ -63,17 +74,12 @@ const LoginForm = () => {
                 const { username, email, isAdmin } = res;
                 await createJWT({ username, email, isAdmin })
                 setFetchedUser(res)
-                startTransition(() => {
-                    refresh()
-                    push(from);
-                });
-                toast.success("Success");
             }
         } catch (error) {
             console.error('Error while login: ', error.message);
             return false;
         }
-        finally{
+        finally {
             toast.dismiss(toastId)
             setDisableForm(false)
         }
