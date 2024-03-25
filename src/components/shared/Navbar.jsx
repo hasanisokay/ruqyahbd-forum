@@ -15,6 +15,7 @@ import BellIcon from "../SVG/BellIcon";
 import UserIcon from "../SVG/UserIcon";
 import { LoadingNotifications } from "../LoadingSkeletons/Loaders";
 import logOut from "@/utils/logOut.mjs";
+import getPendingCount from "@/utils/getPendingCount.mjs";
 
 const Navbar = () => {
   const [navToggle, setNavToggle] = useState(false);
@@ -24,8 +25,18 @@ const Navbar = () => {
   const [navData, setNavData] = useState()
   const router = useRouter();
   const [loadingNotifications, setLoadingNotifications] = useState(false);
-  const [isPending, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition();
+  const [pendingCount, setPendingCount] = useState(0);
   const navRef = useRef(null);
+
+  useEffect(() => {
+    (async () => {
+      if (fetchedUser && fetchedUser?.isAdmin) {
+        setPendingCount(await getPendingCount())
+      }
+    })()
+  }, [fetchedUser])
+
   useEffect(() => {
     if (loading) {
       setNavData(commonNavData)
@@ -34,7 +45,6 @@ const Navbar = () => {
       setNavData(fetchedUser ? afterLoginNavData : beforeLoginNavData)
     }
   }, [fetchedUser, loggedOut, loading])
-
 
   useEffect(() => {
     if (socket && fetchedUser && fetchedUser?.isAdmin) {
@@ -49,7 +59,6 @@ const Navbar = () => {
       }
     }
   }, [socket, fetchedUser, setAllNotifications, setNotificationsCount])
-
 
   useEffect(() => {
     if (socket && fetchedUser) {
@@ -201,7 +210,7 @@ const Navbar = () => {
             </li>)
           }
           {
-            fetchedUser && fetchedUser?.isAdmin && <li><NavLink activeClassName={"text-[#308853] text-semibold"} href={"/admin"}>Admin</NavLink></li>
+            fetchedUser && fetchedUser?.isAdmin && <li><NavLink activeClassName={"text-[#308853] text-semibold"} href={"/admin"}>Admin {pendingCount > 0 && <span className="text-red-500 text-[14px]">{pendingCount}</span>}</NavLink></li>
           }
           {
             fetchedUser && fetchedUser?.isAdmin && <li><NavLink activeClassName={"text-[#308853] text-semibold"} href={"/chat"}>Chat</NavLink></li>

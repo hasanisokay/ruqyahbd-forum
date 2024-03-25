@@ -10,9 +10,9 @@ const PostStat = async () => {
             <div className='flex flex-col items-center justify-center my-4 py-4 bg-[#fffef9] cardinhome shadow-xl dark:bg-[#242526]'>
                 <h1 className='statsHeaderTitle'>Post Stats</h1>
                 <div>
-                    <p>Pending Posts: <span className='font-semibold'>{stats?.totalPendingPosts}</span></p>
-                    <p>Approved Posts: <span className='font-semibold'>{stats?.totalApprovedPosts}</span></p>
-                    <p>Declined Posts: <span className='font-semibold'>{stats?.totalDeclinedPosts}</span></p>
+                    <p>Pending: <span className='font-semibold'>{stats?.totalPendingPosts}</span></p>
+                    <p>Approved: <span className='font-semibold'>{stats?.totalApprovedPosts}</span></p>
+                    <p>Declined: <span className='font-semibold'>{stats?.totalDeclinedPosts}</span></p>
                     <p>Notices: <span className='font-semibold'>{stats?.totalNoticesCount}</span></p>
                 </div>
             </div>

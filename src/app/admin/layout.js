@@ -1,15 +1,15 @@
+'use server'
 import Sidebar from "@/components/admin/Sidebar";
-const layout = ({ children }) => {
-  return (
-    <>
-  
-        <>
-          <Sidebar />
-          {children}
-        </>
- 
-    </>
-  );
+import getStats from "@/utils/getStats";
+
+const layout = async({children}) => {
+  const postData = await getStats();
+    return (
+        <div>
+              <Sidebar postData={postData}/>
+            {children}
+        </div>
+    );
 };
 
 export default layout;

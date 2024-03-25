@@ -1,4 +1,4 @@
-'use server'
+"use server";
 import Dashboard from "@/components/admin/Dashboard";
 export async function generateMetadata() {
   return {
@@ -18,10 +18,10 @@ export async function generateMetadata() {
   };
 }
 
-const page = () => {
+const page = async() => {
   return (
     <>
-     <Dashboard />
+      <Dashboard />
     </>
   );
 };
