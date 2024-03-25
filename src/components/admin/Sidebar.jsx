@@ -24,10 +24,13 @@ const navLinks = [
         path: "/admin/declinedposts",
         title: "Declined Posts"
     },
+    {
+        path: "/admin/send-email",
+        title: "Email"
+    },
 ]
 
 const Sidebar = ({postData}) => {
-
     return (
         <div>
             <h1 className="text-2xl font-semibold text-center">Admin Home</h1>

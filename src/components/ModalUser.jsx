@@ -76,7 +76,6 @@ const ModalUser = () => {
             document.removeEventListener("click", handleCloseModal);
         };
     }, [setSelectedUsernameToShowDetails]);
-console.log(postsByUser);
 
     return (
         <div>

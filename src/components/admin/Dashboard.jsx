@@ -27,23 +27,15 @@ const Dashboard = () => {
         }
     };
     const removeAdmin = async (username) => {
+        if (fetchedUser?.username !== "rafael" || fetchedUser?.username !== "bonjui" || fetchedUser?.username !== "anwar" || fetchedUser?.username !== "thealmahmud") {
+            return toast.error("Unauthorized");
+        }
         const { message, status } = await handleRemoveAdmin(username);
         if (status === 200) return toast.success(message);
         else return toast.error(message)
     }
     return (
-        <div className='cardinhome flex items-center justify-center flex-col md:flex-row'>
-            {/* {loadingData && <LoadingSpinner />} */}
-            {/* {postData && (
-                <div className='w-full'>
-                    <p>Pending: <span className='font-semibold'>{postData?.totalPendingPosts}</span></p>
-                    <p>Approved: <span className='font-semibold'>{postData?.totalApprovedPosts}</span></p>
-                    <p>Declined: <span className='font-semibold'>{postData?.totalDeclinedPosts}</span></p>
-                    <p>Notices: <span className='font-semibold'>{postData?.totalNoticesCount}</span></p>
-                    <p>Users: <span className='font-semibold'>{postData?.totalUsersCount}</span></p>
-                    <p>Admins: <span className='font-semibold'>{postData?.totalAdminCount}</span></p>
-                </div>
-            )} */}
+        <div className='cardinhome '>
             <div>
                 <SearchUserForm onSearch={(username) => handleSearch(username)} />
             </div>
