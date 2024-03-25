@@ -1,4 +1,4 @@
-"use server";
+"use server"
 import dbConnect from "@/services/DbConnect";
 import { cookies } from "next/headers";
 const getPendingCount = async () => {

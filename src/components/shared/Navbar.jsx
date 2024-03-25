@@ -32,10 +32,11 @@ const Navbar = () => {
   useEffect(() => {
     (async () => {
       if (fetchedUser && fetchedUser?.isAdmin) {
-        setPendingCount(await getPendingCount())
+        const data = await getPendingCount();
+        setPendingCount(data);
       }
     })()
-  }, [fetchedUser])
+  }, [fetchedUser, loading, loggedOut])
 
   useEffect(() => {
     if (loading) {
