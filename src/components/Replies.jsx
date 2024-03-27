@@ -47,8 +47,9 @@ const Replies = ({ postID, commentID, setReplyCount, replyCount}) => {
 
 
 
-    const handleLoadMore = () => {
+    const handleLoadMore = async() => {
         pageRef.current += 1;
+        await fetchReplies();
     };
 
     const fetchReplies = useCallback(async () => {
@@ -97,7 +98,7 @@ const Replies = ({ postID, commentID, setReplyCount, replyCount}) => {
         };
     }, [postID, commentID, socket, setReplyCount]);
 
-
+console.log(fetchedReplies);
     return (
         <div>
 
@@ -109,8 +110,8 @@ const Replies = ({ postID, commentID, setReplyCount, replyCount}) => {
             {
                 loading && <LoadingModalUser />
             }
-            {fetchedReplies.map((reply, index) => (
-                <div key={index} className="mb-[10px]">
+            {fetchedReplies.map((reply) => (
+                <div key={reply._id} className="mb-[10px]">
                     <div className="flex gap-2 ">
                         <div onClick={() => setSelectedUsernameToShowDetails(reply?.authorInfo?.username)} className='cursor-pointer min-w-[20px]'>
                             {

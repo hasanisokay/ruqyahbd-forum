@@ -3,10 +3,8 @@ import dynamic from 'next/dynamic';
 import getPosts from "@/utils/getPosts";
 import { Suspense } from "react";
 import { LoadingCards } from '@/components/LoadingSkeletons/Loaders';
-
 const HomePagePosts = dynamic(() => import('@/components/HomeSecttion/HomePagePosts'));
 const NewPostSection = dynamic(() => import('@/components/HomeSecttion/NewPostSection'));
-// const LoadingCards = dynamic(() => import('@/components/LoadingSkeletons/LoadingCards'));
 
 const HomePage = async () => {
   const posts = await getPosts(1);
