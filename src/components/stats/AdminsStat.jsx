@@ -36,7 +36,7 @@ const AdminsStat = ({ allAdmins, }) => {
                 }
             </div>
             <h3 className="text-center my-2">Offline Admins ({offlineAdmins?.length})</h3>
-            <div style={{ '--avatar-count': offlineAdmins?.length }} className="avatars md:grid flex flex-wrap md:gap-0 gap-1">
+            <div style={{ '--avatar-count': offlineAdmins?.length }} className="avatars md:gap-0 md:grid flex flex-wrap gap-[1px]">
                 {
                     offlineAdmins?.map((user) => <div onClick={() => setSelectedUsernameToShowDetails(user?.username)} title={`Click to see ${user?.name}'s profile`} className="cursor-pointer singleavatar" key={user?._id}>
                         <Image src={user?.photoURL || "https://i.ibb.co/JB4phdq/computer-icons-user-profile-head-ico-download-e2a2cb46bb62fe3f3cd00e0414dd13d6.png"} alt='Admin Profile Photo'

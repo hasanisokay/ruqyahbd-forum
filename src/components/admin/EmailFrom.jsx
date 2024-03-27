@@ -1,25 +1,25 @@
 'use client'
-import React, { useState } from 'react';
-// import ReactQuill from 'react-quill';
+import React, { useContext, useState } from 'react';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import sendEmail from '@/utils/sendEmail.mjs';
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
+import AuthContext from '@/contexts/AuthContext';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const EmailForm = () => {
-    const [emailFrom, setEmailFrom] = useState('');
+    const { fetchedUser } = useContext(AuthContext);
+    const [emailFrom, setEmailFrom] = useState(fetchedUser?.username + "@f.ruqyahbd.org" || "admin@f.ruqyahbd.org" );
     const [email, setEmail] = useState('');
     const [subject, setSubject] = useState('');
     const [htmlMessage, setHtmlMessage] = useState('');
-
     const modules = {
         toolbar: [
-            [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-            [{size: []}],
+            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+            [{ size: [] }],
             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{'list': 'ordered'}, {'list': 'bullet'}, 
-            {'indent': '-1'}, {'indent': '+1'}],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' },
+            { 'indent': '-1' }, { 'indent': '+1' }],
             ['link',],
             ['clean'],
             [{ 'color': [] }, { 'background': [] }], // Text and background color options
@@ -53,7 +53,7 @@ const EmailForm = () => {
                     className="input input-bordered focus:outline-none"
                     value={emailFrom}
                     onChange={(e) => setEmailFrom(e.target.value)}
-                    required
+                    disabled={fetchedUser?.username !=="bonjui" || fetchedUser?.username !=="rafael" || fetchedUser?.username !=="anwar" || fetchedUser?.username !=="thealmahmud"}
                 />
             </div>
 

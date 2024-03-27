@@ -7,13 +7,13 @@
   grid-template-columns: repeat(var(--avatar-count), var(--column-size));
   transition: 500ms;
   transition-delay: 500ms;
-  padding-block: 2rem;
-  overflow-x: auto;
+  padding-block: 3rem;
+  overflow: auto;
 }
 
 .avatars:hover,
 .avatars:focus-within {
-  --column-size: calc(var(--avatar-size) * 1.5);
+  --column-size: calc(var(--avatar-size) * 1.1);
   transition-delay: 0ms;
 }
 
