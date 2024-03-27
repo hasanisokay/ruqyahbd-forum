@@ -19,7 +19,22 @@ export const GET = async (request) => {
           $match: { status: "approved" },
         },
         {
-          $sort: { date: -1 },
+          $addFields: {
+            // Add a field to check if there are any comments
+            hasComments: { $cond: { if: { $isArray: "$comment" }, then: { $size: "$comment" }, else: 0 } },
+            // Add a field to check if there are any replies
+            hasReplies: { $cond: { if: { $isArray: "$comment.replies" }, then: { $size: "$comment.replies" }, else: 0 } },
+          },
+        },
+        {
+          $sort: {
+            // Sort first by comment date if there are comments
+            "comment.date": -1,
+            // If no comments, sort by replies date if there are replies
+            "comment.replies.date": -1,
+            // If both comment and replies are empty, sort by post date
+            date: -1,
+          },
         },
         {
           $skip: skip,

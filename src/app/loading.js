@@ -1,9 +1,7 @@
-import LoadingCircle from "@/components/LoadingSkeletons/LoadingCircle";
-import LoadingSpinner from "@/components/LoadingSkeletons/LoadingSpinner";
+import RandomLoader from "@/components/LoadingSkeletons/RandomLoader";
 
 const RootLoading = () => {
-  const randomNumber = Math.floor(Math.random() * 2);
-  return randomNumber === 0 ? <LoadingCircle/> : <LoadingSpinner />
+  return <RandomLoader />
 };
 
 export default RootLoading;
