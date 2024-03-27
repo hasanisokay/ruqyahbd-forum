@@ -7,7 +7,7 @@ const HomePagePosts = dynamic(() => import('@/components/HomeSecttion/HomePagePo
 const NewPostSection = dynamic(() => import('@/components/HomeSecttion/NewPostSection'));
 
 const HomePage = async () => {
-  const posts = await getPosts(1);
+  const posts = await getPosts(1, 'date');
   return (
     <div>
       <NewPostSection />

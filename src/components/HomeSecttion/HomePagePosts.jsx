@@ -46,8 +46,8 @@ const HomePagePosts = ({ tenPostsArray }) => {
     const [loadingPosts, setLoadingPosts] = useState(false);
     const [noMorePosts, setNoMorePosts] = useState(false);
     const [error, setError] = useState(null);
-
-
+    const [sortingMethod, setSortingMethod] = useState("");
+    const [changedSortingMethod, setChangedSortingMethod] = useState(false);
     useEffect(() => {
         const handleScroll = () => {
             if (
@@ -72,7 +72,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
     useEffect(() => {
         const fetchPosts = async () => {
             setLoadingPosts(true);
-            const data = await getPosts(size);
+            const data = await getPosts(size, sortingMethod);
             setLoadingPosts(false)
             if (data?.message) {
                 return setError(data?.message);
@@ -86,7 +86,24 @@ const HomePagePosts = ({ tenPostsArray }) => {
         else {
             fetchPosts()
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [size])
+
+    useEffect(() => {
+        (async () => {
+            setChangedSortingMethod(true);
+            console.log(sortingMethod);
+            const data = await getPosts(1, sortingMethod);
+            if (data?.message) {
+                setError(data?.message);
+            }
+            else {
+                setError("");
+                setPosts(data);
+            }
+            setChangedSortingMethod(false);
+        })()
+    }, [sortingMethod])
 
     useEffect(() => {
         const handleOutsideClick = (event) => {
@@ -138,16 +155,13 @@ const HomePagePosts = ({ tenPostsArray }) => {
             const data = await response.json();
 
             if (data.status === 200) {
-                // Update the likes array in the posts
+
                 const updatedPosts = posts.map((post) => {
                     if (post._id === id) {
-                        // Remove fetchedUser.username from the likes array
                         post.likes = post.likes.filter((person) => person !== fetchedUser?.username);
                     }
                     return post;
                 });
-
-                // Update the state to trigger a re-render
                 setPosts(updatedPosts);
             }
         } catch (error) {
@@ -196,15 +210,25 @@ const HomePagePosts = ({ tenPostsArray }) => {
             console.error("Error disliking post:", error);
         }
     }
-    
+
     const handleDelete = (id) => {
         setPostIdToDelete(id);
         setShowDeleteModal(true)
     }
+    if (changedSortingMethod) {
+        return <LoadingCards />
+    }
     return (
         <>
+            {/* <div className='cardinhome'>
+                <select value={sortingMethod} onChange={(e) => setSortingMethod(e.target.value)} className="select select-sm select-ghost focus:outline-none max-w-xs">
+                    <option value={"date"}>Post</option>
+                    <option value={"activity"}>Activity</option>
+                </select>
+            </div> */}
+
             {posts?.map((post) => (
-                <div key={post._id} className='cursor-default bg-[#fffef9] shadow-xl dark:bg-[#242526] mx-2 mt-4 mb-4 pb-2 rounded-lg cardinhome min-h-[10vh]'>
+                <div key={post?._id} className='cursor-default bg-[#fffef9] shadow-xl dark:bg-[#242526] mx-2 mt-4 mb-4 pb-2 rounded-lg cardinhome min-h-[10vh]'>
                     <div className='p-2'>
                         <div className='relative'>
                             <ThreeDotsIcon
@@ -283,17 +307,17 @@ const HomePagePosts = ({ tenPostsArray }) => {
                         </div>}
                     </div>
                     <div className='reaction-box'>
-                            <Link href={`/${post?._id}`} className='reaction-item'>
-                                <CommentIcon fill={post?.comment > 0 ? "#7637e7" : theme === "dark" ? "#ffffff" : "#000000"} />
-                                <span className='text-xs'>{post?.comment || 0} {post?.comment > 1 ? "Comments" : "Comment" } </span>
-                            </Link>
+                        <Link href={`/${post?._id}`} className='reaction-item'>
+                            <CommentIcon fill={post?.comment > 0 ? "#7637e7" : theme === "dark" ? "#ffffff" : "#000000"} />
+                            <span className='text-xs'>{post?.comment || 0} {post?.comment > 1 ? "Comments" : "Comment"} </span>
+                        </Link>
                         <div className=' reaction-item '>
                             {post?.likes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
                                 <HeartIcon classes={"stroke-2 stroke-red-600 fill-red-600"} title={'You Liked this. Click to dislike'} handleOnclick={() => handleDislike(post?._id)} />
                                 :
                                 <HeartIcon handleOnclick={() => handleLike(post._id, post?.authorInfo?.username)} title={'Click to Like'} classes={"stroke-2 stroke-black dark:stroke-white fill-transparent"} />
                             }
-                            <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.likes)}>{post?.likes?.length || 0} {post?.likes?.length > 1 ? "Likes" : "Like" } </span>
+                            <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.likes)}>{post?.likes?.length || 0} {post?.likes?.length > 1 ? "Likes" : "Like"} </span>
                         </div>
                         <div className=' reaction-item'>
                             {post?.dislikes?.filter((username) => username === fetchedUser?.username)?.length > 0 ?
@@ -301,7 +325,7 @@ const HomePagePosts = ({ tenPostsArray }) => {
                                 :
                                 <DislikeIcon handleOnclick={() => handleHate(post._id, fetchedUser?.username, posts, setPosts)} title={'Click to dislike'} classes={"stroke-2 stroke-black dark:stroke-white dark:fill-white fill-black"} />
                             }
-                            <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.dislikes)}>{post?.dislikes?.length || 0} {post?.dislikes?.length > 1 ? "Dislikes":"Dislike"}</span>
+                            <span className='text-xs cursor-pointer' onClick={() => setLikersArray(post?.dislikes)}>{post?.dislikes?.length || 0} {post?.dislikes?.length > 1 ? "Dislikes" : "Dislike"}</span>
                         </div>
 
                     </div>

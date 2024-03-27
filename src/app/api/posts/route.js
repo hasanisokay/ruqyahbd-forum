@@ -3,14 +3,33 @@ import { NextResponse } from "next/server";
 
 export const GET = async (request) => {
   const page = parseInt(request.nextUrl.searchParams.get("page")) || 1;
+  const sortMethod = request.nextUrl.searchParams.get("sort");
   const db = await dbConnect();
   const postCollection = db?.collection("posts");
+  
   if (!db)
     return NextResponse.json({
       status: 400,
       message: "Database connection error",
     });
   try {
+    let sortLogic ={}
+    if(sortMethod === "activity"){
+      sortLogic = {
+        // Sort first by comment date if there are comments
+        "comment.date": -1,
+        // If no comments, sort by replies date if there are replies
+        "comment.replies.date": -1,
+        // If both comment and replies are empty, sort by post date
+        date: -1,
+      }
+    }
+    else{
+      sortLogic = {
+        date: -1,
+        }
+    }
+    
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
     const result = await postCollection
@@ -27,14 +46,7 @@ export const GET = async (request) => {
           },
         },
         {
-          $sort: {
-            // Sort first by comment date if there are comments
-            "comment.date": -1,
-            // If no comments, sort by replies date if there are replies
-            "comment.replies.date": -1,
-            // If both comment and replies are empty, sort by post date
-            date: -1,
-          },
+          $sort: sortLogic
         },
         {
           $skip: skip,
