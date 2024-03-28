@@ -46,10 +46,11 @@ const HomePagePosts = ({ tenPostsArray }) => {
     const [loadingPosts, setLoadingPosts] = useState(false);
     const [noMorePosts, setNoMorePosts] = useState(false);
     const [error, setError] = useState(null);
-    const [sortingMethod, setSortingMethod] = useState("");
+    const [sortingMethod, setSortingMethod] = useState("date");
     const [changedSortingMethod, setChangedSortingMethod] = useState(false);
     useEffect(() => {
         const handleScroll = () => {
+
             if (
                 infiniteScrollRef.current &&
                 window.innerHeight + window.scrollY >= infiniteScrollRef.current.offsetTop
@@ -58,8 +59,10 @@ const HomePagePosts = ({ tenPostsArray }) => {
                     setSize(size + 1);
                     return;
                 }
-                else if (size * 10 < posts?.length) return setNoMorePosts(true);
-                else setNoMorePosts(true)
+                // else if (size * 10 < posts?.length) return setNoMorePosts(true);
+                else{
+                    setNoMorePosts(true)
+                }
             }
         };
         window.addEventListener('scroll', handleScroll);
@@ -86,24 +89,28 @@ const HomePagePosts = ({ tenPostsArray }) => {
         else {
             fetchPosts()
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [size])
 
     useEffect(() => {
+        if(!changedSortingMethod) return;
         (async () => {
-            setChangedSortingMethod(true);
-            console.log(sortingMethod);
+           
+            setLoadingPosts(true);
             const data = await getPosts(1, sortingMethod);
+            setLoadingPosts(false)
+            setChangedSortingMethod(false);
+            setSize(1)
             if (data?.message) {
                 setError(data?.message);
             }
             else {
                 setError("");
-                setPosts(data);
+                setPosts(data)
             }
-            setChangedSortingMethod(false);
         })()
-    }, [sortingMethod])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [changedSortingMethod])
 
     useEffect(() => {
         const handleOutsideClick = (event) => {
@@ -215,17 +222,21 @@ const HomePagePosts = ({ tenPostsArray }) => {
         setPostIdToDelete(id);
         setShowDeleteModal(true)
     }
+    const handleSort = (e) => {
+        setSortingMethod(e.target.value)
+        setChangedSortingMethod(true);
+    }
     if (changedSortingMethod) {
         return <LoadingCards />
     }
     return (
         <>
-            {/* <div className='cardinhome'>
-                <select value={sortingMethod} onChange={(e) => setSortingMethod(e.target.value)} className="select select-sm select-ghost focus:outline-none max-w-xs">
+            <div className='cardinhome'>
+                <select value={sortingMethod} onChange={(e) => handleSort(e)} className="select select-sm select-ghost focus:outline-none max-w-xs">
                     <option value={"date"}>Post</option>
                     <option value={"activity"}>Activity</option>
                 </select>
-            </div> */}
+            </div>
 
             {posts?.map((post) => (
                 <div key={post?._id} className='cursor-default bg-[#fffef9] shadow-xl dark:bg-[#242526] mx-2 mt-4 mb-4 pb-2 rounded-lg cardinhome min-h-[10vh]'>
