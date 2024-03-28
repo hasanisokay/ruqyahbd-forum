@@ -53,7 +53,7 @@ const EmailForm = () => {
                     className="input input-bordered focus:outline-none"
                     value={emailFrom}
                     onChange={(e) => setEmailFrom(e.target.value)}
-                    disabled={fetchedUser?.username !=="bonjui" || fetchedUser?.username !=="rafael" || fetchedUser?.username !=="anwar" || fetchedUser?.username !=="thealmahmud"}
+                    disabled={fetchedUser?.username ==="bonjui" || fetchedUser?.username ==="rafael" || fetchedUser?.username ==="anwar" || fetchedUser?.username ==="thealmahmud"}
                 />
             </div>
 
