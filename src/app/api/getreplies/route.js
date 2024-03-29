@@ -6,7 +6,7 @@ export const GET = async (request) => {
     const page = parseInt(request.nextUrl.searchParams.get('page')) || 1;
     const postID = request.nextUrl.searchParams.get('postID');
     const commentID = request.nextUrl.searchParams.get('commentID');
-    const pageSize = parseInt(request.nextUrl.searchParams.get('pageSize')) || 10;
+    const pageSize = parseInt(request.nextUrl.searchParams.get('pageSize')) || 500;
 
     if (isNaN(page) || isNaN(pageSize) || page < 1 || pageSize < 1) {
         return NextResponse.json({
@@ -25,8 +25,12 @@ export const GET = async (request) => {
             { $unwind: "$comment" },
             { $match: { "comment._id": new ObjectId(commentID) } },
             { $project: { _id: 0, replies: "$comment.replies" } },
-            { $sort: { "replies.date": -1 } },
             { $unwind: "$replies" },
+            {
+                $sort: {
+                    "replies.date": 1, // Sort replies by date in descending order
+                },
+            },
             {
                 $lookup: {
                     from: "users",

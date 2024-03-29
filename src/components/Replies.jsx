@@ -11,9 +11,9 @@ import { LoadingModalUser } from "./LoadingSkeletons/Loaders";
 
 const LinkPreview = dynamic(() => import('./LinkPreview'));
 
-const Replies = ({ postID, commentID, setReplyCount, replyCount}) => {
+const Replies = ({ postID, commentID, setReplyCount, replyCount }) => {
     const pageRef = useRef(1);
-    const {onlineUsers, setSelectedUsernameToShowDetails, socket } = useContext(AuthContext);
+    const { onlineUsers, setSelectedUsernameToShowDetails, socket } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [fetchedReplies, setFetchedReplies] = useState([]);
@@ -47,26 +47,25 @@ const Replies = ({ postID, commentID, setReplyCount, replyCount}) => {
 
 
 
-    const handleLoadMore = async() => {
+    const handleLoadMore = async () => {
         pageRef.current += 1;
         await fetchReplies();
     };
-
+    console.log(fetchedReplies);
     const fetchReplies = useCallback(async () => {
         if (replyCount === 0) return;
         if (fetchedReplies?.length > 1 && fetchedReplies?.length < 10) return;
-
         if (fetchedReplies?.length === replyCount) return;
         try {
             setLoading(true);
             const url = `/api/getreplies?commentID=${commentID}&postID=${postID}&page=${pageRef.current}`;
-            const response = await fetch(url, {cache: 'no-store'});
+            const response = await fetch(url, { cache: 'no-store' });
             const data = await response.json();
             const newReplies = data?.replies || [];
             if (newReplies?.length === 0) {
                 setHasMore(false);
             }
-            setFetchedReplies((prevReplies) => [...prevReplies, ...newReplies]);
+            setFetchedReplies((prevReplies) => [...prevReplies, ...newReplies ]);
         } catch (error) {
             console.error("Error fetching replies:", error);
         } finally {
@@ -98,11 +97,10 @@ const Replies = ({ postID, commentID, setReplyCount, replyCount}) => {
         };
     }, [postID, commentID, socket, setReplyCount]);
 
-console.log(fetchedReplies);
+    console.log(fetchedReplies);
     return (
         <div>
-
-            {hasMore && !loading && replyCount > fetchedReplies?.length && <div className="text-center">
+                        {hasMore && !loading && replyCount > fetchedReplies?.length && <div className="text-center">
                 <button className="text-[10px]" onClick={handleLoadMore} disabled={loading}>
                     Load More
                 </button>
@@ -118,9 +116,9 @@ console.log(fetchedReplies);
                                 reply?.authorInfo?.photoURL ?
                                     <Image src={reply.authorInfo?.photoURL} blurDataURL='' alt='User Profile Photo'
                                         width={20} height={20} loading="lazy" sizes="(max-width: 768px) 100vw, 33vw"
-                                        className={`${onlineUsers?.includes(reply?.authorInfo?.username) ? "online-border-color":"offline-border-color" } rounded-full  w-[20px] h-[20px]`}
+                                        className={`${onlineUsers?.includes(reply?.authorInfo?.username) ? "online-border-color" : "offline-border-color"} rounded-full  w-[20px] h-[20px]`}
                                     />
-                                    : <div className={`flex items-center justify-center rounded-full ${onlineUsers?.includes(reply?.authorInfo?.username) ? "online-border-color":"offline-border-color" } w-[20px] h-[20px]`}>
+                                    : <div className={`flex items-center justify-center rounded-full ${onlineUsers?.includes(reply?.authorInfo?.username) ? "online-border-color" : "offline-border-color"} w-[20px] h-[20px]`}>
                                         <UserIcon height={"12px"} width={"12px"} />
                                     </div>
                             }
