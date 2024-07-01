@@ -19,12 +19,12 @@ const dbConnect = async () => {
     const client = new MongoClient(uri, {
       serverApi: {
         version: ServerApiVersion.v1,
-        strict: true,
+        // strict: true,
         deprecationErrors: true,
       },
     });
 
-    db = client.db(`ruqyahbd-forum`);
+    db = client.db(`ruqyah-forum`);
 
     await client.db("admin").command({ ping: 1 });
     return db;

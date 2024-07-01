@@ -71,7 +71,7 @@ const AuthProvider = ({ children }) => {
             setLoading(true);
             const { user } = await getUser();
             setLoading(false);
-            if (user.status === 200) {
+            if (user?.status === 200) {
                 setLoggedOut(false);
                 setFetchedUser(user.user);
             }
