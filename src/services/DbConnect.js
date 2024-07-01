@@ -7,6 +7,7 @@ let db;
 
 const dbConnect = async () => {
   if (db) return db;
+  console.log(db)
   try {
     const uri = process.env.MONGO_URI;
     // const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@next-hero.ktnme97.mongodb.net/?retryWrites=true&w=majority`;
@@ -23,7 +24,7 @@ const dbConnect = async () => {
       },
     });
 
-    db = client.db(`ruqyah-forum`);
+    db = client.db(`ruqyahbd-forum`);
 
     await client.db("admin").command({ ping: 1 });
     return db;
