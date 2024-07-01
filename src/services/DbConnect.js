@@ -23,7 +23,7 @@ const dbConnect = async () => {
         deprecationErrors: true,
       },
     });
-
+// this is changed
     db = client.db(`ruqyahbd-forum`);
 
     await client.db("admin").command({ ping: 1 });
